@@ -175,11 +175,8 @@ PRICING_FIX_SUMMARY.md
 supabase-charge-product-insert.sql
 ADMIN_PAGE_PRERENDER_FIX.md
 PRICING_PAGE_PRERENDER_FIX.md
-.gitignore
 PRISMA_CONNECTION_FIX.md
 PRISMA_DB_CONNECTION_FIX_SUMMARY.md
-.gitignore
-.gitignore
 CLOUDFLARE_AI_GATEWAY_FIX_SUMMARY.md
 CLOUDFLARE_AI_GATEWAY_SETUP.md
 SHOULD_SKIP_DB_QUERY_AUDIT.md
@@ -195,7 +192,6 @@ WEBHOOK_500_ERROR_FIX.md
 diagnose-webhook.js
 DEV_MODE_COMPLETE_FIX.md
 diagnose-vercel-webhook.js
-.gitignore
 test-production-webhook.sh
 test-dev-mode-final.js
 VERCEL_WEBHOOK_FIX_GUIDE.md
@@ -206,7 +202,6 @@ WEBHOOK_LOGS_FIX_SUCCESS.md
 test-webhook-fix.js
 TASK_API_COMPLETION.md
 TASK_API_FIX_SUCCESS.md
-.gitignore
 test-task-api.js
 DOWNLOAD_API_FIX.md
 debug-flux-id.js
@@ -214,16 +209,12 @@ test-download-fix.js
 PROMPT_GENERATOR_AUTH_FIX.md
 TRANSLATION_FIX_SUMMARY.md
 AI_GATEWAY_AUTH_FIX.md
-.gitignore
-.gitignore
 GEMINI_2_5_FLASH_INTEGRATION.md
-lib/ai-gateway.ts
 test-gemini-connection.js
 GEMINI_EMPTY_RESPONSE_FIX.md
 GEMINI_ROLE_MAPPING_FIX.md
 CLOUDFLARE_AI_GATEWAY_DUAL_TOKEN_SUPPORT.md
 FLUX_PROMPT_GENERATOR.md
-.gitignore
 FLUX_PROMPT_SYSTEM_UPDATE.md
 scripts/test-stripe-config.js
 scripts/setup-stripe.js
