@@ -6,7 +6,7 @@ echo 📋 当前状态检查:
 echo    远程仓库: %(git remote get-url origin)
 echo.
 echo ⚠️  问题诊断:
-echo    当前连接到 remove-anything 仓库，需要连接到 fluxkreafree 仓库
+echo    当前连接到 fluxkreafree 仓库，需要连接到 fluxkreafree 仓库
 echo.
 echo 📝 解决步骤:
 echo    1. 请在GitHub上创建新的 fluxkreafree 仓库

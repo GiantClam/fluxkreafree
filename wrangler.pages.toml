@@ -2,7 +2,7 @@
 # 专门用于 Pages + Functions 部署
 
 # 应用基本信息
-name = "remove-anything"
+name = "fluxkreafree"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
 
@@ -13,7 +13,7 @@ pages_build_output_dir = ".vercel/output"
 [vars]
 ENVIRONMENT = "production"
 NODE_ENV = "production"
-NEXT_PUBLIC_SITE_URL = "https://remove-anything.pages.dev"
+NEXT_PUBLIC_SITE_URL = "https://fluxkreafree.pages.dev"
 
 # KV 存储绑定
 [[kv_namespaces]]
@@ -24,13 +24,13 @@ id = "your-kv-production-id"
 # R2 存储绑定
 [[r2_buckets]]
 binding = "R2"
-bucket_name = "remove-anything-storage"
-preview_bucket_name = "remove-anything-storage-preview"
+bucket_name = "fluxkreafree-storage"
+preview_bucket_name = "fluxkreafree-storage-preview"
 
 # D1 数据库绑定
 [[d1_databases]]
 binding = "DB"
-database_name = "remove-anything-db"
+database_name = "fluxkreafree-db"
 database_id = "your-d1-database-id"
 
 # AI Gateway 绑定
@@ -50,11 +50,11 @@ id = "your-kv-development-id"
 
 [[env.development.r2_buckets]]
 binding = "R2"
-bucket_name = "remove-anything-storage-dev"
+bucket_name = "fluxkreafree-storage-dev"
 
 [[env.development.d1_databases]]
 binding = "DB"
-database_name = "remove-anything-db-dev"
+database_name = "fluxkreafree-db-dev"
 database_id = "your-d1-development-database-id"
 
 # Pages Functions 配置

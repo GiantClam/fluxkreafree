@@ -218,3 +218,6 @@ FLUX_PROMPT_GENERATOR.md
 FLUX_PROMPT_SYSTEM_UPDATE.md
 scripts/test-stripe-config.js
 scripts/setup-stripe.js
+FIX_GITHUB_REPO.bat
+scripts/migrate-d1.js
+scripts/setup-github-repo.js

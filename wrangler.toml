@@ -1,4 +1,4 @@
-name = "remove-anything"
+name = "fluxkreafree"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
 
@@ -28,13 +28,13 @@ id = "your-kv-production-id"
 # R2 存储绑定
 [[r2_buckets]]
 binding = "R2"
-bucket_name = "remove-anything-storage"
-preview_bucket_name = "remove-anything-storage-preview"
+bucket_name = "fluxkreafree-storage"
+preview_bucket_name = "fluxkreafree-storage-preview"
 
 # D1 数据库绑定
 [[d1_databases]]
 binding = "DB"
-database_name = "remove-anything-db"
+database_name = "fluxkreafree-db"
 database_id = "your-d1-database-id"
 migrations_dir = "prisma/migrations-d1"
 
@@ -59,11 +59,11 @@ id = "your-kv-development-id"
 
 [[env.development.r2_buckets]]
 binding = "R2"
-bucket_name = "remove-anything-storage-dev"
+bucket_name = "fluxkreafree-storage-dev"
 
 [[env.development.d1_databases]]
 binding = "DB"
-database_name = "remove-anything-db-dev"
+database_name = "fluxkreafree-db-dev"
 database_id = "your-d1-development-database-id"
 
 # 预发布环境配置
@@ -79,9 +79,9 @@ id = "your-kv-staging-id"
 
 [[env.staging.r2_buckets]]
 binding = "R2"
-bucket_name = "remove-anything-storage-staging"
+bucket_name = "fluxkreafree-storage-staging"
 
 [[env.staging.d1_databases]]
 binding = "DB"
-database_name = "remove-anything-db-staging"
+database_name = "fluxkreafree-db-staging"
 database_id = "your-d1-staging-database-id" 

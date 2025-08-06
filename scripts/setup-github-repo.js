@@ -42,7 +42,7 @@ function createGitHubRepo() {
     return false;
   }
 
-  const repoName = 'remove-anything';
+  const repoName = 'fluxkreafree';
   const description = '🎨 Remove Anything - AI 背景去除工具，基于 Next.js 和 Cloudflare Workers';
   
   console.log(`📦 创建仓库: ${repoName}`);
@@ -58,7 +58,7 @@ function createGitHubRepo() {
   } catch (error) {
     console.log('❌ 创建仓库失败，请手动创建：');
     console.log('   1. 访问 https://github.com/new');
-    console.log('   2. 仓库名称: remove-anything');
+    console.log('   2. 仓库名称: fluxkreafree');
     console.log('   3. 描述: 🎨 Remove Anything - AI 背景去除工具');
     console.log('   4. 选择 Public');
     console.log('   5. 不要初始化 README、.gitignore 或 License');
@@ -76,7 +76,7 @@ function updateRemoteConfig() {
     
     // 添加新的远程仓库
     const username = execSync('gh api user --jq .login', { encoding: 'utf8' }).trim();
-    const newOrigin = `https://github.com/${username}/remove-anything.git`;
+    const newOrigin = `https://github.com/${username}/fluxkreafree.git`;
     
     execSync(`git remote add origin ${newOrigin}`);
     console.log(`✅ 远程仓库已更新: ${newOrigin}`);
@@ -86,14 +86,14 @@ function updateRemoteConfig() {
     execSync('git push -u origin main', { stdio: 'inherit' });
     
     console.log('\n🎉 代码已成功推送到 GitHub！');
-    console.log(`🌐 访问: https://github.com/${username}/remove-anything`);
+    console.log(`🌐 访问: https://github.com/${username}/fluxkreafree`);
     
     return true;
   } catch (error) {
     console.log('❌ 更新远程配置失败');
     console.log('请手动执行以下命令：');
     console.log('   git remote remove origin');
-    console.log('   git remote add origin https://github.com/YOUR_USERNAME/remove-anything.git');
+    console.log('   git remote add origin https://github.com/YOUR_USERNAME/fluxkreafree.git');
     console.log('   git push -u origin main');
     return false;
   }

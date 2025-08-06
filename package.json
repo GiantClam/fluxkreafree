@@ -1,5 +1,5 @@
 {
-  "name": "remove-anything",
+  "name": "fluxkreafree",
   "version": "0.3.1",
   "private": true,
   "author": {
@@ -23,9 +23,9 @@
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
     "d1:migrate": "node scripts/migrate-d1.js",
-    "d1:create": "npx wrangler d1 create remove-anything-db",
-    "d1:local": "npx wrangler d1 migrations apply remove-anything-db --local",
-    "d1:deploy": "npx wrangler d1 migrations apply remove-anything-db",
+    "d1:create": "npx wrangler d1 create fluxkreafree-db",
+    "d1:local": "npx wrangler d1 migrations apply fluxkreafree-db --local",
+    "d1:deploy": "npx wrangler d1 migrations apply fluxkreafree-db",
     "email": "email dev --dir emails --port 3333",
     "prettier": "prettier --write **/*.{js,ts,tsx}",
     "check-config": "node scripts/check-cloudflare-config.js",
