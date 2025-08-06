@@ -1,0 +1,662 @@
+{
+  "Error": {
+    "description": "<p>Lamentablemente, hemos encontrado un error.</p><p>Puedes intentar <retry>recargar la página</retry> que estabas visitando.</p>",
+    "title": "¡Algo salió mal!"
+  },
+  "IndexPage": {
+    "intro": "Presentamos el Generador de Imágenes Flux AI",
+    "description": "Revolutionando el modelo avanzado de texto a imagen de próxima generación, compatible con los modelos flux.1 pro/dev y flux.1 schnell.",
+    "title": "Generador de Imágenes Flux AI",
+    "subtitle": "Texto a Imagen Avanzado",
+    "examples": {
+      "label": "Ejemplo",
+      "title": "Ejemplos de Imágenes Flux AI",
+      "subtitle": "Generar imágenes a partir de textos."
+    },
+    "features": {
+      "title": "Características",
+      "description": "El Generador de Imágenes Flux AI es una herramienta poderosa que te permite generar imágenes a partir de textos. Utiliza modelos avanzados de IA para crear imágenes impresionantes perfectas para cualquier proyecto.",
+      "action": {
+        "visit": "Generar"
+      },
+      "item1": {
+        "title": "FLUX.1 [pro]",
+        "description": "Lo mejor de FLUX.1, ofreciendo generación de imágenes de última generación con seguimiento de avisos de primera clase, calidad visual, detalle de imagen y diversidad de salida."
+      },
+      "item2": {
+        "title": "FLUX.1 [dev]",
+        "description": "Destilado directamente de FLUX.1 [pro], FLUX.1 [dev] obtiene una calidad similar y capacidades de adherencia a avisos, siendo más eficiente que un modelo estándar del mismo tamaño."
+      },
+      "item3": {
+        "title": "FLUX.1 [schnell]",
+        "description": "El modelo de generación de imágenes más rápido, diseñado para desarrollo local y uso personal."
+      },
+      "item4": {
+        "title": "Rápido como un rayo",
+        "description": "Flux AI genera imágenes de alta calidad en segundos, significativamente más rápido que Stable Diffusion 3 y Midjourney. Con su capacidad de generación de imágenes ultrarrápida, Flux AI asegura resultados rápidos y eficientes, ahorrándote tiempo y recursos valiosos."
+      },
+      "item5": {
+        "title": "Personalizable",
+        "description": "El modelo avanzado Flux.1 produce imágenes más detalladas y coherentes que los competidores. Con sus características personalizables y una interfaz de usuario amigable, el Generador de Imágenes Flux AI es la herramienta definitiva para generar imágenes impresionantes a partir de textos. Ya seas un principiante o un profesional, Flux AI te tiene cubierto. ¡Experimenta el poder de la IA y revoluciona tu proceso de generación de imágenes hoy!"
+      },
+      "item6": {
+        "title": "Interfaz de Usuario Amigable",
+        "description": "Más fácil de usar que ComfyUI, perfecto para principiantes y profesionales por igual. El Generador de Imágenes Flux AI es la herramienta definitiva para generar imágenes impresionantes a partir de textos. Con su interfaz de usuario amigable y potentes modelos de IA, Flux AI facilita la creación de increíbles visuales tanto para principiantes como para profesionales."
+      }
+    },
+    "powered": {
+      "title": "Desarrollado por"
+    },
+    "bent": {
+      "first": {
+        "title": "Personalizable"
+      }
+    },
+    "schnell": {
+      "title": "Flux.1 [Schnell]",
+      "description": "Flux.1 [schnell] es una versión refinada del modelo base, que opera hasta 10 veces más rápido que el original. Con licencia Apache 2.0, está optimizado para velocidad y eficiencia, atendiendo a usuarios que exigen una generación rápida de imágenes sin comprometer la calidad. Este modelo es ideal para desarrollo local y uso personal, logrando el equilibrio perfecto entre rendimiento y accesibilidad. Ofrecemos a los usuarios 5 oportunidades gratuitas cada mes para experimentar la generación ultrarrápida de imágenes del modelo Flux.1 [schnell], permitiéndote presenciar su increíble velocidad de primera mano.",
+      "action": "Pruébalo ahora"
+    },
+    "action": {
+      "pricing": "Comprar Créditos",
+      "login": "Iniciar Sesión",
+      "dashboard": "Panel de Control",
+      "generate": "Generar",
+      "github": {
+        "sm": "Dar Estrella en",
+        "normal": "Github"
+      }
+    }
+  },
+  "PricingPage": {
+    "title": "Elige un plan para comprar créditos",
+    "description": "Sin recargas",
+    "worth": "Crédito",
+    "label": "Precios",
+    "action": {
+      "signin": "Iniciar Sesión",
+      "buy": "Pago único"
+    },
+    "contact": {
+      "title": "Contáctanos",
+      "description": "Si tienes alguna pregunta, no dudes en contactarnos."
+    },
+    "faq": {
+      "label": "FAQ",
+      "title": "Preguntas Frecuentes",
+      "subtitle": "Explora nuestra FAQ completa para encontrar respuestas rápidas a consultas comunes. Si necesitas más ayuda, no dudes en contactarnos para obtener ayuda personalizada.",
+      "item1": {
+        "question": "¿Cómo se compara Flux AI con Stable Diffusion 3?",
+        "answer": "Flux AI ofrece tiempos de generación más rápidos, mayor calidad de imagen y una interfaz de usuario más amigable en comparación con Stable Diffusion 3. El modelo Flux.1 incorpora los últimos avances en investigación de IA."
+      },
+      "item2": {
+        "question": "¿Está disponible Flux AI en GitHub o Hugging Face?",
+        "answer": "Sí, Flux AI es de código abierto y está disponible tanto en GitHub como en Hugging Face."
+      },
+      "item3": {
+        "question": "¿Qué hace que Flux AI sea diferente de otros generadores de imágenes por IA?",
+        "answer": "Flux AI combina velocidad, calidad y facilidad de uso. Es más rápido que Midjourney, más fácil de usar que ComfyUI y produce imágenes de mayor calidad que muchos competidores."
+      },
+      "item4": {
+        "question": "¿Cómo usar Flux AI?",
+        "answer": "Para usar Flux AI, simplemente visita fluxaipro.art, ingresa tu aviso y presencia la creación de impresionantes visuales en cuestión de segundos."
+      },
+      "item5": {
+        "question": "¿Qué planes de precios ofrece Flux AI?",
+        "answer": "Utilizamos puntos para usar nuestros servicios, y puedes hacer clic en la tarjeta de precio para comprar puntos (solo se requiere un pago)."
+      },
+      "item6": {
+        "question": "¿Cómo puedo obtener soporte en línea?",
+        "answer": "Puedes contactarnos en support@fluxaipro.art."
+      }
+    },
+    "tip": {
+      "title": "💳 Consejo de Pago: Si encuentras algún problema durante el proceso de pago, no dudes en contactarnos! 😉",
+      "subtitle": "¿Preguntas?",
+      "contact": "contáctanos"
+    }
+  },
+  "Promotion": {
+    "title": "Oferta Limitada: ¡Obtén un 20% de Puntos Extra en Compras de Paquetes Dentro de un Mes!",
+    "error": {
+      "common": "¡Ups! Algo salió mal. Por favor, inténtelo de nuevo más tarde.",
+      "limit": "Necesita hacer una compra primero para calificar para esta oferta."
+    },
+    "success": {
+      "title": "¡Felicitaciones! Ha recibido un 20% de puntos extra en su compra."
+    },
+    "action": {
+      "claim": "Activar Sus Puntos",
+      "close": "Cerrar"
+    }
+  },
+  "PromptGenerator": {
+    "layout": {
+      "title": "Generador de Prompts de Flux AI Gratis: Mejora tu Creatividad con Prompts impulsados por IA",
+      "description": "Descubre el poder del Generador de Prompts de Flux AI, tu herramienta definitiva para crear prompts de IA personalizados sin esfuerzo. Ya seas escritor, desarrollador o pensador creativo, nuestra plataforma intuitiva transforma tus ideas en prompts atractivos, aumentando la productividad e inspirando innovación. ¡Comienza a generar contenido convincente hoy y eleva tus proyectos con Flux AI!",
+      "keywords": "generador de prompts de flux ai, generador de prompts de IA, creador de prompts de flux, generación de contenido de IA, herramientas de escritura de IA, prompts de escritura creativa, herramientas de flux AI, generar prompts con IA, generación de prompts impulsada por IA, mejorar la creatividad con IA, software de generación de prompts"
+    },
+    "title": "Generador de Prompts de Flux AI Gratis",
+    "subtitle": "Transforma tus ideas en potentes prompts de generación de imágenes AI con nuestra guía completa",
+    "tabs": {
+      "generator": "Generador AI",
+      "guide": "Guía de Prompts",
+      "examples": "Ejemplos"
+    },
+    "quickPrompts": {
+      "title": "Prompts de Inicio Rápido"
+    },
+    "guide": {
+      "howToUse": {
+        "title": "💡 Cómo Usar Estos Prompts",
+        "description": "Estos prompts están específicamente optimizados para modelos FLUX.1. Simplemente copia cualquier prompt de abajo y pégalo en nuestro generador gratuito. También puedes modificarlos para crear tus propias variaciones únicas.",
+        "proTips": {
+          "title": "🎯 Consejos Profesionales",
+          "tips": {
+            "0": "Agrega \"alta calidad\" o \"detallado\" para mejores resultados",
+            "1": "Incluye términos de iluminación como \"hora dorada\" o \"iluminación de estudio\"",
+            "2": "Especifica estilos artísticos como \"pintura al óleo\" o \"arte digital\"",
+            "3": "Usa adjetivos descriptivos para resultados más específicos"
+          }
+        },
+        "modelSelection": {
+          "title": "⚡ Selección de Modelos",
+          "models": {
+            "0": "FLUX.1 Pro: Mejor para imágenes artísticas y detalladas",
+            "1": "FLUX.1 Dev: Excelente para exploración de conceptos",
+            "2": "FLUX.1 Schnell: Perfecto para iteración rápida"
+          }
+        }
+      },
+      "advancedTechniques": {
+        "title": "🔧 Técnicas Avanzadas de Prompting",
+        "structure": {
+          "title": "📝 Estructura tus Prompts",
+          "description": "Comienza con el sujeto principal, agrega detalles, especifica el estilo, luego agrega términos técnicos:",
+          "template": "[Sujeto] + [Detalles] + [Estilo] + [Términos Técnicos]"
+        },
+        "styleKeywords": {
+          "title": "🎨 Palabras Clave de Estilo",
+          "keywords": {
+            "0": "\"fotorrealista\" - Imágenes ultra realistas",
+            "1": "\"arte digital\" - Estilo digital moderno",
+            "2": "\"pintura al óleo\" - Apariencia de arte tradicional",
+            "3": "\"estilo anime\" - Animación japonesa",
+            "4": "\"cinemático\" - Composición tipo película"
+          }
+        }
+      }
+    },
+    "examples": {
+      "useInGenerator": "Usar en Generador"
+    },
+    "cta": {
+      "title": "¿Listo para Crear Imágenes Increíbles?",
+      "description": "Usa estos prompts con nuestro generador gratuito FLUX.1 y da vida a tus ideas.",
+      "button": "Comenzar a Generar Gratis",
+      "subtext": "Sin registro requerido • Sin tarjeta de crédito • Generaciones ilimitadas"
+    },
+    "form": {
+      "input": {
+        "title": "Introduce tu Idea de Prompt",
+        "placeholder": "Introduce tu idea de prompt aquí..."
+      },
+      "output": {
+        "title": "Prompt Generado"
+      },
+      "action": {
+        "generate": "Generar Prompt de IA",
+        "generating": "Generando...",
+        "copy": "Copiar prompt",
+        "copySuccess": "Prompt copiado al portapapeles.",
+        "to_generate": "Generar"
+      }
+    },
+    "faq": {
+      "label": "Preguntas",
+      "title": "Preguntas Frecuentes sobre el Generador de Prompts de Flux AI",
+      "subtitle": "Explora nuestras preguntas frecuentes para encontrar respuestas rápidas a las consultas comunes. Si necesitas más ayuda, no dudes en contactarnos para obtener ayuda personalizada.",
+      "item1": {
+        "question": "¿Qué es el Generador de Prompts de Flux AI?",
+        "answer": "El Generador de Prompts de Flux AI es una herramienta innovadora diseñada para ayudar a los usuarios a crear prompts atractivos y efectivos para diversas aplicaciones, incluyendo escritura, marketing y creación de contenido. Al aprovechar algoritmos avanzados de IA, genera sugerencias que estimulan la creatividad y mejoran la productividad."
+      },
+      "item2": {
+        "question": "¿Cómo funciona Flux AI?",
+        "answer": "Flux AI utiliza técnicas de inteligencia artificial y aprendizaje automático para analizar las entradas de los usuarios y generar prompts relevantes. Los usuarios pueden personalizar parámetros para adaptar la salida, asegurando que los prompts generados cumplan con sus necesidades específicas, ya sean para proyectos personales o tareas profesionales."
+      },
+      "item3": {
+        "question": "¿Quién puede beneficiarse de usar Flux AI?",
+        "answer": "Flux AI es ideal para escritores, especialistas en marketing, educadores y creadores de contenido que buscan inspiración y orientación. Puede ayudar a los usuarios a superar el bloqueo del escritor, desarrollar estrategias de marketing o crear planes de lecciones, lo que lo convierte en una herramienta valiosa para cualquiera que necesite ideas frescas."
+      },
+      "item4": {
+        "question": "¿Es Flux AI fácil de usar?",
+        "answer": "Sí, Flux AI está diseñado pensando en la experiencia del usuario. Su interfaz intuitiva permite a los usuarios de todos los niveles de habilidad navegar fácilmente por la herramienta. Con opciones de entrada simples y instrucciones claras, incluso aquellos con experiencia técnica mínima pueden comenzar a generar prompts en poco tiempo."
+      },
+      "item5": {
+        "question": "¿Puedo usar Flux AI para múltiples proyectos?",
+        "answer": "¡Absolutamente! El Generador de Prompts de Flux AI es versátil y soporta una amplia gama de proyectos. Ya sea que estés elaborando publicaciones de blog, contenido de redes sociales o ideas para escritura creativa, puedes utilizar la herramienta varias veces para generar prompts únicos para diferentes necesidades."
+      },
+      "item6": {
+        "question": "¿Hay un costo asociado con el uso del Generador de Prompts de Flux AI?",
+        "answer": "El Generador de Prompts de Flux AI es actualmente gratuito. Los usuarios pueden acceder a la plataforma en cualquier momento, ingresar prompts y generar sugerencias relevantes sin costo alguno."
+      }
+    }
+  },
+  "ExplorePage": {
+    "layout": {
+      "title": "Explorar el Generador de Imágenes de Flux AI",
+      "description": "Descubre las últimas características y actualizaciones del Generador de Imágenes de Flux AI.",
+      "keywords": "flux AI, AI flux, inteligencia artificial flux, tecnología de IA, aprendizaje automático flux, herramientas flux AI, aplicaciones de IA, soluciones de inteligencia artificial, análisis de datos flux, innovación en IA, analítica predictiva flux, aprendizaje automático flux, desarrollo de IA, IA de próxima generación"
+    },
+    "title": "Explorar el Generador de Imágenes de Flux AI",
+    "description": "Descubre las últimas características y actualizaciones del Generador de Imágenes de Flux AI.",
+    "flux": {
+      "model": "Modelo",
+      "lora": "Estilo",
+      "prompt": "Prompt",
+      "executePrompt": "Prompt Mágico",
+      "resolution": "Resolución",
+      "createdAt": "Fecha de creación"
+    }
+  },
+  "Playground": {
+    "layout": {
+      "title": "Generador de Imágenes Gratuito Flux.1 {model}: Crea Imágenes Impresionantes en Segundos",
+      "description": "Descubre el generador de imágenes gratuito Flux.1, tu herramienta ideal para crear visuales impresionantes sin esfuerzo. Genera imágenes de alta calidad fácilmente y libera tu creatividad sin costo alguno. Perfecto para diseñadores, artistas y cualquiera que busque mejorar sus proyectos con imágenes únicas.",
+      "keywords": "generador de imágenes flux.1, generador de imágenes modelo flux.1, generador de imágenes gratis, generador de imágenes IA, herramienta de generación de imágenes, crear imágenes con IA, generar imágenes en línea, software de creación de imágenes, herramienta de diseño de imágenes, plataforma de generación de imágenes"
+    },
+    "page": {
+      "title": "Generador de Imágenes Gratuito Flux.1 {model}",
+      "subtitle": "Modelos de IA asombrosos para generar imágenes a partir de indicaciones de texto."
+    },
+    "settings": {
+      "display": "Mostrar {mode}",
+      "displayTooltip": "Elige si quieres hacer público tu contenido. Si lo configuras como público, otros usuarios podrán ver o descargar tu contenido. La configuración privada protege tu privacidad, mientras que la pública facilita compartir y colaborar.",
+      "displayLabel": "El uso gratuito será público",
+      "displayAction": "Ver Precios"
+    },
+    "schnell_faq": {
+      "label": "Preguntas Frecuentes",
+      "title": "Preguntas frecuentes",
+      "subtitle": "Explora nuestras preguntas frecuentes para encontrar respuestas rápidas a consultas comunes. Si necesitas más ayuda, no dudes en contactarnos para obtener asistencia personalizada.",
+      "item1": {
+        "question": "¿Qué es Flux.1 Schnell?",
+        "answer": "Flux.1 Schnell es el modelo de generación de imágenes más rápido, diseñado para desarrollo local y uso personal."
+      },
+      "item2": {
+        "question": "¿Qué tan importante es la entrada inicial al generar imágenes en Flux.1 Schnell?",
+        "answer": "La entrada inicial en Flux.1 Schnell es crucial para la calidad de la imagen. Proporcionar entradas detalladas y de alta calidad puede resultar en salidas más realistas y detalladas. Asegúrate de que los conceptos y elementos propuestos estén bien definidos para obtener los mejores resultados."
+      },
+      "item3": {
+        "question": "¿Cómo puedo mejorar la calidad de las imágenes generadas por Flux.1 Schnell?",
+        "answer": "Para mejorar la calidad de la imagen, proporciona indicaciones claras y detalladas, experimenta con diferentes estilos artísticos y considera usar la variante pro para tareas más complejas."
+      },
+      "item4": {
+        "question": "¿Existen comunidades en línea o foros que ofrezcan consejos para mejorar la calidad de las imágenes de Flux.1 Schnell?",
+        "answer": "Sí, se puede usar en el sitio web oficial en https://fluxaipro.art/flux-schnell. Los usuarios solo necesitan ingresar sus indicaciones en el sitio web y generar imágenes, lo que puede ayudarte a mejorar la calidad de tus imágenes generadas."
+      },
+      "item5": {
+        "question": "¿Cómo puedo usar Flux.1 Schnell y hay opciones gratuitas?",
+        "answer": "Flux.1 Schnell se puede usar en el sitio web oficial en https://fluxaipro.art/flux-schnell. Cada usuario obtiene 5 usos gratuitos del modelo Flux.1 Schnell por mes calendario, que se reinician al comienzo de cada mes. Para usarlo, simplemente ingresa tu indicación en el sitio web y genera imágenes. Este proceso puede ayudarte a mejorar la calidad de tus imágenes generadas con el tiempo."
+      },
+      "item6": {
+        "question": "¿Cómo puedo obtener soporte en línea?",
+        "answer": "Puedes contactarnos en support@fluxaipro.art."
+      }
+    },
+    "title": "Generador de Imágenes Flux AI",
+    "description": "Modelos de IA asombrosos para generar imágenes a partir de textos.",
+    "empty": {
+      "title": "Error del Generador",
+      "description": "Información del Error: {error}",
+      "errorPlaceholder": "Ocurrió un error"
+    },
+    "form": {
+      "input": "Entrada",
+      "result": "Resultado",
+      "placeholder": "Ingresa el aviso para generar la imagen...",
+      "prompt": {
+        "label": "Aviso",
+        "placeholder": "Un hermoso atardecer sobre el océano, estilo de arte digital"
+      },
+      "negativePrompt": {
+        "label": "Aviso Negativo",
+        "placeholder": "borroso, baja calidad, distorsionado"
+      },
+      "model": {
+        "label": "Modelo",
+        "pro": "FLUX.1 Pro - Mejor Calidad",
+        "dev": "FLUX.1 Dev - Equilibrado",
+        "schnell": "FLUX.1 Schnell - Más Rápido"
+      },
+      "lora": {
+        "label": "Estilo",
+        "tooltip": "Seleccionar un estilo",
+        "name": "Nombre del Estilo"
+      },
+      "modelTooltip": "Elige un modelo para generar imágenes.",
+      "submit": "Generar",
+      "ratio": {
+        "label": "Relación de Aspecto"
+      },
+      "aspectRatio": "Relación de Aspecto",
+      "aspectRatioTooltip": "Relación de aspecto para la imagen generada.",
+      "inputImage": "Imagen",
+      "inputImageTooltip": "Imagen de entrada para el modo de imagen a imagen. La relación de aspecto de tu salida coincidirá con esta imagen",
+      "inputImagePlaceholder": "Subir imagen de entrada",
+      "private": {
+        "label": "Generación Privada"
+      },
+      "action": {
+        "generate": "Generar Gratis",
+        "generating": "Generando...",
+        "cancel": "Cancelar"
+      }
+    },
+    "result": {
+      "title": "Imagen Generada",
+      "download": "Descargar",
+      "share": "Compartir",
+      "regenerate": "Regenerar"
+    },
+    "error": {
+      "insufficientCredits": "Puntos insuficientes, ¡recarga por favor!",
+      "limitInsufficient": "Has alcanzado el límite de uso gratuito. Por favor, actualiza a un plan pagado para continuar usando nuestros servicios.",
+      "title": "Generación Fallida",
+      "description": "Algo salió mal durante la generación de la imagen. Por favor, inténtalo de nuevo.",
+      "retry": "Intentar de Nuevo"
+    },
+    "info": {
+      "free": "100% Gratis - No Se Requieren Créditos",
+      "quality": "Impulsado por Krea FLUX.1",
+      "speed": "Generación Ultra Rápida"
+    },
+    "action": {
+      "copy": "Copiar aviso",
+      "copySuccess": "Aviso copiado al portapapeles.",
+      "download": "Descargar Imagen",
+      "downloadSuccess": "Imagen descargada.",
+      "downloadLoading": "Descargando...",
+      "upgrade": "Eleva tu arte con las pruebas gratuitas mensuales limitadas de Schnell. Para experiencias de modelo premium sin marca, haz clic aquí para actualizar."
+    }
+  },
+  "GiftCode": {
+    "title": "Canje de Código de Regalo",
+    "text": "Introduce tu código de regalo para canjear créditos.",
+    "form": {
+      "placeholder": "Introduce tu código de regalo",
+      "aria_label": "Código de regalo",
+      "button": "Canjear",
+      "required": "Este campo es obligatorio.",
+      "invalid": "Código de regalo inválido.",
+      "success": "Créditos de {credits} canjeados exitosamente.",
+      "error": "Fallo al canjear el código de regalo."
+    }
+  },
+  "History": {
+    "title": "Historial de Generación de Imágenes",
+    "description": "Ver tu historial reciente de generación de imágenes.",
+    "empty": {
+      "title": "Aún no hay historial.",
+      "description": "Genera una imagen para verla aquí."
+    },
+    "action": {
+      "generate": "Generar",
+      "copy": "Copiar aviso",
+      "copySuccess": "Aviso copiado al portapapeles.",
+      "download": "Descargar Imagen",
+      "downloadSuccess": "Imagen descargada.",
+      "downloadLoading": "Descargando..."
+    }
+  },
+  "Billings": {
+    "page": {
+      "title": "App – Generador de Imágenes Flux AI",
+      "description": "Ver tus predicciones recientes"
+    },
+    "title": "Predicciones Recientes",
+    "empty": {
+      "title": "Reciente Vacío",
+      "description": "Aún no hay registros."
+    },
+    "table": {
+      "fluxId": "ID de Tarea",
+      "status": "Estado",
+      "amount": "Crédito",
+      "type": "Tipo",
+      "createdAt": "Creado En",
+      "total": "Total",
+      "records": "Órdenes"
+    }
+  },
+  "Orders": {
+    "title": "Órdenes",
+    "description": "Ver tu historial de facturación.",
+    "empty": {
+      "title": "Órdenes Vacías",
+      "description": "Aún no hay registros de pago."
+    },
+    "table": {
+      "customer": "Cliente",
+      "amount": "Precio",
+      "status": "Estado",
+      "credit": "Puntos",
+      "channel": "Canal",
+      "createdAt": "Creado En",
+      "total": "Total",
+      "records": "Órdenes"
+    },
+    "order": {
+      "all": "Todas",
+      "paid": "Pagadas",
+      "pending": "Pendientes",
+      "failed": "Fallidas",
+      "canceled": "Canceladas"
+    }
+  },
+  "NewsLetter": {
+    "title": "Únete a nuestro Boletín",
+    "subtitle": "¡Suscríbete para recibir actualizaciones!",
+    "form": {
+      "placeholder": "Introduce tu dirección de correo electrónico",
+      "aria_label": "Correo Electrónico",
+      "confirm": "Por favor, revisa el correo de confirmación de suscripción.",
+      "button": "Suscribirse"
+    }
+  },
+  "FluxAIPage": {
+    "title": "¿Qué es FLUX.1 y por qué es un cambio revolucionario?",
+    "description": "Descubre el modelo revolucionario de generación de imágenes IA que está transformando la industria",
+    "tryButton": "Probar FLUX.1 gratis",
+    "whatIs": {
+      "title": "🚀 ¿Qué es FLUX.1?",
+      "content1": "FLUX.1 es el modelo revolucionario de generación de imágenes de código abierto de Krea AI que representa un salto significativo en la tecnología de creatividad IA. Lanzado como una solución completamente gratuita y de código abierto, FLUX.1 combina rendimiento de vanguardia con accesibilidad sin precedentes.",
+      "content2": "A diferencia de los modelos de IA tradicionales que requieren suscripciones costosas o hardware potente, FLUX.1 democratiza la generación de imágenes IA haciéndola disponible para todos a costo cero."
+    },
+    "whyRevolutionary": {
+      "title": "⚡ Por qué FLUX.1 es revolucionario",
+      "quality": {
+        "title": "🎯 Calidad superior",
+        "description": "FLUX.1 produce imágenes con detalle excepcional, coherencia y calidad artística que rivaliza o supera las alternativas comerciales."
+      },
+      "speed": {
+        "title": "⚡ Velocidad relámpago",
+        "description": "La variante FLUX.1 Schnell opera hasta 10x más rápido que los modelos estándar, haciendo posible la creación rápida de prototipos e iteración."
+      },
+      "free": {
+        "title": "🔓 Completamente gratis",
+        "description": "Licenciado bajo Apache 2.0, FLUX.1 es gratuito para uso personal y comercial, rompiendo barreras para la creatividad IA."
+      },
+      "opensource": {
+        "title": "🌐 Código abierto",
+        "description": "Código fuente completo disponible en GitHub, permite a los desarrolladores personalizar, mejorar y construir sobre la tecnología."
+      }
+    },
+    "comparison": {
+      "title": "🆚 FLUX.1 vs. Stable Diffusion 3: Análisis técnico profundo",
+      "headers": {
+        "feature": "Característica",
+        "flux": "FLUX.1",
+        "sd3": "Stable Diffusion 3"
+      },
+      "rows": {
+        "speed": {
+          "feature": "Velocidad",
+          "flux": "Hasta 10x más rápido (variante Schnell)",
+          "sd3": "Velocidad estándar"
+        },
+        "cost": {
+          "feature": "Costo",
+          "flux": "100% gratis",
+          "sd3": "API paga/Suscripción"
+        },
+        "license": {
+          "feature": "Licencia",
+          "flux": "Apache 2.0 (Código abierto)",
+          "sd3": "Propietario"
+        },
+        "prompt": {
+          "feature": "Comprensión de prompts",
+          "flux": "Adherencia superior a prompts",
+          "sd3": "Buena"
+        },
+        "quality": {
+          "feature": "Calidad de imagen",
+          "flux": "Detalle de vanguardia",
+          "sd3": "Alta calidad"
+        }
+      }
+    },
+    "variants": {
+      "title": "🔧 Las tres variantes de FLUX.1",
+      "pro": {
+        "title": "FLUX.1 Pro",
+        "subtitle": "Mejor calidad",
+        "description": "El modelo insignia que ofrece la más alta calidad de salida con seguimiento superior de prompts y fidelidad visual."
+      },
+      "dev": {
+        "title": "FLUX.1 Dev",
+        "subtitle": "Equilibrado",
+        "description": "Destilado directamente de Pro, ofrece calidad similar con eficiencia mejorada para flujos de trabajo de desarrollo."
+      },
+      "schnell": {
+        "title": "FLUX.1 Schnell",
+        "subtitle": "Más rápido",
+        "description": "Optimizado para velocidad, opera hasta 10x más rápido mientras mantiene excelente calidad para iteración rápida."
+      }
+    },
+    "howBuilt": {
+      "title": "🚀 Cómo construimos un generador IA gratuito con FLUX.1 de Krea",
+      "description": "En FluxKreaFree.com, hemos aprovechado el modelo revolucionario FLUX.1 GGUF de Krea para crear la plataforma de generación de imágenes IA más accesible disponible. Nuestra implementación se centra en tres principios fundamentales:",
+      "principles": {
+        "accessibility": {
+          "title": "1. Accesibilidad",
+          "description": "No se requiere registro, no se necesitan tarjetas de crédito, sin límites en el uso."
+        },
+        "performance": {
+          "title": "2. Rendimiento",
+          "description": "Infraestructura optimizada asegura tiempos de generación rápidos y servicio confiable."
+        },
+        "quality": {
+          "title": "3. Calidad",
+          "description": "Integración directa con modelos FLUX.1 asegura la más alta calidad de salida."
+        }
+      }
+    },
+    "cta": {
+      "title": "¿Listo para experimentar FLUX.1?",
+      "description": "Únete a miles de creadores que ya están usando FLUX.1 para dar vida a sus ideas.",
+      "generateButton": "Comenzar a generar gratis",
+      "githubButton": "Ver en GitHub"
+    }
+  },
+  "KreaAlternativePage": {
+    "title": "La mejor alternativa gratuita a Krea AI en 2025",
+    "description": "Obtén la misma tecnología FLUX.1 que Krea AI, pero completamente gratis e ilimitado",
+    "badges": {
+      "free": "100% gratis",
+      "limits": "Sin límites",
+      "technology": "Misma tecnología"
+    },
+    "startButton": "Comenzar a usar gratis",
+    "whyChoose": {
+      "title": "🎯 ¿Por qué elegir FluxKreaFree como tu alternativa a Krea?",
+      "description": "Mientras que Krea AI ofrece excelente tecnología, muchos usuarios buscan alternativas más accesibles. FluxKreaFree.com proporciona exactamente la misma tecnología FLUX.1 que impulsa Krea AI, pero con una diferencia crucial: es completamente gratuito.",
+      "sameTech": {
+        "title": "✅ Misma tecnología FLUX.1",
+        "description": "Usamos los modelos FLUX.1 idénticos que usa Krea AI, asegurando los mismos resultados de alta calidad y rendimiento."
+      },
+      "free": {
+        "title": "💰 100% gratis para siempre",
+        "description": "Sin tarifas de suscripción, sin tarjeta de crédito requerida, sin límites de uso. Genera tantas imágenes como quieras."
+      }
+    },
+    "cta": {
+      "title": "¿Listo para cambiar a la mejor alternativa gratuita?",
+      "description": "Únete a miles de usuarios que han descubierto que no necesitas pagar por generación de imágenes IA premium cuando puedes obtener la misma tecnología completamente gratis.",
+      "button": "Comenzar a generar gratis"
+    }
+  },
+  "LocaleLayout": {
+    "title": "Flux Krea AI Gratis - Generador de Imágenes Fotorrealistas Sin Aspecto IA | FluxKreaFree",
+    "description": "Experimenta Flux Krea - el modelo de IA con opiniones que sobresale en fotorrealismo y evita el aspecto sobresaturado de 'IA'. Generación de imágenes de calidad profesional, completamente gratis. Sin registro requerido.",
+    "keywords": "Krea, flux krea, generador de imágenes IA, IA fotorrealista, herramientas creativas, generación de imágenes, generación de video, arte IA, imagen IA, video IA, generador de arte IA, generador de video IA, herramienta de arte IA, herramienta de video IA, potenciador IA, escalador IA, escalado ia, escalado ia gratis, escalador de imágenes, escalador de video, potenciador de imágenes, potenciador de video, transferencia de estilo, transferencia de escena, magnific, magnific.ai, alternativa magnific.ai, alternativa magnific, mejor generador de imágenes ia, generador de imágenes ia gratis, Flux, Stable Diffusion, tiempo real, img2img, estilo, entrenar, modelo, transferencia de estilo, Midjourney, Alternativa Midjourney, Midjourney tiempo real, lora, estilos, consistencia de personajes, consistencia de objetos, editor Krea, inpaint, outpaint, editor de fotos IA, IA photoshop, fotorrealista, sin aspecto IA, iluminación natural, calidad cinematográfica, fotografía profesional, Black Forest Labs"
+  },
+  "LocaleSwitcher": {
+    "label": "Cambiar idioma",
+    "locale": "{locale, select, zh {🇨🇳 简体中文} tw {🇭🇰 繁體中文} en {🇺🇸 English} fr {🇫🇷 Français} ja {🇯🇵 日本語} ko {🇰🇷 한국어} de {🇩🇪 Deutsch} es {🇪🇸 Español} pt {🇧🇷 Português} ar {🇦🇪 العربية} other {Unknown}}"
+  },
+  "Manifest": {
+    "name": "Generador de Imágenes Flux AI"
+  },
+  "AppNavigation": {
+    "Index": "Inicio",
+    "Generate": "Generar",
+    "History": "Historial",
+    "GiftCode": "Código de Regalo",
+    "ChargeOrder": "Orden de Carga"
+  },
+  "Navigation": {
+    "title": "FluxKreaFree",
+    "Generate": "Generar",
+    "FLUX1": "FLUX.1",
+    "Krea Alternative": "Alternativa Krea",
+    "Prompt Generator": "Generador de Prompts",
+    "Prompt Guide": "Guía de Prompts",
+    "Blog": "Blog",
+    "Learn More": "Más Información",
+    "prompt": "Generador de Prompts FLUX.1",
+    "dashboard": "Panel de Control",
+    "tooltip": {
+      "login": "Comenzar a Generar Gratis"
+    }
+  },
+  "NotFoundPage": {
+    "description": "Por favor, revisa la barra de direcciones del navegador o utiliza la navegación para ir a una página conocida.",
+    "title": "Página no encontrada"
+  },
+  "PageLayout": {
+    "footer": {
+      "title": "Generador de Imágenes Flux AI",
+      "term": "Términos",
+      "privacy": "Privacidad",
+      "contact": "Contacto"
+    },
+    "links": {
+      "docs": {
+        "description": "Aprende más sobre next-intl en la documentación oficial.",
+        "href": "https://next-intl-docs.vercel.app/",
+        "title": "Documentos"
+      },
+      "source": {
+        "description": "Explora el código fuente de este ejemplo en GitHub.",
+        "href": "https://github.com/amannn/next-intl/tree/main/examples/example-app-router",
+        "title": "Código Fuente"
+      }
+    }
+  },
+  "BlogPage": {
+    "title": "Blog",
+    "description": "Las últimas noticias y actualizaciones de Nuestro"
+  }
+}

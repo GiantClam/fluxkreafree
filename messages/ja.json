@@ -1,0 +1,662 @@
+{
+  "Error": {
+    "description": "<p>申し訳ありませんが、エラーが発生しました。</p><p>閲覧していたページを<retry>再読み込み</retry>してみてください。</p>",
+    "title": "問題が発生しました"
+  },
+  "Promotion": {
+    "title": "期間限定オファー: 1ヶ月以内にパッケージを購入すると、追加で20%のボーナスポイントを獲得できます！",
+    "error": {
+      "common": "おっと！何か問題が発生しました。後ほど再試行してください。",
+      "limit": "このオファーに該当するためには、まず購入する必要があります。"
+    },
+    "success": {
+      "title": "おめでとうございます！購入に対して20%の追加ボーナスポイントを獲得しました。"
+    },
+    "action": {
+      "claim": "ポイントを有効化",
+      "close": "閉じる"
+    }
+  },
+  "PromptGenerator": {
+    "layout": {
+      "title": "無料のFlux AIプロンプトジェネレーター：AI駆動のプロンプトで創造性を向上させる",
+      "description": "Flux AIプロンプトジェネレーターの力を発見し、手間をかけずにカスタマイズされたAIプロンプトを作成するための究極のツールです。作家、開発者、クリエイティブな考え方の方であれ、私たちの直感的なプラットフォームはあなたのアイデアを魅力的なプロンプトに変え、生産性を向上させ、イノベーションを刺激します。今日から説得力のあるコンテンツを生成し、Flux AIでプロジェクトを引き上げましょう！",
+      "keywords": "flux aiプロンプトジェネレーター, AIプロンプトジェネレーター, fluxプロンプトクリエイター, AIコンテンツ生成, AIライティングツール, クリエイティブライティングプロンプト, flux AIツール, AIでプロンプトを生成, AI駆動プロンプト生成, AIで創造性を向上, プロンプト生成ソフトウェア"
+    },
+    "title": "無料のFlux AIプロンプトジェネレーター",
+    "subtitle": "アイデアを包括的なガイドで強力なAI画像生成プロンプトに変換",
+    "tabs": {
+      "generator": "AIジェネレーター",
+      "guide": "プロンプトガイド",
+      "examples": "例"
+    },
+    "quickPrompts": {
+      "title": "クイックスタートプロンプト"
+    },
+    "guide": {
+      "howToUse": {
+        "title": "💡 これらのプロンプトの使用方法",
+        "description": "これらのプロンプトはFLUX.1モデル用に特別に最適化されています。以下のプロンプトをコピーして、無料ジェネレーターに貼り付けるだけです。独自のバリエーションを作成するために修正することもできます。",
+        "proTips": {
+          "title": "🎯 プロのヒント",
+          "tips": {
+            "0": "より良い結果を得るために「高品質」や「詳細」を追加",
+            "1": "「ゴールデンアワー」や「スタジオ照明」などの照明用語を含める",
+            "2": "「油絵」や「デジタルアート」などのアートスタイルを指定",
+            "3": "より具体的な結果を得るために説明的な形容詞を使用"
+          }
+        },
+        "modelSelection": {
+          "title": "⚡ モデル選択",
+          "models": {
+            "0": "FLUX.1 Pro：芸術的で詳細な画像に最適",
+            "1": "FLUX.1 Dev：コンセプト探索に最適",
+            "2": "FLUX.1 Schnell：迅速な反復に最適"
+          }
+        }
+      },
+      "advancedTechniques": {
+        "title": "🔧 高度なプロンプト技術",
+        "structure": {
+          "title": "📝 プロンプトの構造化",
+          "description": "メインの主題から始めて、詳細を追加し、スタイルを指定してから技術用語を追加します：",
+          "template": "[主題] + [詳細] + [スタイル] + [技術用語]"
+        },
+        "styleKeywords": {
+          "title": "🎨 スタイルキーワード",
+          "keywords": {
+            "0": "\"フォトリアリスティック\" - 超リアルな画像",
+            "1": "\"デジタルアート\" - モダンなデジタルスタイル",
+            "2": "\"油絵\" - 伝統的なアートの外観",
+            "3": "\"アニメスタイル\" - 日本のアニメーション",
+            "4": "\"シネマティック\" - 映画のような構図"
+          }
+        }
+      }
+    },
+    "examples": {
+      "useInGenerator": "ジェネレーターで使用"
+    },
+    "cta": {
+      "title": "素晴らしい画像を作成する準備はできましたか？",
+      "description": "これらのプロンプトを無料のFLUX.1ジェネレーターで使用して、アイデアを実現させましょう。",
+      "button": "無料で生成開始",
+      "subtext": "登録不要 • クレジットカード不要 • 無制限生成"
+    },
+    "form": {
+      "input": {
+        "title": "プロンプトのアイデアを入力",
+        "placeholder": "ここにプロンプトのアイデアを入力してください..."
+      },
+      "output": {
+        "title": "生成されたプロンプト"
+      },
+      "action": {
+        "generate": "AIプロンプトを生成",
+        "generating": "生成中...",
+        "copy": "プロンプトをコピー",
+        "copySuccess": "プロンプトがクリップボードにコピーされました。",
+        "to_generate": "生成するには"
+      }
+    },
+    "faq": {
+      "label": "質問",
+      "title": "Flux AIプロンプトジェネレーターに関するよくある質問",
+      "subtitle": "よくある質問に対する迅速な回答を見つけるために、私たちの包括的なFAQをご覧ください。さらに支援が必要な場合は、お気軽にお問い合わせください。",
+      "item1": {
+        "question": "Flux AIプロンプトジェネレーターとは何ですか？",
+        "answer": "Flux AIプロンプトジェネレーターは、ユーザーが魅力的で効果的なプロンプトを作成するのを支援する革新的なツールです。高度なAIアルゴリズムを活用することで、創造性を刺激し、生産性を向上させる提案を生成します。"
+      },
+      "item2": {
+        "question": "Flux AIはどのように機能しますか？",
+        "answer": "Flux AIは、ユーザーの入力を分析し、関連性の高いプロンプトを生成するために、人工知能と機械学習技術を利用しています。ユーザーはパラメータをカスタマイズして出力を調整し、生成されたプロンプトが特定のニーズに合うようにすることができます。"
+      },
+      "item3": {
+        "question": "誰がFlux AIを利用できますか？",
+        "answer": "Flux AIは、作家、マーケター、教育者、コンテンツクリエイターに最適です。ブロックバスターを克服し、マーケティング戦略を立てたり、レッスンプランを作成したりするのに役立ちます。"
+      },
+      "item4": {
+        "question": "Flux AIは使いやすいですか？",
+        "answer": "はい、Flux AIはユーザー体験を重視して設計されています。直感的なインターフェースで、技術経験の有無に関わらず、誰でも簡単にツールを操作できます。"
+      },
+      "item5": {
+        "question": "複数のプロジェクトでFlux AIを使用できますか？",
+        "answer": "もちろんです！Flux AIプロンプトジェネレーターは、ブログ記事、ソーシャルメディアコンテンツ、クリエイティブライティングのアイデアなど、幅広いプロジェクトに対応しています。"
+      },
+      "item6": {
+        "question": "Flux AIプロンプトジェネレーターの使用に費用はかかりますか？",
+        "answer": "Flux AIプロンプトジェネレーターは現在無料です。ユーザーはいつでもプラットフォームにアクセスし、プロンプトを入力して、関連性の高い提案を無料で生成できます。"
+      }
+    }
+  },
+  "IndexPage": {
+    "intro": "Flux AI画像生成ツールのご紹介",
+    "description": "次世代の高度なテキストから画像への変換を革新する先進的なオープンモデルです。flux.1 pro/devとflux.1 schnellモデルをサポートしています。",
+    "title": "Flux AI画像生成ツール",
+    "subtitle": "高度なテキストから画像への変換",
+    "examples": {
+      "label": "サンプル",
+      "title": "Flux AI画像の例",
+      "subtitle": "テキストプロンプトから画像を生成します。"
+    },
+    "features": {
+      "title": "特徴",
+      "description": "Flux AI画像生成ツールは、テキストプロンプトから画像を生成する強力なツールです。最先端のAIモデルを使用して、あらゆるプロジェクトに最適な素晴らしい画像を作成します。",
+      "action": {
+        "visit": "生成する"
+      },
+      "item1": {
+        "title": "FLUX.1 [pro]",
+        "description": "FLUX.1の最高峰モデルで、最先端のパフォーマンスを提供します。プロンプトの忠実な再現、視覚的品質、画像の細部、出力の多様性において卓越しています。"
+      },
+      "item2": {
+        "title": "FLUX.1 [dev]",
+        "description": "FLUX.1 [pro]から直接蒸留されたモデルで、同等の品質とプロンプト遵守能力を維持しつつ、同サイズの標準モデルよりも効率的です。"
+      },
+      "item3": {
+        "title": "FLUX.1 [schnell]",
+        "description": "ローカル開発や個人利用に最適化された、最速の画像生成モデルです。"
+      },
+      "item4": {
+        "title": "超高速",
+        "description": "Flux AIは、Stable Diffusion 3やMidjourneyよりも大幅に高速で、数秒で高品質な画像を生成します。その圧倒的な速さで、貴重な時間とリソースを節約します。"
+      },
+      "item5": {
+        "title": "カスタマイズ可能",
+        "description": "高度なFlux.1モデルは、競合他社よりも詳細で一貫性のある画像を生成します。カスタマイズ可能な機能とユーザーフレンドリーなインターフェースにより、Flux AI画像生成ツールはテキストプロンプトから驚くべき画像を生成する究極のツールです。初心者からプロフェッショナルまで、Flux AIがサポートします。今すぐAIの力を体験し、画像生成プロセスを革新しましょう！"
+      },
+      "item6": {
+        "title": "ユーザーフレンドリーなインターフェース",
+        "description": "ComfyUIよりも使いやすく、初心者からプロまで最適です。Flux AI画像生成ツールは、テキストプロンプトから驚くべき画像を生成する究極のツールです。ユーザーフレンドリーなインターフェースと強力なAIモデルにより、初心者もプロフェッショナルも簡単に素晴らしいビジュアルを作成できます。"
+      }
+    },
+    "powered": {
+      "title": "提供元"
+    },
+    "bent": {
+      "first": {
+        "title": "カスタマイズ可能"
+      }
+    },
+    "schnell": {
+      "title": "Flux.1 [Schnell]",
+      "description": "Flux.1 [schnell]は、基本モデルの改良版で、元のモデルの最大10倍の速度で動作します。Apache 2.0ライセンスの下で提供され、品質を損なうことなく高速な画像生成を求めるユーザーのために、速度と効率性に最適化されています。このモデルは、ローカル開発や個人利用に最適で、パフォーマンスとアクセシビリティの完璧なバランスを実現しています。ユーザーには毎月5回の無料機会を提供し、Flux.1 [schnell]モデルの超高速画像生成を体験できるようにしています。これにより、その信じられないほどの速さを直接体験することができます。",
+      "action": "今すぐ試す"
+    },
+    "action": {
+      "pricing": "クレジットを購入する",
+      "login": "ログイン",
+      "dashboard": "ダッシュボード",
+      "generate": "生成",
+      "github": {
+        "sm": "スターを付ける",
+        "normal": "GitHub"
+      }
+    }
+  },
+  "PricingPage": {
+    "title": "クレジット購入プランを選択",
+    "description": "定期購入なし",
+    "worth": "クレジット",
+    "label": "価格",
+    "action": {
+      "signin": "サインイン",
+      "buy": "一括払い"
+    },
+    "contact": {
+      "title": "お問い合わせ",
+      "description": "ご質問がある場合は、お気軽にお問い合わせください。"
+    },
+    "faq": {
+      "label": "よくある質問",
+      "title": "よくある質問",
+      "subtitle": "包括的なFAQをご覧いただき、一般的な質問への迅速な回答をご確認ください。さらなるサポートが必要な場合は、個別のサポートをご利用いただけます。",
+      "item1": {
+        "question": "Flux AIはStable Diffusion 3とどう違いますか？",
+        "answer": "Flux AIは、Stable Diffusion 3と比較して、生成時間が短く、画像品質が高く、よりユーザーフレンドリーなインターフェースを提供します。Flux.1モデルは、AIリサーチの最新の進歩を取り入れています。"
+      },
+      "item2": {
+        "question": "Flux AIはGitHubやHugging Faceで利用できますか？",
+        "answer": "はい、Flux AIはオープンソースで、GitHubとHugging Faceの両方で利用可能です。"
+      },
+      "item3": {
+        "question": "Flux AIが他のAI画像生成ツールと異なる点は何ですか？",
+        "answer": "Flux AIは、速度、品質、使いやすさを兼ね備えています。Midjourneyよりも高速で、ComfyUIよりも使いやすく、多くの競合他社よりも高品質な画像を生成します。"
+      },
+      "item4": {
+        "question": "Flux AIの使い方を教えてください。",
+        "answer": "Flux AIを使用するには、fluxaipro.artにアクセスし、プロンプトを入力するだけで、数秒で驚くべきビジュアルが作成されます。"
+      },
+      "item5": {
+        "question": "Flux AIはどのような価格プランを提供していますか？",
+        "answer": "サービス利用にはポイントを使用し、価格カードをクリックしてポイントを購入できます（1回の支払いのみ必要です）。"
+      },
+      "item6": {
+        "question": "オンラインサポートを受けるにはどうすればよいですか？",
+        "answer": "support@fluxaipro.artまでお問い合わせください。"
+      }
+    },
+    "tip": {
+      "title": "💳 支払いに関するヒント：支払い処理中に問題が発生した場合は、お気軽にお問い合わせください！😉",
+      "subtitle": "ご質問は？",
+      "contact": "お問い合わせ"
+    }
+  },
+  "ExplorePage": {
+    "layout": {
+      "title": "Flux AI画像生成ツールを探索",
+      "description": "Flux AI画像生成ツールの最新機能と更新内容を発見してください。 ",
+      "keywords": "flux AI, AI flux, flux artificial intelligence, AI technology, machine learning flux, flux AI tools, AI applications, artificial intelligence solutions, flux data analysis, AI innovation, predictive analytics flux, flux machine learning, AI development, next-gen AI"
+    },
+    "title": "Flux AI画像生成ツールを探索",
+    "description": "Flux AI画像生成ツールの最新機能と更新内容を発見してください。 ",
+    "flux": {
+      "model": "モデル",
+      "lora": "スタイル",
+      "prompt": "プロンプト",
+      "executePrompt": "マジックプロンプト",
+      "resolution": "解像度",
+      "createdAt": "作成日時"
+    }
+  },
+  "Playground": {
+    "layout": {
+      "title": "無料Flux.1 {model}画像生成ツール：数秒で驚くような画像を作成",
+      "description": "無料のFlux.1モデル画像生成ツールを体験してください。簡単に素晴らしいビジュアルを作成できる便利なツールです。高品質な画像を手軽に生成し、コストをかけずに創造性を解き放ちましょう。デザイナー、アーティスト、そしてユニークな画像でプロジェクトを強化したい全ての方に最適です。",
+      "keywords": "flux.1画像生成ツール, flux.1モデル画像生成, 無料画像生成, AI画像生成, 画像生成ツール, AIで画像作成, オンライン画像生成, 画像作成ソフトウェア, 画像デザインツール, 画像生成プラットフォーム"
+    },
+    "page": {
+      "title": "無料Flux.1 {model}画像生成ツール",
+      "subtitle": "テキストプロンプトから画像を生成する驚異的なAIモデル。"
+    },
+    "settings": {
+      "display": "{mode}表示",
+      "displayTooltip": "コンテンツを公開するかどうかを選択してください。公開に設定すると、他のユーザーがあなたのコンテンツを閲覧またはダウンロードできるようになります。プライベート設定ではプライバシーが保護され、公開設定では共有やコラボレーションが容易になります。",
+      "displayLabel": "無料利用は公開されます",
+      "displayAction": "料金を見る"
+    },
+    "schnell_faq": {
+      "label": "よくある質問",
+      "title": "よくある質問",
+      "subtitle": "一般的な質問への迅速な回答を見つけるには、こちらの包括的なFAQをご覧ください。さらなるサポートが必要な場合は、お気軽にお問い合わせください。個別のサポートを提供いたします。",
+      "item1": {
+        "question": "Flux.1 Schnellとは何ですか？",
+        "answer": "Flux.1 Schnellは、ローカル開発や個人利用に最適化された最速の画像生成モデルです。"
+      },
+      "item2": {
+        "question": "Flux.1 Schnellで画像を生成する際、初期入力はどれほど重要ですか？",
+        "answer": "Flux.1 Schnellでの初期入力は画像品質に非常に重要です。高品質で詳細な入力を提供することで、よりリアルで詳細な出力が得られます。最良の結果を得るために、提案される概念や要素が明確に定義されていることを確認してください。"
+      },
+      "item3": {
+        "question": "Flux.1 Schnellで生成される画像の品質を向上させるにはどうすればよいですか？",
+        "answer": "画像品質を向上させるには、明確で詳細なプロンプトを提供し、さまざまなアーティスティックスタイルを試してみてください。より複雑なタスクにはプロバージョンの使用を検討することをおすすめします。"
+      },
+      "item4": {
+        "question": "Flux.1 Schnellの画像品質を向上させるためのヒントを提供するオンラインコミュニティやフォーラムはありますか？",
+        "answer": "はい、公式ウェブサイト（https://fluxaipro.art/flux-schnell）で利用できます。ユーザーはウェブサイト上でプロンプトを入力し画像を生成するだけで、生成画像の品質向上に役立ちます。"
+      },
+      "item5": {
+        "question": "Flux.1 Schnellの使用方法と無料オプションについて教えてください。",
+        "answer": "Flux.1 Schnellは公式ウェブサイト（https://fluxaipro.art/flux-schnell）で利用できます。各ユーザーは1カ月あたり5回まで無料でFlux.1 Schnellモデルを使用でき、毎月初めにリセットされます。使用するには、ウェブサイト上でプロンプトを入力し画像を生成するだけです。この過程を通じて、時間とともに生成画像の品質を向上させることができます。"
+      },
+      "item6": {
+        "question": "オンラインサポートを受けるにはどうすればよいですか？",
+        "answer": "support@fluxaipro.artまでお問い合わせください。"
+      }
+    },
+    "title": "Flux AI画像生成ツール",
+    "description": "テキストプロンプトから画像を生成する素晴らしいAIモデル。",
+    "empty": {
+      "title": "生成エラー",
+      "description": "エラー情報: {error}",
+      "errorPlaceholder": "エラーが発生しました"
+    },
+    "form": {
+      "input": "入力",
+      "result": "結果",
+      "placeholder": "画像を生成するプロンプトを入力...",
+      "prompt": {
+        "label": "プロンプト",
+        "placeholder": "美しい海の夕日、デジタルアートスタイル"
+      },
+      "negativePrompt": {
+        "label": "ネガティブプロンプト",
+        "placeholder": "ぼやけた、低品質、歪んだ"
+      },
+      "model": {
+        "label": "モデル",
+        "pro": "FLUX.1 Pro - 最高品質",
+        "dev": "FLUX.1 Dev - バランス",
+        "schnell": "FLUX.1 Schnell - 最速"
+      },
+      "lora": {
+        "label": "スタイル",
+        "tooltip": "スタイルを選択",
+        "name": "スタイル名"
+      },
+      "modelTooltip": "画像生成に使用するモデルを選択してください。",
+      "submit": "生成",
+      "ratio": {
+        "label": "アスペクト比"
+      },
+      "aspectRatio": "アスペクト比",
+      "aspectRatioTooltip": "生成される画像のアスペクト比。",
+      "inputImage": "画像",
+      "inputImageTooltip": "画像から画像へのモード用の入力画像。出力のアスペクト比はこの画像に合わせられます。",
+      "inputImagePlaceholder": "入力画像をアップロード",
+      "private": {
+        "label": "プライベート生成"
+      },
+      "action": {
+        "generate": "無料生成",
+        "generating": "生成中...",
+        "cancel": "キャンセル"
+      }
+    },
+    "result": {
+      "title": "生成された画像",
+      "download": "ダウンロード",
+      "share": "共有",
+      "regenerate": "再生成"
+    },
+    "error": {
+      "insufficientCredits": "ポイントが少ないですね。チャージしてください！",
+      "limitInsufficient": "無料利用の上限に達しました。サービスを継続するためには、有料プランにアップグレードしてください。",
+      "title": "生成失敗",
+      "description": "画像生成中に問題が発生しました。もう一度お試しください。",
+      "retry": "再試行"
+    },
+    "info": {
+      "free": "100%無料 - クレジット不要",
+      "quality": "Krea FLUX.1搭載",
+      "speed": "超高速生成"
+    },
+    "action": {
+      "copy": "プロンプトをコピー",
+      "copySuccess": "プロンプトをクリップボードにコピーしました。",
+      "download": "画像をダウンロード",
+      "downloadSuccess": "画像をダウンロードしました。",
+      "downloadLoading": "ダウンロード中...",
+      "upgrade": "Flux.1の無料試用版を利用して、あなたの芸術を高めましょう。ロゴなしのプレミアムモデル体験のために、こちらをクリックしてアップグレードしてください。"
+    }
+  },
+  "GiftCode": {
+    "title": "ギフトコード交換",
+    "text": "ギフトコードを入力してクレジットを獲得してください。",
+    "form": {
+      "placeholder": "ギフトコードを入力",
+      "aria_label": "ギフトコード",
+      "button": "交換",
+      "required": "このフィールドは必須です。",
+      "invalid": "無効なギフトコードです。",
+      "success": "{credits}クレジットの交換に成功しました。",
+      "error": "ギフトコードの交換に失敗しました。"
+    }
+  },
+  "History": {
+    "title": "画像生成履歴",
+    "description": "最近の画像生成履歴を表示します。",
+    "empty": {
+      "title": "まだ履歴がありません。",
+      "description": "画像を生成するとここに表示されます。"
+    },
+    "action": {
+      "generate": "生成",
+      "copy": "プロンプトをコピー",
+      "copySuccess": "プロンプトをクリップボードにコピーしました。",
+      "download": "画像をダウンロード",
+      "downloadSuccess": "画像をダウンロードしました。",
+      "downloadLoading": "ダウンロード中..."
+    }
+  },
+  "Billings": {
+    "page": {
+      "title": "アプリ - Flux AI画像生成ツール",
+      "description": "最近の予測を表示"
+    },
+    "title": "最近の予測",
+    "empty": {
+      "title": "記録なし",
+      "description": "まだ記録がありません。"
+    },
+    "table": {
+      "fluxId": "タスクID",
+      "status": "ステータス",
+      "amount": "クレジット",
+      "type": "タイプ",
+      "createdAt": "作成日時",
+      "total": "合計",
+      "records": "注文"
+    }
+  },
+  "Orders": {
+    "title": "注文",
+    "description": "請求履歴を表示します。",
+    "empty": {
+      "title": "注文なし",
+      "description": "まだ支払い記録がありません。"
+    },
+    "table": {
+      "customer": "顧客",
+      "amount": "価格",
+      "credit": "ポイント",
+      "status": "ステータス",
+      "channel": "チャンネル",
+      "createdAt": "作成日時",
+      "total": "合計",
+      "records": "注文"
+    },
+    "order": {
+      "all": "全て",
+      "paid": "支払い済み",
+      "pending": "保留中",
+      "failed": "失敗",
+      "canceled": "キャンセル"
+    }
+  },
+  "NewsLetter": {
+    "title": "ニュースレターに登録",
+    "subtitle": "最新情報を受け取るために登録してください！",
+    "form": {
+      "placeholder": "メールアドレスを入力",
+      "aria_label": "メール",
+      "confirm": "購読確認メールをご確認ください。",
+      "button": "購読"
+    }
+  },
+  "FluxAIPage": {
+    "title": "FLUX.1とは何か？なぜゲームチェンジャーなのか？",
+    "description": "業界を変革している革新的なAI画像生成モデルを発見する",
+    "tryButton": "FLUX.1を無料で試す",
+    "whatIs": {
+      "title": "🚀 FLUX.1とは？",
+      "content1": "FLUX.1は、Krea AIの革新的なオープンソース画像生成モデルで、AI創造技術の大きな飛躍を表しています。完全無料のオープンソースソリューションとしてリリースされ、FLUX.1は最先端のパフォーマンスと前例のないアクセシビリティを組み合わせています。",
+      "content2": "高価なサブスクリプションや強力なハードウェアが必要な従来のAIモデルとは異なり、FLUX.1は零コストで誰でも利用できるようにすることで、AI画像生成を民主化しています。"
+    },
+    "whyRevolutionary": {
+      "title": "⚡ なぜFLUX.1は革新的なのか",
+      "quality": {
+        "title": "🎯 優れた品質",
+        "description": "FLUX.1は、商業的な代替品に匹敵するか、それを上回る例外的な詳細、一貫性、芸術的品質を持つ画像を生成します。"
+      },
+      "speed": {
+        "title": "⚡ 稲妻の速度",
+        "description": "FLUX.1 Schnellバリアントは標準モデルより最大10倍高速に動作し、迅速なプロトタイピングとイテレーションを可能にします。"
+      },
+      "free": {
+        "title": "🔓 完全無料",
+        "description": "Apache 2.0ライセンスの下、FLUX.1は個人および商用利用が無料で、AI創造性への障壁を取り除きます。"
+      },
+      "opensource": {
+        "title": "🌐 オープンソース",
+        "description": "GitHubで完全なソースコードが利用可能で、開発者がテクノロジーをカスタマイズ、改善、構築できます。"
+      }
+    },
+    "comparison": {
+      "title": "🆚 FLUX.1 vs. Stable Diffusion 3：技術的詳細比較",
+      "headers": {
+        "feature": "機能",
+        "flux": "FLUX.1",
+        "sd3": "Stable Diffusion 3"
+      },
+      "rows": {
+        "speed": {
+          "feature": "速度",
+          "flux": "最大10倍高速（Schnellバリアント）",
+          "sd3": "標準速度"
+        },
+        "cost": {
+          "feature": "コスト",
+          "flux": "100% 無料",
+          "sd3": "有料API/サブスクリプション"
+        },
+        "license": {
+          "feature": "ライセンス",
+          "flux": "Apache 2.0（オープンソース）",
+          "sd3": "プロプライエタリ"
+        },
+        "prompt": {
+          "feature": "プロンプト理解",
+          "flux": "優れたプロンプト遵守",
+          "sd3": "良好"
+        },
+        "quality": {
+          "feature": "画像品質",
+          "flux": "最先端の詳細",
+          "sd3": "高品質"
+        }
+      }
+    },
+    "variants": {
+      "title": "🔧 3つのFLUX.1バリアント",
+      "pro": {
+        "title": "FLUX.1 Pro",
+        "subtitle": "最高品質",
+        "description": "優れたプロンプトフォローと視覚的忠実度を持つ最高品質の出力を提供するフラッグシップモデル。"
+      },
+      "dev": {
+        "title": "FLUX.1 Dev",
+        "subtitle": "バランス型",
+        "description": "Proから直接蒸留され、開発ワークフローの効率向上と同様の品質を提供。"
+      },
+      "schnell": {
+        "title": "FLUX.1 Schnell",
+        "subtitle": "最高速",
+        "description": "速度に最適化され、優れた品質を維持しながら迅速なイテレーションのために最大10倍高速に動作。"
+      }
+    },
+    "howBuilt": {
+      "title": "🚀 KreaのFLUX.1を使って無料AIジェネレーターを構築した方法",
+      "description": "FluxKreaFree.comでは、Kreaの革新的なFLUX.1 GGUFモデルを活用して、最もアクセシブルなAI画像生成プラットフォームを作成しました。私たちの実装は3つの核心原則に焦点を当てています：",
+      "principles": {
+        "accessibility": {
+          "title": "1. アクセシビリティ",
+          "description": "登録不要、クレジットカード不要、使用制限なし。"
+        },
+        "performance": {
+          "title": "2. パフォーマンス",
+          "description": "最適化されたインフラストラクチャにより、高速な生成時間と信頼性のあるサービスを保証。"
+        },
+        "quality": {
+          "title": "3. 品質",
+          "description": "FLUX.1モデルとの直接統合により、最高品質の出力を保証。"
+        }
+      }
+    },
+    "cta": {
+      "title": "FLUX.1を体験する準備はできましたか？",
+      "description": "すでにFLUX.1を使ってアイデアを現実にしている数千人のクリエイターに参加しましょう。",
+      "generateButton": "無料で生成開始",
+      "githubButton": "GitHubで表示"
+    }
+  },
+  "KreaAlternativePage": {
+    "title": "2025年最高の無料Krea AI代替案",
+    "description": "Krea AIと同じFLUX.1テクノロジーを完全無料かつ無制限で入手",
+    "badges": {
+      "free": "100% 無料",
+      "limits": "制限なし",
+      "technology": "同じテクノロジー"
+    },
+    "startButton": "無料で使用開始",
+    "whyChoose": {
+      "title": "🎯 なぜFluxKreaFreeをKrea代替案として選ぶのか？",
+      "description": "Krea AIは優れたテクノロジーを提供していますが、多くのユーザーはよりアクセシブルな代替案を求めています。FluxKreaFree.comは、Krea AIを動かすのと全く同じFLUX.1テクノロジーを提供しますが、重要な違いが1つあります：完全無料です。",
+      "sameTech": {
+        "title": "✅ 同じFLUX.1テクノロジー",
+        "description": "Krea AIが使用するのと同じFLUX.1モデルを使用し、同じ高品質な結果とパフォーマンスを保証します。"
+      },
+      "free": {
+        "title": "💰 永続的に100%無料",
+        "description": "サブスクリプション料金なし、クレジットカード不要、使用制限なし。好きなだけ画像を生成できます。"
+      }
+    },
+    "cta": {
+      "title": "最高の無料代替案に切り替える準備はできましたか？",
+      "description": "同じテクノロジーを完全無料で入手できるのに、プレミアムAI画像生成にお金を払う必要がないことを発見した数千人のユーザーに参加しましょう。",
+      "button": "無料で生成開始"
+    }
+  },
+  "LocaleLayout": {
+    "title": "無料Flux Krea AI - AI感のないフォトリアルな画像生成器 | FluxKreaFree",
+    "description": "Flux Krea を体験 - フォトリアリズムに特化し、過飽和な「AI感」を避ける信念のあるAIモデル。プロ級の画像生成が完全無料。登録不要。",
+    "keywords": "Krea, flux krea, AI画像生成器, フォトリアルAI, クリエイティブツール, 画像生成, 動画生成, AIアート, AI画像, AI動画, AIアートジェネレーター, AI動画ジェネレーター, AIアートツール, AI動画ツール, AI強化, AIアップスケーラー, ai アップスケーリング, 無料ai アップスケール, 画像アップスケーラー, 動画アップスケーラー, 画像強化, 動画強化, スタイル転送, シーン転送, 最高のai画像生成器, 無料ai画像生成器, Flux, Stable Diffusion, リアルタイム, img2img, スタイル, 訓練, モデル, スタイル転送, Midjourney, Midjourney代替, Midjourney リアルタイム, lora, スタイル, キャラクター一貫性, オブジェクト一貫性, Kreaエディター, インペイント, アウトペイント, AI写真エディター, AI photoshop, フォトリアル, AI感なし, 自然光, シネマティック品質, プロ写真, Black Forest Labs"
+  },
+  "LocaleSwitcher": {
+    "label": "言語を変更",
+    "locale": "{locale, select, zh {🇨🇳 简体中文} tw {🇭🇰 繁體中文} en {🇺🇸 英語} fr {🇫🇷 フランス語} ja {🇯🇵 日本語} ko {🇰🇷 한국어} es {🇪🇸 Español} de {🇩🇪 Deutsch} pt {🇧🇷 Português} ar {🇦🇪 العربية} other {不明}}"
+  },
+  "Manifest": {
+    "name": "Flux AI画像生成ツール"
+  },
+  "AppNavigation": {
+    "Index": "ホーム",
+    "Generate": "生成",
+    "History": "履歴",
+    "GiftCode": "ギフトコード",
+    "ChargeOrder": "チャージオーダー"
+  },
+  "Navigation": {
+    "title": "FluxKreaFree",
+    "Generate": "生成",
+    "FLUX1": "FLUX.1",
+    "Krea Alternative": "Krea代替案",
+    "Prompt Generator": "プロンプト生成器",
+    "Prompt Guide": "プロンプトガイド",
+    "Blog": "ブログ",
+    "Learn More": "詳細を見る",
+    "prompt": "FLUX.1プロンプト生成器",
+    "dashboard": "ダッシュボード",
+    "tooltip": {
+      "login": "無料で生成開始"
+    }
+  },
+  "NotFoundPage": {
+    "description": "ブラウザのアドレスバーを再確認するか、ナビゲーションを使用して既知のページに移動してください。",
+    "title": "ページが見つかりません"
+  },
+  "PageLayout": {
+    "footer": {
+      "title": "Flux AI画像生成ツール",
+      "term": "利用規約",
+      "privacy": "プライバシーポリシー",
+      "contact": "お問い合わせ"
+    },
+    "links": {
+      "docs": {
+        "description": "公式ドキュメントでnext-intlについて詳しく学びましょう。",
+        "href": "https://next-intl-docs.vercel.app/",
+        "title": "ドキュメント"
+      },
+      "source": {
+        "description": "GitHubでこの例のソースコードを閲覧できます。",
+        "href": "https://github.com/amannn/next-intl/tree/main/examples/example-app-router",
+        "title": "ソースコード"
+      }
+    }
+  },
+  "BlogPage": {
+    "title": "ブログ",
+    "description": "当社からの最新ニュースとアップデート"
+  }
+}

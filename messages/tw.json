@@ -1,0 +1,666 @@
+{
+  "Error": {
+    "description": "<p>很抱歉，我們遇到了壹個錯誤。</p><p>您可以嘗試<retry>重新載入</retry>您正在訪問的頁面。</p>",
+    "title": "出現錯誤！"
+  },
+  "Promotion": {
+    "title": "限時優惠：一個月內購買套餐，額外贈送 20% 積分！",
+    "error": {
+      "common": "哎呀！出現了一些問題。請稍後再試。",
+      "limit": "您需要先購買才能符合此優惠條件。"
+    },
+    "success": {
+      "title": "恭喜！您已獲得額外 20% 積分獎勵。"
+    },
+    "action": {
+      "claim": "激活積分",
+      "close": "關閉"
+    }
+  },
+  "PromptGenerator": {
+    "layout": {
+      "title": "免費Flux AI提示生成器：利用AI驅動的提示增強您的創造力",
+      "description": "探索Flux AI提示生成器的強大功能，這是您輕鬆創建定制AI提示的終極工具。無論您是作家、開發者還是創意思考者，我們的直觀平台將您的想法轉化為引人入勝的提示，提高生產力並激發創新。立即開始生成引人注目的內容，並通過Flux AI提升您的項目！",
+      "keywords": "flux ai提示生成器, AI提示生成器, flux提示創建器, AI內容生成, AI寫作工具, 創意寫作提示, flux AI工具, 使用AI生成提示, AI驅動提示生成, 利用AI增強創造力, 提示生成軟件"
+    },
+    "title": "免費Flux AI提示生成器",
+    "subtitle": "將您的想法轉化為強大的AI圖像生成提示，通過我們的全面指南",
+    "tabs": {
+      "generator": "AI生成器",
+      "guide": "提示指南",
+      "examples": "範例"
+    },
+    "quickPrompts": {
+      "title": "快速開始提示"
+    },
+    "guide": {
+      "howToUse": {
+        "title": "💡 如何使用這些提示",
+        "description": "這些提示專門針對FLUX.1模型進行了優化。只需複製下面的任何提示並貼到我們的免費生成器中。您也可以修改它們來創建自己獨特的變體。",
+        "proTips": {
+          "title": "🎯 專業技巧",
+          "tips": {
+            "0": "添加「高品質」或「詳細」以獲得更好的結果",
+            "1": "包含照明術語如「黃金時段」或「工作室照明」",
+            "2": "指定藝術風格如「油畫」或「數位藝術」",
+            "3": "使用描述性形容詞獲得更具體的結果"
+          }
+        },
+        "modelSelection": {
+          "title": "⚡ 模型選擇",
+          "models": {
+            "0": "FLUX.1 Pro：最適合藝術和詳細圖像",
+            "1": "FLUX.1 Dev：非常適合概念探索",
+            "2": "FLUX.1 Schnell：完美用於快速迭代"
+          }
+        }
+      },
+      "advancedTechniques": {
+        "title": "🔧 高級提示技巧",
+        "structure": {
+          "title": "📝 構建您的提示",
+          "description": "從主要主題開始，添加細節，指定風格，然後添加技術術語：",
+          "template": "[主題] + [細節] + [風格] + [技術術語]"
+        },
+        "styleKeywords": {
+          "title": "🎨 風格關鍵字",
+          "keywords": {
+            "0": "「超寫實」 - 超逼真圖像",
+            "1": "「數位藝術」 - 現代數位風格",
+            "2": "「油畫」 - 傳統藝術外觀",
+            "3": "「動漫風格」 - 日本動畫",
+            "4": "「電影感」 - 電影般構圖"
+          }
+        }
+      }
+    },
+    "examples": {
+      "useInGenerator": "在生成器中使用"
+    },
+    "cta": {
+      "title": "準備創建令人驚嘆的圖像？",
+      "description": "使用這些提示與我們的免費FLUX.1生成器，讓您的想法變為現實。",
+      "button": "免費開始生成",
+      "subtext": "無需註冊 • 無需信用卡 • 無限生成"
+    },
+    "form": {
+      "input": {
+        "title": "輸入您的提示想法",
+        "placeholder": "在此輸入您的提示想法..."
+      },
+      "output": {
+        "title": "生成的提示"
+      },
+      "action": {
+        "generate": "生成AI提示",
+        "generating": "生成中...",
+        "copy": "複製提示",
+        "copySuccess": "提示已複製到剪貼板。",
+        "to_generate": "生成"
+      }
+    },
+    "faq": {
+      "label": "問題",
+      "title": "關於Flux AI提示生成器的常見問題",
+      "subtitle": "探索我們的全面FAQ，快速找到常見問題的答案。如果您需要進一步幫助，請隨時聯繫我們獲取個性化幫助。",
+      "item1": {
+        "question": "什麼是Flux AI提示生成器？",
+        "answer": "Flux AI提示生成器是一款創新工具，旨在幫助用戶創建引人入勝且有效的提示，適用於寫作、營銷和內容創作等各種應用。通過利用先進的AI算法，它生成能夠激發創造力和提高生產力的建議。"
+      },
+      "item2": {
+        "question": "Flux AI如何工作？",
+        "answer": "Flux AI利用人工智能和機器學習技術分析用戶輸入並生成相關提示。用戶可以自定義參數以調整輸出，確保生成的提示滿足其特定需求，無論是個人項目還是專業任務。"
+      },
+      "item3": {
+        "question": "誰可以從使用Flux AI中受益？",
+        "answer": "Flux AI非常適合尋求靈感和指導的作家、營銷人員、教育工作者和內容創作者。它可以帮助用户突破写作障碍、制定营销策略或创建教案，是任何需要新鲜创意的人的宝贵工具。"
+      },
+      "item4": {
+        "question": "Flux AI用戶友好嗎？",
+        "answer": "是的，Flux AI設計時考慮了用戶體驗。其直觀的界面允許所有技能水平的用戶輕鬆導航工具。通過簡單的輸入選項和清晰的說明，即使是技術經驗有限的人也可以立即開始生成提示。"
+      },
+      "item5": {
+        "question": "我可以將Flux AI用於多個項目嗎？",
+        "answer": "當然可以！Flux AI提示生成器非常靈活，支持廣泛的項目。無論您是在創作博客文章、社交媒體內容，還是為創意寫作集思廣益，您都可以多次使用該工具為不同需求生成獨特的提示。"
+      },
+      "item6": {
+        "question": "使用Flux AI有成本嗎？",
+        "answer": "Flux AI提供多種定價計劃，包括免費試用供新用戶探索其功能。根據您的使用情況和需求，您可以選擇符合預算的計劃，同時獲得高級功能以增強創意輸出。"
+      }
+    }
+  },
+  "IndexPage": {
+    "intro": "介紹 Flux AI 圖像生成工具",
+    "description": "領先市場的高階文字轉換圖像開放模型，支援 flux.1 pro/dev 與 flux.1 schnell 模型。",
+    "title": "Flux AI 圖像生成工具",
+    "subtitle": "高階文字轉圖像技術",
+    "powered": {
+      "title": "技術支援服務"
+    },
+    "bent": {
+      "first": {
+        "title": "可自訂"
+      }
+    },
+    "examples": {
+      "label": "示範案例",
+      "title": "Flux AI 生成示範 - 高階文字圖像轉換",
+      "subtitle": "探索 Flux AI 的生成示範，透過文字提示創造圖像。體驗尖端的文字轉圖像技術。"
+    },
+    "features": {
+      "title": "產品特色",
+      "action": {
+        "visit": "去生成"
+      },
+      "description": "Flux AI 圖像生成工具是壹個強大的工具，可以根據文字提示生成圖像。它採用最先進的 AI 模型來創造卓越的圖像，適合各種專案需求。",
+      "item1": {
+        "title": "FLUX.1 [pro]",
+        "description": "FLUX.1 的頂級版本，提供卓越的圖像生成性能，擁有頂尖的提示追隨、視覺品質、圖像細節與輸出多樣性。"
+      },
+      "item2": {
+        "title": "FLUX.1 [dev]",
+        "description": "FLUX.1 [dev] 提供與頂級版本相當的品質與提示追隨能力，且比同規格的標準模型更加高效。"
+      },
+      "item3": {
+        "title": "FLUX.1 [schnell]",
+        "description": "專為本地開發及個人使用而設計的超快速圖像生成模型，具有更低的成本效益，快速生成圖像並提供文字提示功能。"
+      },
+      "item4": {
+        "title": "极速生成",
+        "description": "Flux AI 能夠在幾秒鐘內生成高品質圖像，速度遠超 Stable Diffusion 3 和 Midjourney。憑藉其快速的生成能力，Flux AI 確保了高效快速的圖像創造，節省您的寶貴時間。"
+      },
+      "item5": {
+        "title": "可自訂化",
+        "description": "Flux.1 模型生成的圖像比競爭對手更細膩、更有連貫性。結合其可自訂化的功能與易用的介面，Flux AI 圖像生成工具是從文字轉換到驚人圖像的最佳選擇。"
+      },
+      "item6": {
+        "title": "簡易操作",
+        "description": "Flux AI 圖像生成工具比 ComfyUI 更簡單易用，適合初學者及專業人士。輕鬆創造出色的視覺效果，無需複雜操作。"
+      }
+    },
+    "schnell": {
+      "title": "Flux.1 [Schnell]",
+      "description": "Flux.1 [schnell] 是基礎模型的精煉版本，運行速度比原版快10倍。它採用 Apache 2.0 許可，針對速度和效率進行了優化，滿足那些需要快速生成圖像而不影響質量的用戶。這個模型非常適合本地開發和個人使用，在性能和可訪問性之間達到了完美平衡。我們每月為用戶提供5次免費機會，體驗 Flux.1 [schnell] 模型的閃電般快速圖像生成，讓您親身感受其令人難以置信的速度。",
+      "action": "立即嘗試"
+    },
+    "action": {
+      "pricing": "購買積分",
+      "login": "登錄",
+      "dashboard": "去使用",
+      "generate": "去生成",
+      "github": {
+        "sm": "在 Github 上加星",
+        "normal": "Github"
+      }
+    }
+  },
+  "PricingPage": {
+    "title": "選擇方案購買積分",
+    "description": "無隱藏費用",
+    "worth": "積分價值",
+    "label": "價格方案",
+    "action": {
+      "signin": "登錄",
+      "buy": "一次性付款"
+    },
+    "contact": {
+      "title": "聯絡我們",
+      "description": "如果您有任何疑問，歡迎隨時與我們聯絡。"
+    },
+    "faq": {
+      "label": "常見問題",
+      "title": "FAQ",
+      "subtitle": "瀏覽我們的 FAQ，快速找到您需要的答案。若需要進壹步協助，請隨時聯絡我們獲得專業支援。",
+      "item1": {
+        "question": "Flux AI 與 Stable Diffusion 3 有什麼不同？",
+        "answer": "Flux AI 相較於 Stable Diffusion 3，提供更快速的生成時間、更優質的圖像與更直觀的用戶介面。Flux.1 模型結合了最新的 AI 研究成果。"
+      },
+      "item2": {
+        "question": "Flux AI 在 GitHub 或 Hugging Face 上可用嗎？",
+        "answer": "是的，Flux AI 是開源的，可以在 GitHub 和 Hugging Face 上找到。"
+      },
+      "item3": {
+        "question": "Flux AI 與其他 AI 圖像生成工具有何區別？",
+        "answer": "Flux AI 結合了速度、品質與易用性。它比 Midjourney 更快，比 ComfyUI 更簡單易用，並且在圖像品質上優於許多競爭對手。"
+      },
+      "item4": {
+        "question": "如何使用 Flux AI？",
+        "answer": "使用 Flux AI 很簡單，只需訪問 fluxaipro.art，輸入您的文字提示，即可在幾秒鐘內看到驚人的圖像產生。"
+      },
+      "item5": {
+        "question": "Flux AI 提供哪些購買方案？",
+        "answer": "我們使用積分制度，您可以選擇適合自己的方案進行購買（只需壹次付款）。"
+      },
+      "item6": {
+        "question": "如何獲得線上支援？",
+        "answer": "如有任何問題，請透過電子郵件 support@fluxaipro.art 與我們的技術團隊聯絡。"
+      }
+    },
+    "tip": {
+      "title": "💳 付款提示：如果您在付款過程中有任何問題，歡迎隨時與我們聯絡！😉",
+      "subtitle": "有問題？",
+      "contact": "聯絡我們"
+    }
+  },
+  "ExplorePage": {
+    "layout": {
+      "title": "探索Flux AI圖像生成器",
+      "description": "探索Flux AI圖像生成器的最新功能和更新。 ",
+      "keywords": "flux AI, AI flux, flux人工智慧, AI技術, flux機器學習, flux AI工具, AI應用, 人工智慧解決方案, flux數據分析, AI創新, flux預測分析, flux機器學習, AI開發, 下一代AI"
+    },
+    "title": "探索Flux AI圖像生成器",
+    "description": "探索Flux AI圖像生成器的最新功能和更新。 ",
+    "flux": {
+      "model": "模型",
+      "lora": "風格",
+      "prompt": "提示",
+      "executePrompt": "魔法提示",
+      "resolution": "解析度",
+      "createdAt": "創建日期"
+    }
+  },
+  "Playground": {
+    "layout": {
+      "title": "免費 Flux.1 {model} 圖像生成器：幾秒鐘內創造令人驚嘆的圖像",
+      "description": "探索免費的 Flux.1 模型圖像生成器，這是您輕鬆創造令人驚嘆視覺效果的首選工具。輕鬆生成高品質圖像，無需任何費用即可釋放您的創意。非常適合設計師、藝術家以及任何希望用獨特圖像增強專案的人。",
+      "keywords": "flux.1 圖像生成器, flux.1 模型圖像生成器, 免費圖像生成器, AI 圖像生成器, 圖像生成工具, AI 創建圖像, 線上生成圖像, 圖像創作軟體, 圖像設計工具, 圖像生成平台"
+    },
+    "page": {
+      "title": "免費 Flux.1 {model} 圖像生成器",
+      "subtitle": "驚人的 AI 模型，可從文字提示生成圖像。"
+    },
+    "settings": {
+      "display": "顯示{mode}",
+      "displayTooltip": "選擇是否公開您的內容。如果設為公開，其他用戶將能夠查看或下載您的內容。私密設置保護您的隱私，而公開設置則有利於分享和協作。",
+      "displayLabel": "免費使用將會公開",
+      "displayAction": "查看價格"
+    },
+    "schnell_faq": {
+      "label": "常見問題",
+      "title": "常見問題解答",
+      "subtitle": "瀏覽我們全面的常見問題解答，快速找到常見疑問的答案。如果您需要進一步協助，請隨時聯繫我們獲得個人化幫助。",
+      "item1": {
+        "question": "什麼是 Flux.1 Schnell？",
+        "answer": "Flux.1 Schnell 是專為本地開發和個人使用而設計的最快速圖像生成模型。"
+      },
+      "item2": {
+        "question": "在 Flux.1 Schnell 生成圖像時，初始輸入有多重要？",
+        "answer": "Flux.1 Schnell 中使用的初始輸入對圖像品質極為重要。提供高品質和詳細的輸入可以產生更逼真和細緻的輸出。為獲得最佳結果，請確保提出的概念和元素都有明確定義。"
+      },
+      "item3": {
+        "question": "如何提高 Flux.1 Schnell 生成的圖像品質？",
+        "answer": "要提高圖像品質，請提供清晰詳細的提示，嘗試不同的藝術風格，並考慮使用專業版來處理更複雜的任務。"
+      },
+      "item4": {
+        "question": "是否有提供改善 Flux.1 Schnell 圖像品質技巧的線上社群或論壇？",
+        "answer": "是的，您可以在官方網站 https://fluxaipro.art/flux-schnell 上使用。用戶只需在網站上輸入提示並生成圖像，這可以幫助您提高生成圖像的品質。"
+      },
+      "item5": {
+        "question": "如何使用 Flux.1 Schnell，有免費選項嗎？",
+        "answer": "Flux.1 Schnell 可在官方網站 https://fluxaipro.art/flux-schnell 上使用。每位用戶每個日曆月可免費使用 Flux.1 Schnell 模型 5 次，每月初重置。使用時，只需在網站上輸入您的提示並生成圖像。這個過程可以幫助您隨時間改善生成圖像的品質。"
+      },
+      "item6": {
+        "question": "如何獲得線上支援？",
+        "answer": "您可以透過 support@fluxaipro.art 聯繫我們。"
+      }
+    },
+    "title": "Flux AI 圖像產生器",
+    "description": "令人驚嘆的 AI 模型，能夠依據文字提示生成圖像。",
+    "empty": {
+      "title": "生成失敗",
+      "description": "錯誤訊息: {error}",
+      "errorPlaceholder": "未知錯誤"
+    },
+    "form": {
+      "input": "輸入",
+      "result": "結果",
+      "placeholder": "輸入提示以生成圖像...",
+      "prompt": {
+        "label": "提示詞",
+        "placeholder": "美麗的海上日落，數位藝術風格"
+      },
+      "negativePrompt": {
+        "label": "負面提示詞",
+        "placeholder": "模糊，低品質，扭曲"
+      },
+      "model": {
+        "label": "模型",
+        "pro": "FLUX.1 Pro - 最佳品質",
+        "dev": "FLUX.1 Dev - 平衡",
+        "schnell": "FLUX.1 Schnell - 最快"
+      },
+      "lora": {
+        "label": "風格",
+        "tooltip": "選擇風格",
+        "name": "風格名稱"
+      },
+      "modelTooltip": "選擇壹個模型來生成圖像。",
+      "submit": "生成",
+      "ratio": {
+        "label": "寬高比"
+      },
+      "aspectRatio": "解析度",
+      "aspectRatioTooltip": "生成圖像的解析度",
+      "inputImage": "圖像",
+      "inputImageTooltip": "圖像轉圖像模式的輸入圖像。您的輸出縱橫比將與此圖像相符",
+      "inputImagePlaceholder": "上傳輸入圖像",
+      "private": {
+        "label": "私有生成"
+      },
+      "action": {
+        "generate": "免費生成",
+        "generating": "生成中...",
+        "cancel": "取消"
+      }
+    },
+    "result": {
+      "title": "生成的圖像",
+      "download": "下載",
+      "share": "分享",
+      "regenerate": "重新生成"
+    },
+    "error": {
+      "insufficientCredits": "積分告急，請速充值！",
+      "limitInsufficient": "您已達到免費使用的上限。請升級到付費計劃以繼續使用我們的服務。",
+      "title": "生成失敗",
+      "description": "圖像生成過程中出現了問題。請重試。",
+      "retry": "重試"
+    },
+    "info": {
+      "free": "100% 免費 - 無需積分",
+      "quality": "由 Krea FLUX.1 提供支援",
+      "speed": "閃電般快速生成"
+    },
+    "action": {
+      "copy": "複製 Prompt",
+      "copySuccess": "Prompt 已複製至剪貼簿。",
+      "download": "下載圖像",
+      "downloadSuccess": "圖像已下載。",
+      "downloadLoading": "正在下載中...",
+      "upgrade": "Flux.1 的免費試用版，讓您的藝術更上一層樓。若要體驗無標誌的 Premium 模型，請點擊這裡升級。"
+    }
+  },
+  "GiftCode": {
+    "title": "禮品碼兌換",
+    "text": "輸入您的禮品碼以兌換積分。",
+    "form": {
+      "placeholder": "輸入您的禮品碼",
+      "aria_label": "禮品碼",
+      "button": "兌換",
+      "required": "此欄位為必填項。",
+      "invalid": "無效的禮品碼。",
+      "success": "成功兌換 {credits} 積分。",
+      "error": "兌換禮品碼失敗。"
+    }
+  },
+  "History": {
+    "title": "生成記錄",
+    "description": "查看您最近的圖像生成記錄。",
+    "empty": {
+      "title": "還沒有歷史記錄",
+      "description": "目前空空如也，快去生成吧～"
+    },
+    "action": {
+      "generate": "去生成",
+      "copy": "複製 Prompt",
+      "copySuccess": "Prompt 已複製至剪貼簿。",
+      "download": "下載圖像",
+      "downloadSuccess": "圖像已下載。",
+      "downloadLoading": "正在下載中..."
+    }
+  },
+  "Billings": {
+    "page": {
+      "title": "應用 – Flux AI 圖像產生器",
+      "description": "查看您的帳單記錄。"
+    },
+    "title": "帳單",
+    "empty": {
+      "title": "未找到",
+      "description": "還沒有帳單記錄哦～"
+    },
+    "table": {
+      "fluxId": "任務ID",
+      "status": "狀態",
+      "amount": "消耗積分",
+      "type": "類型",
+      "createdAt": "創建時間",
+      "total": "總計",
+      "records": "訂單數"
+    }
+  },
+  "Orders": {
+    "title": "充值訂單",
+    "description": "查看您的充值訂單記錄。",
+    "empty": {
+      "title": "訂單為空",
+      "description": "尚未有任何支付記錄。"
+    },
+    "table": {
+      "customer": "客戶",
+      "amount": "金額",
+      "status": "狀態",
+      "credit": "積分",
+      "channel": "渠道",
+      "createdAt": "創建時間",
+      "total": "總計",
+      "records": "訂單數"
+    },
+    "order": {
+      "all": "全部",
+      "paid": "已支付",
+      "pending": "待處理",
+      "failed": "失敗",
+      "canceled": "已取消"
+    }
+  },
+  "NewsLetter": {
+    "title": "訂閱我們的新聞簡報",
+    "subtitle": "訂閱以獲取最新更新！",
+    "form": {
+      "placeholder": "輸入您的電子郵件地址",
+      "aria_label": "電子郵件",
+      "confirm": "請查看訂閱確認郵件。",
+      "button": "訂閱"
+    }
+  },
+  "FluxAIPage": {
+    "title": "什麼是FLUX.1？為什麼它是遊戲規則改變者？",
+    "description": "探索正在改變行業的革命性AI圖像生成模型",
+    "tryButton": "立即免費試用FLUX.1",
+    "whatIs": {
+      "title": "🚀 什麼是FLUX.1？",
+      "content1": "FLUX.1是Krea AI的革命性開源圖像生成模型，代表了AI創意技術的重大飛躍。作為完全免費的開源解決方案發布，FLUX.1將最先進的性能與前所未有的可訪問性相結合。",
+      "content2": "與需要昂貴訂閱或強大硬件的傳統AI模型不同，FLUX.1通過以零成本向所有人提供服務來實現AI圖像生成的民主化。"
+    },
+    "whyRevolutionary": {
+      "title": "⚡ 為什麼FLUX.1是革命性的",
+      "quality": {
+        "title": "🎯 卓越品質",
+        "description": "FLUX.1產生的圖像具有出色的細節、連貫性和藝術質量，可以匹敵或超越商業替代品。"
+      },
+      "speed": {
+        "title": "⚡ 閃電速度",
+        "description": "FLUX.1 Schnell變體的運行速度比標準模型快10倍，使快速原型製作和迭代成為可能。"
+      },
+      "free": {
+        "title": "🔓 完全免費",
+        "description": "在Apache 2.0許可下，FLUX.1可免費用於個人和商業用途，打破了AI創意的障礙。"
+      },
+      "opensource": {
+        "title": "🌐 開源",
+        "description": "完整的源代碼在GitHub上可用，允許開發者定制、改進和基於該技術構建。"
+      }
+    },
+    "comparison": {
+      "title": "🆚 FLUX.1 vs. Stable Diffusion 3：技術深度對比",
+      "headers": {
+        "feature": "特性",
+        "flux": "FLUX.1",
+        "sd3": "Stable Diffusion 3"
+      },
+      "rows": {
+        "speed": {
+          "feature": "速度",
+          "flux": "最高快10倍（Schnell變體）",
+          "sd3": "標準速度"
+        },
+        "cost": {
+          "feature": "成本",
+          "flux": "100% 免費",
+          "sd3": "付費API/訂閱"
+        },
+        "license": {
+          "feature": "許可證",
+          "flux": "Apache 2.0（開源）",
+          "sd3": "專有"
+        },
+        "prompt": {
+          "feature": "提示理解",
+          "flux": "卓越的提示遵循",
+          "sd3": "良好"
+        },
+        "quality": {
+          "feature": "圖像質量",
+          "flux": "最先進的細節",
+          "sd3": "高質量"
+        }
+      }
+    },
+    "variants": {
+      "title": "🔧 三種FLUX.1變體",
+      "pro": {
+        "title": "FLUX.1 Pro",
+        "subtitle": "最佳質量",
+        "description": "旗艦模型，提供最高質量的輸出，具有卓越的提示遵循和視覺保真度。"
+      },
+      "dev": {
+        "title": "FLUX.1 Dev",
+        "subtitle": "平衡",
+        "description": "直接從Pro中提煉，提供類似的質量和改進的開發工作流程效率。"
+      },
+      "schnell": {
+        "title": "FLUX.1 Schnell",
+        "subtitle": "最快",
+        "description": "針對速度優化，運行速度比標準快10倍，同時保持出色的快速迭代質量。"
+      }
+    },
+    "howBuilt": {
+      "title": "🚀 我們如何使用Krea的FLUX.1構建免費AI生成器",
+      "description": "在FluxKreaFree.com，我們利用Krea的革命性FLUX.1 GGUF模型創建了最易訪問的AI圖像生成平台。我們的實現專注於三個核心原則：",
+      "principles": {
+        "accessibility": {
+          "title": "1. 可訪問性",
+          "description": "無需註冊，無需信用卡，無使用限制。"
+        },
+        "performance": {
+          "title": "2. 性能",
+          "description": "優化的基礎設施確保快速的生成時間和可靠的服務。"
+        },
+        "quality": {
+          "title": "3. 質量",
+          "description": "與FLUX.1模型的直接集成確保最高質量的輸出。"
+        }
+      }
+    },
+    "cta": {
+      "title": "準備體驗FLUX.1了嗎？",
+      "description": "加入已經在使用FLUX.1將想法變為現實的數千名創作者。",
+      "generateButton": "開始免費生成",
+      "githubButton": "在GitHub上查看"
+    }
+  },
+  "KreaAlternativePage": {
+    "title": "2025年最佳免費Krea AI替代方案",
+    "description": "獲得與Krea AI相同的FLUX.1技術，但完全免費且無限制",
+    "badges": {
+      "free": "100% 免費",
+      "limits": "無限制",
+      "technology": "相同技術"
+    },
+    "startButton": "開始免費使用",
+    "whyChoose": {
+      "title": "🎯 為什麼選擇FluxKreaFree作為您的Krea替代方案？",
+      "description": "雖然Krea AI提供出色的技術，但許多用戶正在尋找更易訪問的替代方案。FluxKreaFree.com提供與Krea AI相同的FLUX.1技術，但有一個關鍵區別：它完全免費。",
+      "sameTech": {
+        "title": "✅ 相同的FLUX.1技術",
+        "description": "我們使用與Krea AI相同的FLUX.1模型，確保相同的高質量結果和性能。"
+      },
+      "free": {
+        "title": "💰 永遠100%免費",
+        "description": "無訂閱費用，無需信用卡，無使用限制。生成您想要的任意數量圖像。"
+      }
+    },
+    "cta": {
+      "title": "準備切換到最佳免費替代方案了嗎？",
+      "description": "加入數千名用戶，他們發現當您可以完全免費獲得相同技術時，無需為高級AI圖像生成付費。",
+      "button": "開始免費生成"
+    }
+  },
+  "LocaleLayout": {
+    "title": "Flux AI 線上圖像生成器 - Flux AI",
+    "description": "利用 Flux.1 AI 的高級工具提升您的視覺內容：Flux Schnell 快速創作，Flux Dev 精細定制，以及 Flux Pro 無與倫比的專業品質。",
+    "keywords": "Flux AI, AI Flux, Flux 人工智能, AI 技術, 機器學習 Flux, Flux AI 工具, AI 應用, 人工智能解決方案, Flux 數據分析, AI 創新, 預測分析 Flux, Flux 機器學習, AI 開發, 下一代 AI"
+  },
+  "LocaleSwitcher": {
+    "label": "更改語言",
+    "locale": "{locale, select, zh {🇨🇳 简体中文} tw {🇭🇰 繁體中文} en {🇺🇸 English} fr {🇫🇷 Français} ja {🇯🇵 日本語} ko {🇰🇷 한국어} es {🇪🇸 Español} de {🇩🇪 Deutsch} pt {🇧🇷 Português} ar {🇦🇪 العربية} other {未知}}"
+  },
+  "Manifest": {
+    "name": "Flux AI 圖像產生器"
+  },
+  "Navigation": {
+    "title": "FluxKreaFree",
+    "Generate": "生成",
+    "FLUX1": "FLUX.1",
+    "Krea Alternative": "Krea 替代方案",
+    "Prompt Generator": "提示詞生成器",
+    "Prompt Guide": "提示詞指南",
+    "Blog": "博客",
+    "Learn More": "了解更多",
+    "prompt": "FLUX.1 提示詞生成器",
+    "pricing": "定價",
+    "schnell": "Flux Schnell",
+    "explore": "探索",
+    "dashboard": "去使用",
+    "Support": "支援",
+    "tooltip": {
+      "login": "開始免費生成"
+    }
+  },
+  "NotFoundPage": {
+    "description": "請檢查瀏覽器地址欄或使用導航前往已知頁面。",
+    "title": "頁面未找到"
+  },
+  "AppNavigation": {
+    "Index": "首頁",
+    "Generate": "AI 生圖",
+    "History": "歷史記錄",
+    "GiftCode": "兌換",
+    "ChargeOrder": "充值訂單"
+  },
+  "PageLayout": {
+    "footer": {
+      "title": "Flux AI Image Generator",
+      "term": "使用條款",
+      "privacy": "隱私政策",
+      "contact": "聯絡我們"
+    },
+    "links": {
+      "docs": {
+        "description": "在官方文檔中了解更多關於 next-intl 的資訊。",
+        "href": "https://next-intl-docs.vercel.app/",
+        "title": "文檔"
+      },
+      "source": {
+        "description": "在 GitHub 上瀏覽此範例的源代碼。",
+        "href": "https://github.com/amannn/next-intl/tree/main/examples/example-app-router",
+        "title": "源代碼"
+      }
+    }
+  },
+  "BlogPage": {
+    "title": "博客",
+    "description": "我們的最新新聞和更新"
+  }
+}
