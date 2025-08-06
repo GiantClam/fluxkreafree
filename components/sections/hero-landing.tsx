@@ -87,7 +87,7 @@ export default async function HeroLanding() {
           </SignedOut>
 
           <Link
-            href="https://www.krea.ai/blog/flux-krea-open-source-release"
+            href="/pricing"
             className={cn(
               buttonVariants({
                 variant: "outline",
