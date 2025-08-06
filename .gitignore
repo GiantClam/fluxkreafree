@@ -1,0 +1,229 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# local env files
+.env*.local
+.env
+.env.production
+.env.development
+.env.staging
+
+# Documentation files (except README.md)
+*.md
+!README.md
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# email
+/.react-email/
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Contentlayer
+.contentlayer
+
+# Cloudflare
+.wrangler/
+wrangler.toml.bak
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+prisma/dev.db
+
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# nyc test coverage
+.nyc_output
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# parcel-bundler cache (https://parceljs.org/)
+.cache
+.parcel-cache
+
+# next.js build output
+.next
+
+# nuxt.js build output
+.nuxt
+
+# vuepress build output
+.vuepress/dist
+
+# Serverless directories
+.serverless/
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# TernJS port file
+.tern-port
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
+
+# Temporary folders
+tmp/
+temp/
+
+# Sentry
+.sentryclirc
+
+# Local development
+*.local
+
+# API keys and secrets (backup files)
+*.key
+*.pem
+*.crt
+*.p12
+*.pfx
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Test files
+test-results/
+playwright-report/
+test-results.xml
+test-api.sh
+DEPLOYMENT_CHECKLIST.md
+VERCEL_DEPLOYMENT_GUIDE.md
+VERCEL_DEPLOYMENT_GUIDE.md
+BUILD_FIX_SUMMARY.md
+VERCEL_DEPLOYMENT_GUIDE.md
+supabase-charge-product-simple.sql
+PRICING_FIX_SUMMARY.md
+supabase-charge-product-insert.sql
+ADMIN_PAGE_PRERENDER_FIX.md
+PRICING_PAGE_PRERENDER_FIX.md
+.gitignore
+PRISMA_CONNECTION_FIX.md
+PRISMA_DB_CONNECTION_FIX_SUMMARY.md
+.gitignore
+.gitignore
+CLOUDFLARE_AI_GATEWAY_FIX_SUMMARY.md
+CLOUDFLARE_AI_GATEWAY_SETUP.md
+SHOULD_SKIP_DB_QUERY_AUDIT.md
+CLOUDFLARE_GATEWAY_TROUBLESHOOTING.md
+test-cloudflare-gateway.js
+debug-dev-mode.js
+debug-image-preview.js
+IMAGE_PREVIEW_TROUBLESHOOTING.md
+DEV_MODE_IMAGE_PREVIEW_FIX.md
+IMAGE_STORAGE_GUIDE.md
+KV_USAGE_ANALYSIS.md
+WEBHOOK_500_ERROR_FIX.md
+diagnose-webhook.js
+DEV_MODE_COMPLETE_FIX.md
+diagnose-vercel-webhook.js
+.gitignore
+test-production-webhook.sh
+test-dev-mode-final.js
+VERCEL_WEBHOOK_FIX_GUIDE.md
+WEBHOOK_FIX_SUCCESS.md
+LOCAL_FIX_SUCCESS.md
+test-local-fix.js
+WEBHOOK_LOGS_FIX_SUCCESS.md
+test-webhook-fix.js
+TASK_API_COMPLETION.md
+TASK_API_FIX_SUCCESS.md
+.gitignore
+test-task-api.js
+DOWNLOAD_API_FIX.md
+debug-flux-id.js
+test-download-fix.js
+PROMPT_GENERATOR_AUTH_FIX.md
+TRANSLATION_FIX_SUMMARY.md
+AI_GATEWAY_AUTH_FIX.md
+.gitignore
+.gitignore
+GEMINI_2_5_FLASH_INTEGRATION.md
+lib/ai-gateway.ts
+test-gemini-connection.js
+GEMINI_EMPTY_RESPONSE_FIX.md
+GEMINI_ROLE_MAPPING_FIX.md
+CLOUDFLARE_AI_GATEWAY_DUAL_TOKEN_SUPPORT.md
+FLUX_PROMPT_GENERATOR.md
+.gitignore
+FLUX_PROMPT_SYSTEM_UPDATE.md
+scripts/test-stripe-config.js
+scripts/setup-stripe.js
