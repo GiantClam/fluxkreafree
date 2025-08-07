@@ -1,6 +1,6 @@
 /**
  * Cloudflare Workers 入口文件
- * 用于运行 Remove Anything 应用
+ * 用于运行 FLUX Krea Dev 应用
  */
 
 export default {
@@ -41,7 +41,7 @@ async function handleApiRoutes(request, env, ctx) {
   switch (path) {
     case '/api/generate':
       return new Response(JSON.stringify({
-        message: 'Background removal API endpoint',
+        message: 'FLUX Krea Dev API endpoint',
         status: 'ready',
         timestamp: new Date().toISOString(),
         services: {
@@ -89,7 +89,7 @@ async function handlePageRoutes(request, env, ctx) {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Remove Anything - AI 背景去除工具</title>
+                     <title>FLUX Krea Dev - AI 图像生成工具</title>
         <style>
             * {
                 margin: 0;
@@ -196,8 +196,8 @@ async function handlePageRoutes(request, env, ctx) {
     </head>
     <body>
         <div class="container">
-            <h1>🎨 Remove Anything</h1>
-            <p class="subtitle">AI 背景去除工具 - 运行在 Cloudflare Workers 上</p>
+                         <h1>🎨 FLUX Krea Dev</h1>
+             <p class="subtitle">AI 图像生成工具 - 运行在 Cloudflare Workers 上</p>
             
             <div class="info-box">
                 <h3>📋 当前状态</h3>
@@ -240,7 +240,7 @@ async function handlePageRoutes(request, env, ctx) {
             
             <div class="info-box">
                 <h3>⚠️ 重要说明</h3>
-                <p>这是一个 Cloudflare Workers 部署。Remove Anything 应用目前运行在简化模式下。要获得完整的 Next.js SSR 功能，你需要：</p>
+                                 <p>这是一个 Cloudflare Workers 部署。FLUX Krea Dev 应用目前运行在简化模式下。要获得完整的 Next.js SSR 功能，你需要：</p>
                 <ul>
                     <li>使用 <code>@cloudflare/next-on-pages</code> 生成正确的 Worker 代码</li>
                     <li>或部署到支持 Next.js standalone 构建的 Node.js 环境</li>

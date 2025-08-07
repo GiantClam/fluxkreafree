@@ -13,7 +13,7 @@ import { CopyButton } from "@/components/shared/copy-button";
 import { FluxTaskStatus } from "@/db/type";
 import { DownloadAction } from "@/components/history/download-action";
 import { env } from "@/env.mjs";
-import { prisma } from "@/db/prisma";
+import { withRetry } from "@/lib/db-connection";
 import { auth } from "@/lib/auth-utils";
 import { FluxHashids } from "@/db/dto/flux.dto";
 
@@ -69,24 +69,34 @@ export default async function FluxPage({
   const { userId } = await auth();
 
   if (env.VERCEL_ENV === 'production') {
-    const [fluxId] = FluxHashids.decode(flux.id)
-    await prisma.fluxData.update({
-      where: {
-        id: fluxId as number
-      },
-      data: {
-        viewsNum: {
-          increment: 1
-        }
+    try {
+      const { prisma } = await import("@/lib/db-connection");
+      const [fluxId] = FluxHashids.decode(flux.id)
+      await withRetry(async () => {
+        return await prisma.fluxData.update({
+          where: {
+            id: fluxId as number
+          },
+          data: {
+            viewsNum: {
+              increment: 1
+            }
+          }
+        });
+      });
+      if (userId) {
+        await withRetry(async () => {
+          return await prisma.fluxViews.create({
+            data: {
+              fluxId: fluxId as number,
+              userId: userId
+            }
+          });
+        });
       }
-    })
-    if (userId) {
-      await prisma.fluxViews.create({
-        data: {
-          fluxId: fluxId as number,
-          userId: userId
-        }
-      })
+    } catch (error) {
+      console.error("❌ FluxPage 数据库更新错误:", error);
+      // 继续渲染页面，即使数据库更新失败
     }
   }
 

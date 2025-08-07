@@ -5,7 +5,7 @@ import { unstable_setRequestLocale } from "next-intl/server";
 import ReactMarkdown from "react-markdown";
 
 import { Container } from "@/components/layout/container";
-import { prisma } from "@/db/prisma";
+import { withRetry } from "@/lib/db-connection";
 
 export async function generateStaticParams() {
   // 在standalone模式下，返回空数组，路由将在运行时动态处理
@@ -13,17 +13,25 @@ export async function generateStaticParams() {
 }
 
 async function getNewsletter(id: string) {
-  const newsletter = await prisma.newsletters.findFirst({
-    where: {
-      id: parseInt(id),
-    },
-  });
+  try {
+    const { prisma } = await import("@/lib/db-connection");
+    const newsletter = await withRetry(async () => {
+      return await prisma.newsletters.findFirst({
+        where: {
+          id: parseInt(id),
+        },
+      });
+    });
 
-  if (!newsletter || !newsletter.body) {
+    if (!newsletter || !newsletter.body) {
+      notFound();
+    }
+
+    return newsletter;
+  } catch (error) {
+    console.error("❌ getNewsletter 数据库查询错误:", error);
     notFound();
   }
-
-  return newsletter;
 }
 
 export async function generateMetadata({

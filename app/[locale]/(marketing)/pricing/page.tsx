@@ -1,8 +1,9 @@
 import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 
 import { PricingCardsWrapper } from "@/components/pricing-cards-wrapper";
-import { prisma } from "@/db/prisma";
+import { withRetry } from "@/lib/db-connection";
 import { ChargeProductHashids } from "@/db/dto/charge-product.dto";
+import { shouldSkipDatabaseQuery } from "@/lib/build-check";
 import type { ChargeProductSelectDto } from "@/db/type";
 
 interface Props {
@@ -23,15 +24,27 @@ export async function generateMetadata({ params: { locale } }: Props) {
 export default async function PricingPage({ params: { locale } }: Props) {
   unstable_setRequestLocale(locale);
   
-  // 获取套餐数据
-  const chargeProducts = await prisma.chargeProduct.findMany({
-    where: {
-      state: "active",
-    },
-    orderBy: {
-      amount: 'asc',
-    },
-  });
+  // 在构建时或没有数据库连接时返回默认值
+  let chargeProducts: any[] = [];
+  if (!shouldSkipDatabaseQuery()) {
+    try {
+      const { prisma } = await import("@/lib/db-connection");
+      chargeProducts = await withRetry(async () => {
+        return await prisma.chargeProduct.findMany({
+          where: {
+            state: "active",
+          },
+          orderBy: {
+            amount: 'asc',
+          },
+        });
+      });
+    } catch (error) {
+      console.error("❌ PricingPage 数据库查询错误:", error);
+      // 如果数据库查询失败，使用默认数据
+      chargeProducts = [];
+    }
+  }
   
   // 转换为 DTO 格式
   const chargeProduct: ChargeProductSelectDto[] = chargeProducts.map(product => ({

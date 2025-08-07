@@ -1,5 +1,5 @@
 import { ChargeProductHashids } from "@/db/dto/charge-product.dto";
-import { prisma } from "@/db/prisma";
+import { withRetry } from "@/lib/db-connection";
 import { shouldSkipDatabaseQuery, getBuildTimeFallback } from "@/lib/build-check";
 
 import {
@@ -63,13 +63,16 @@ export async function getChargeProduct(locale?: string) {
   }
 
   try {
-    const data = await prisma.chargeProduct.findMany({
-      where: {
-        locale,
-      },
-      orderBy: {
-        credit: "asc",
-      },
+    const { prisma } = await import("@/lib/db-connection");
+    const data = await withRetry(async () => {
+      return await prisma.chargeProduct.findMany({
+        where: {
+          locale,
+        },
+        orderBy: {
+          credit: "asc",
+        },
+      });
     });
 
     return {
@@ -141,35 +144,40 @@ export async function getClaimed(userId: string) {
   }
 
   try {
+    const { prisma } = await import("@/lib/db-connection");
     const targetDate = new Date("2024-08-20T20:20:00+08:00");
     const oneMonthLater = new Date(
       targetDate.getTime() + 30 * 24 * 60 * 60 * 1000,
     );
     // Step 1: Get the IDs of claimed orders for the user
-    const claimedOrderIds = await prisma.claimedActivityOrder.findMany({
-      where: {
-        activityCode,
-        userId,
-      },
-      select: {
-        id: true,
-        chargeOrderId: true,
-      },
+    const claimedOrderIds = await withRetry(async () => {
+      return await prisma.claimedActivityOrder.findMany({
+        where: {
+          activityCode,
+          userId,
+        },
+        select: {
+          id: true,
+          chargeOrderId: true,
+        },
+      });
     });
     const claimedChargeOrderIdIds = claimedOrderIds.map((row) => row.chargeOrderId);
-    const charOrders = await prisma.chargeOrder.findMany({
-      where: {
-        phase: OrderPhase.Paid,
-        userId,
-        channel: PaymentChannelType.Stripe,
-        paymentAt: {
-          gte: targetDate,
-          lte: oneMonthLater,
+    const charOrders = await withRetry(async () => {
+      return await prisma.chargeOrder.findMany({
+        where: {
+          phase: OrderPhase.Paid,
+          userId,
+          channel: PaymentChannelType.Stripe,
+          paymentAt: {
+            gte: targetDate,
+            lte: oneMonthLater,
+          },
+          id: {
+            notIn: claimedChargeOrderIdIds,
+          },
         },
-        id: {
-          notIn: claimedChargeOrderIdIds,
-        },
-      },
+      });
     });
     return charOrders.length > 0;
   } catch (error) {

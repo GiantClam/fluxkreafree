@@ -16,6 +16,7 @@ export const locales = [
 
 export type Locale = (typeof locales)[number];
 
+// 简化路径配置，只保留必要的路径映射
 export const pathnames: Pathnames<typeof locales> = {
   "/": "/",
   "/blog": "/blog",

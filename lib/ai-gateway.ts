@@ -4,7 +4,7 @@ export interface ReplicateImageRequest {
   model: string;
   input_image_url?: string;
   input_prompt: string;
-  aspect_ratio?: string; // 去背景功能不需要长宽比
+  aspect_ratio?: string;
   is_private: number;
   user_id: string;
   lora_name?: string;
@@ -69,15 +69,9 @@ class CloudflareAIGateway {
       // 根据 Cloudflare 文档，Replicate 使用 Bearer Token 认证
       headers.append("Authorization", `Bearer ${this.replicateApiToken}`);
 
-      // 根据模型类型构建不同的输入参数
-      const isBackgroundRemoval = request.model === "background-removal";
-      
       const payload = {
         version: this.getReplicateModelVersion(request.model),
-        input: isBackgroundRemoval ? {
-          // 去背景模型只需要输入图片
-          image: request.input_image_url,
-        } : {
+        input: {
           // FLUX 模型需要完整的参数
           prompt: request.input_prompt,
           aspect_ratio: request.aspect_ratio,
@@ -219,11 +213,10 @@ class CloudflareAIGateway {
    */
   private getReplicateModelVersion(model: string): string {
     const modelVersions = {
-      "background-removal": "men1scus/birefnet",
       "black-forest-labs/flux-krea-dev": "black-forest-labs/flux-krea-dev",
     };
 
-    return modelVersions[model] || "men1scus/birefnet";
+    return modelVersions[model] || "black-forest-labs/flux-krea-dev";
   }
 
   /**

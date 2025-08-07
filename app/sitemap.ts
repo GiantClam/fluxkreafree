@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next";
-import { prisma } from "@/db/prisma";
+import { withRetry } from "@/lib/db-connection";
 import { FluxTaskStatus } from "@/db/type";
 import { FluxHashids } from "@/db/dto/flux.dto";
 import { shouldSkipDatabaseQuery } from "@/lib/build-check";
@@ -17,16 +17,19 @@ const getFluxUrl = async () => {
   }
 
   try {
-    const fluxs = await prisma.fluxData.findMany({
-      where: {
-        isPrivate: false,
-        taskStatus: {
-          in: [FluxTaskStatus.Succeeded],
+    const { prisma } = await import("@/lib/db-connection");
+    const fluxs = await withRetry(async () => {
+      return await prisma.fluxData.findMany({
+        where: {
+          isPrivate: false,
+          taskStatus: {
+            in: [FluxTaskStatus.Succeeded],
+          },
         },
-      },
-      select: {
-        id: true
-      }
+        select: {
+          id: true
+        }
+      });
     });
     return fluxs.map((flux) => `/d/${FluxHashids.encode(flux.id)}`)
   } catch (error) {
@@ -46,13 +49,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let fluxDataCount = 0;
   if (!shouldSkipDatabaseQuery()) {
     try {
-      fluxDataCount = await prisma.fluxData.count({
-        where: {
-          isPrivate: false,
-          taskStatus: {
-            in: [FluxTaskStatus.Succeeded],
-          },
-        }
+      const { prisma } = await import("@/lib/db-connection");
+      fluxDataCount = await withRetry(async () => {
+        return await prisma.fluxData.count({
+          where: {
+            isPrivate: false,
+            taskStatus: {
+              in: [FluxTaskStatus.Succeeded],
+            },
+          }
+        });
       });
     } catch (error) {
       console.error("❌ sitemap fluxDataCount 数据库查询错误:", error);
