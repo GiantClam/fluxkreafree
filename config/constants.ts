@@ -10,6 +10,7 @@ export enum model {
   dev = "black-forest-labs/flux-dev",
   general = "lucataco/flux-dev-lora",
   freeSchnell = "siliconflow/flux-schnell",
+  kreaDev = "black-forest-labs/flux-krea-dev",
 }
 
 export enum loras {
@@ -39,6 +40,7 @@ export const Credits = {
   [model.dev]: 5,
   [model.general]: 8,
   [model.freeSchnell]: 0,
+  [model.kreaDev]: 3,
 };
 
 export const ModelName = {
@@ -47,6 +49,7 @@ export const ModelName = {
   [model.dev]: "FLUX.1 [dev]",
   [model.general]: "FLUX.1 General",
   [model.freeSchnell]: "FLUX.1 [schnell]",
+  [model.kreaDev]: "FLUX.1 [krea-dev]",
 };
 
 export enum Ratio {
@@ -84,4 +87,26 @@ export const ModelDefaultAdVancedSetting = {
   },
   [model.schnell]: "FLUX.1 [schnell]",
   [model.dev]: "FLUX.1 [dev]",
+  [model.kreaDev]: {
+    steps: {
+      default: 20,
+      min: 1,
+      max: 40,
+    },
+    guidance: {
+      default: 3,
+      min: 2,
+      max: 5,
+    },
+    interval: {
+      default: 2,
+      min: 1,
+      max: 4,
+    },
+    safety_tolerance: {
+      default: 2,
+      min: 1,
+      max: 5,
+    },
+  },
 };

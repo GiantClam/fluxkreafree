@@ -44,6 +44,12 @@ export const modelMappings: ModelMapping = {
     credits: 0,
     description: 'FLUX Schnell - 免费版本（每月限制）'
   },
+  [model.kreaDev]: {
+    provider: 'replicate',
+    model: 'black-forest-labs/flux-krea-dev',
+    credits: 3,
+    description: 'FLUX Krea Dev - 经济实惠的开发版本，成本优化'
+  },
 };
 
 export function getModelInfo(modelName: string) {

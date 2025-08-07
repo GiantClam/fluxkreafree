@@ -44,4 +44,11 @@ export const models: Model<ModelType>[] = [
     description: "For LoRA use. Choose to see LoRAs.",
     type: "Flux AI",
   },
+  {
+    id: model.kreaDev,
+    name: ModelName[model.kreaDev],
+    description:
+      "FLUX Krea Dev - 经济实惠的开发版本，成本优化，适合大量生成和测试",
+    type: "Flux AI",
+  },
 ];

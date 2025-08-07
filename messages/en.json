@@ -293,7 +293,8 @@
         "label": "Model",
         "pro": "FLUX.1 Pro - Best Quality",
         "dev": "FLUX.1 Dev - Balanced",
-        "schnell": "FLUX.1 Schnell - Fastest"
+        "schnell": "FLUX.1 Schnell - Fastest",
+        "kreaDev": "FLUX.1 Krea Dev - Cost Effective"
       },
       "lora": {
         "label": "Style",

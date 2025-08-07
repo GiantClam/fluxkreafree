@@ -34,6 +34,7 @@ const CreateGenerateSchema = z.object({
     model.dev,
     model.general,
     model.freeSchnell,
+    model.kreaDev,
   ]),
   inputPrompt: z.string(),
   aspectRatio: z.enum([

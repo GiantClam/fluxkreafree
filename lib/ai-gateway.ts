@@ -220,6 +220,7 @@ class CloudflareAIGateway {
   private getReplicateModelVersion(model: string): string {
     const modelVersions = {
       "background-removal": "men1scus/birefnet",
+      "black-forest-labs/flux-krea-dev": "black-forest-labs/flux-krea-dev",
     };
 
     return modelVersions[model] || "men1scus/birefnet";

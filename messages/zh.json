@@ -327,7 +327,8 @@
         "label": "模型",
         "pro": "FLUX.1 Pro - 最佳质量",
         "dev": "FLUX.1 Dev - 平衡",
-        "schnell": "FLUX.1 Schnell - 最快"
+        "schnell": "FLUX.1 Schnell - 最快",
+        "kreaDev": "FLUX.1 Krea Dev - 经济实惠"
       },
       "lora": {
         "label": "风格",

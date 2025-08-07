@@ -327,7 +327,8 @@
         "label": "Modèle",
         "pro": "FLUX.1 Pro - Meilleure Qualité",
         "dev": "FLUX.1 Dev - Équilibré",
-        "schnell": "FLUX.1 Schnell - Plus Rapide"
+        "schnell": "FLUX.1 Schnell - Plus Rapide",
+        "kreaDev": "FLUX.1 Krea Dev - Économique"
       },
       "lora": {
         "label": "Style",
