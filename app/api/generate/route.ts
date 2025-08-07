@@ -7,7 +7,7 @@ import { z } from "zod";
 
 import { Credits, model, Ratio } from "@/config/constants";
 import { FluxHashids } from "@/db/dto/flux.dto";
-import { prisma } from "@/db/prisma";
+import { withRetry, prisma } from "@/lib/db-connection";
 import { getUserCredit } from "@/db/queries/account";
 import { BillingType } from "@/db/type";
 import { env } from "@/env.mjs";
@@ -83,15 +83,17 @@ export async function POST(req: NextRequest, { params }: Params) {
     if (modelName === model.freeSchnell) {
       const thisMonthStart = dayjs().startOf("M");
       const thisMonthEnd = dayjs().endOf("M");
-      const freeSchnellCount = await prisma.fluxData.count({
-        where: {
-          model: model.freeSchnell,
-          userId,
-          createdAt: {
-            gte: thisMonthStart.toDate(),
-            lte: thisMonthEnd.toDate(),
+      const freeSchnellCount = await withRetry(async () => {
+        return await prisma.fluxData.count({
+          where: {
+            model: model.freeSchnell,
+            userId,
+            createdAt: {
+              gte: thisMonthStart.toDate(),
+              lte: thisMonthEnd.toDate(),
+            },
           },
-        },
+        });
       });
       // 5 free schnell generate per month
       if (freeSchnellCount >= 5) {
@@ -115,21 +117,23 @@ export async function POST(req: NextRequest, { params }: Params) {
     }
 
     // 先创建 fluxData 记录
-    const fluxData = await prisma.fluxData.create({
-      data: {
-        userId,
-        replicateId: "", // 暂时留空，等 AI Gateway 响应后更新
-        inputPrompt,
-        executePrompt: inputPrompt,
-        model: modelName,
-        aspectRatio,
-        taskStatus: "Processing",
-        executeStartTime: BigInt(Date.now()),
-        locale,
-        isPrivate: Boolean(isPrivate),
-        loraName,
-        ...(inputImageUrl && { inputImageUrl }),
-      },
+    const fluxData = await withRetry(async () => {
+      return await prisma.fluxData.create({
+        data: {
+          userId,
+          replicateId: "", // 暂时留空，等 AI Gateway 响应后更新
+          inputPrompt,
+          executePrompt: inputPrompt,
+          model: modelName,
+          aspectRatio,
+          taskStatus: "Processing",
+          executeStartTime: BigInt(Date.now()),
+          locale,
+          isPrivate: Boolean(isPrivate),
+          loraName,
+          ...(inputImageUrl && { inputImageUrl }),
+        },
+      });
     });
 
     try {
@@ -149,8 +153,10 @@ export async function POST(req: NextRequest, { params }: Params) {
 
       if (!res?.replicate_id && res.error) {
         // 如果 AI Gateway 调用失败，删除已创建的记录
-        await prisma.fluxData.delete({
-          where: { id: fluxData.id },
+        await withRetry(async () => {
+          return await prisma.fluxData.delete({
+            where: { id: fluxData.id },
+          });
         });
         return NextResponse.json(
           { error: res.error || "Create Generator Error" },
@@ -159,11 +165,13 @@ export async function POST(req: NextRequest, { params }: Params) {
       }
 
       // 更新 fluxData 记录，添加 replicate_id
-      await prisma.fluxData.update({
-        where: { id: fluxData.id },
-        data: {
-          replicateId: res.replicate_id,
-        },
+      await withRetry(async () => {
+        return await prisma.fluxData.update({
+          where: { id: fluxData.id },
+          data: {
+            replicateId: res.replicate_id,
+          },
+        });
       });
 
       console.log('✅ AI Gateway 调用成功，replicate_id:', res?.replicate_id);
@@ -174,36 +182,57 @@ export async function POST(req: NextRequest, { params }: Params) {
       
       if (!isDevMode || userId !== "dev-user-123") {
         // 执行积分扣除和账单记录（非开发模式用户）
-        await prisma.$transaction(async (tx) => {
-          const newAccount = await tx.userCredit.update({
-            where: { id: Number(account.id) },
-            data: {
-              credit: {
-                decrement: needCredit,
+        try {
+          await prisma.$transaction(async (tx) => {
+            const newAccount = await tx.userCredit.update({
+              where: { id: Number(account.id) },
+              data: {
+                credit: {
+                  decrement: needCredit,
+                },
               },
-            },
-          });
-          const billing = await tx.userBilling.create({
-            data: {
-              userId,
-              fluxId: fluxData.id,
-              state: "Done",
-              amount: -needCredit,
-              type: BillingType.Withdraw,
-              description: `Generate ${modelName} - ${aspectRatio} Withdraw`,
-            },
-          });
+            });
+            const billing = await tx.userBilling.create({
+              data: {
+                userId,
+                fluxId: fluxData.id,
+                state: "Done",
+                amount: -needCredit,
+                type: BillingType.Withdraw,
+                description: `Generate ${modelName} - ${aspectRatio} Withdraw`,
+              },
+            });
 
-          await tx.userCreditTransaction.create({
-            data: {
-              userId,
-              credit: -needCredit,
-              balance: newAccount.credit,
-              billingId: billing.id,
-              type: "Generate",
-            },
+            await tx.userCreditTransaction.create({
+              data: {
+                userId,
+                credit: -needCredit,
+                balance: newAccount.credit,
+                billingId: billing.id,
+                type: "Generate",
+              },
+            });
+          }, {
+            // 添加事务配置
+            maxWait: 5000, // 最大等待时间
+            timeout: 10000, // 事务超时时间
+            isolationLevel: 'ReadCommitted', // 隔离级别
           });
-        });
+        } catch (transactionError) {
+          console.error('事务执行失败:', transactionError);
+          
+          // 如果事务失败，删除已创建的 fluxData 记录
+          await withRetry(async () => {
+            return await prisma.fluxData.delete({
+              where: { id: fluxData.id },
+            });
+          });
+          
+          return NextResponse.json(
+            { error: "Transaction failed, please try again" },
+            { status: 500 },
+          );
+        }
       } else {
         console.log("🔧 开发模式：跳过积分扣除，使用真实 AI 生成");
       }
@@ -212,8 +241,10 @@ export async function POST(req: NextRequest, { params }: Params) {
     } catch (aiError) {
       // 如果 AI Gateway 调用过程中出错，清理已创建的记录
       console.error("AI Gateway 调用失败:", aiError);
-      await prisma.fluxData.delete({
-        where: { id: fluxData.id },
+      await withRetry(async () => {
+        return await prisma.fluxData.delete({
+          where: { id: fluxData.id },
+        });
       });
       throw aiError;
     }

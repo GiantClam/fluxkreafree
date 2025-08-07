@@ -20,12 +20,35 @@ if (isBuildTime) {
 } else {
   // 在运行时创建真实的Prisma客户端
   if (process.env.NODE_ENV === "production") {
-    prisma = new PrismaClient();
+    prisma = new PrismaClient({
+      datasources: {
+        db: {
+          url: process.env.DATABASE_URL,
+        },
+      },
+      // 添加连接池配置
+      log: ['error', 'warn'],
+    });
   } else {
     if (!global.cachedPrisma) {
-      global.cachedPrisma = new PrismaClient();
+      global.cachedPrisma = new PrismaClient({
+        datasources: {
+          db: {
+            url: process.env.DATABASE_URL,
+          },
+        },
+        // 添加连接池配置
+        log: ['error', 'warn'],
+      });
     }
     prisma = global.cachedPrisma;
   }
   console.log("✅ 运行时：创建真实Prisma客户端");
 }
+
+// 优雅关闭连接
+process.on('beforeExit', async () => {
+  if (!isBuildTime) {
+    await prisma.$disconnect();
+  }
+});
