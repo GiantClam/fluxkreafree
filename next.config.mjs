@@ -9,7 +9,7 @@ import withNextIntl from "next-intl/plugin";
 
 import("./env.mjs");
 
-const withNextIntlConfig = withNextIntl();
+const withNextIntlConfig = withNextIntl('./i18n/request.ts');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
