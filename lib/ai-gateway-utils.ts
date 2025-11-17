@@ -6,7 +6,7 @@ import { model } from "@/config/constants";
 
 export interface ModelMapping {
   [key: string]: {
-    provider: 'replicate' | 'gemini';
+    provider: 'replicate' | 'gemini' | 'runninghub';
     model: string;
     credits: number;
     description: string;
@@ -49,6 +49,12 @@ export const modelMappings: ModelMapping = {
     model: 'black-forest-labs/flux-krea-dev',
     credits: 3,
     description: 'FLUX Krea Dev - 经济实惠的开发版本，成本优化'
+  },
+  [model.clothingTryon]: {
+    provider: 'runninghub',
+    model: 'clothing-tryon',
+    credits: 5,
+    description: 'Clothing Try-On - AI 虚拟试衣，支持上传全身自拍照和衣服图片'
   },
 };
 

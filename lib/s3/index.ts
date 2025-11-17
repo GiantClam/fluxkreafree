@@ -55,14 +55,15 @@ export class S3Service {
     bucket?: string
   }) {
     this.endpoint = params.endpoint
-    this.region = params.region
+    // R2 需要使用 'auto' 作为 region
+    this.region = params.region || 'auto'
     this.accessKeyId = params.accessKeyId
     this.secretAccessKey = params.secretAccessKey
     this.bucket = params.bucket || 'private-oss'
     this.url = params.url
     this.s3Client = new S3Client({
       endpoint: this.endpoint,
-      region: this.region,
+      region: this.region, // R2 使用 'auto'
       credentials: {
         accessKeyId: this.accessKeyId,
         secretAccessKey: this.secretAccessKey,

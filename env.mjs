@@ -34,6 +34,8 @@ export const env = createEnv({
     GOOGLE_CLIENT_SECRET: z.string().min(1).optional(),
     NEXTAUTH_SECRET: z.string().min(1).optional(),
     NEXTAUTH_URL: z.string().min(1).optional(),
+    // 开发模式：启用匿名/默认用户（仅在开发环境中生效）
+    ENABLE_DEV_USER: z.string().optional().default("false"),
     LOG_SNAG_TOKEN: z.string().min(1).default("log-snag-token-placeholder"),
     TASK_HEADER_KEY: z.string().min(1).default("task-header-key-placeholder"),
     FLUX_HEADER_KEY: z.string().min(1).default("flux-header-key-placeholder"),
@@ -50,6 +52,16 @@ export const env = createEnv({
     REPLICATE_API_TOKEN: z.string().min(1).default("placeholder"),
     REPLICATE_WEBHOOK_SECRET: z.string().optional(),
     GEMINI_API_KEY: z.string().min(1).default("placeholder"),
+    
+    // RunningHub Configuration
+    RUNNINGHUB_API_BASE_URL: z.string().url().default("https://www.runninghub.cn"),
+    RUNNINGHUB_API_KEY: z.string().min(1).default("placeholder"),
+    RUNNINGHUB_WEBHOOK_SECRET: z.string().optional(),
+    RUNNINGHUB_SINGLE_ITEM_WORKFLOW_ID: z.string().min(1).default("1980526002948493313"),
+    RUNNINGHUB_TOP_BOTTOM_WORKFLOW_ID: z.string().min(1).default("1978804072985825281"),
+    RUNNINGHUB_NODE_USER_PHOTO: z.string().min(1).default("254"),
+    RUNNINGHUB_NODE_TOP_CLOTHES: z.string().min(1).default("253"),
+    RUNNINGHUB_NODE_BOTTOM_CLOTHES: z.string().min(1).default("300"),
     
     // Legacy OpenAI config (now replaced by Gemini via AI Gateway)
     OPEN_AI_API_ENDPOINT: z.string().url().optional(),
@@ -95,7 +107,7 @@ export const env = createEnv({
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     R2_ENDPOINT: process.env.R2_ENDPOINT,
-    R2_REGION: process.env.R2_REGION,
+    R2_REGION: process.env.R2_REGION || "auto", // R2 使用 'auto' 作为 region
     R2_ACCESS_KEY: process.env.R2_ACCESS_KEY,
     R2_SECRET_KEY: process.env.R2_SECRET_KEY,
     R2_URL_BASE: process.env.R2_URL_BASE,
@@ -125,6 +137,17 @@ export const env = createEnv({
     REPLICATE_API_TOKEN: process.env.REPLICATE_API_TOKEN,
     REPLICATE_WEBHOOK_SECRET: process.env.REPLICATE_WEBHOOK_SECRET,
     GEMINI_API_KEY: process.env.GEMINI_API_KEY,
+    
+    // RunningHub Configuration
+    RUNNINGHUB_API_BASE_URL: process.env.RUNNINGHUB_API_BASE_URL || "https://www.runninghub.cn",
+    RUNNINGHUB_API_KEY: process.env.RUNNINGHUB_API_KEY,
+    RUNNINGHUB_WEBHOOK_SECRET: process.env.RUNNINGHUB_WEBHOOK_SECRET,
+    RUNNINGHUB_SINGLE_ITEM_WORKFLOW_ID: process.env.RUNNINGHUB_SINGLE_ITEM_WORKFLOW_ID || "1980526002948493313",
+    RUNNINGHUB_TOP_BOTTOM_WORKFLOW_ID: process.env.RUNNINGHUB_TOP_BOTTOM_WORKFLOW_ID || "1978804072985825281",
+    RUNNINGHUB_NODE_USER_PHOTO: process.env.RUNNINGHUB_NODE_USER_PHOTO || "254",
+    RUNNINGHUB_NODE_TOP_CLOTHES: process.env.RUNNINGHUB_NODE_TOP_CLOTHES || "253",
+    RUNNINGHUB_NODE_BOTTOM_CLOTHES: process.env.RUNNINGHUB_NODE_BOTTOM_CLOTHES || "300",
+    ENABLE_DEV_USER: process.env.ENABLE_DEV_USER || "false",
     
     // Legacy OpenAI config
     OPEN_AI_API_ENDPOINT: process.env.OPEN_AI_API_ENDPOINT,

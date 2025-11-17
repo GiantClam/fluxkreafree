@@ -8,8 +8,12 @@ import { shouldSkipDatabaseQuery } from "@/lib/build-check";
 // 条件性配置
 const providers: any[] = [];
 
-// 只在Google OAuth配置存在时添加Google Provider
-if (env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET) {
+// 开发模式：如果启用了 ENABLE_DEV_USER，跳过 Google Provider
+const enableDevUser = env.ENABLE_DEV_USER === "true" || env.ENABLE_DEV_USER === "1";
+const isDevelopment = process.env.NODE_ENV === "development";
+
+// 只在非开发模式或未启用开发用户时，且Google OAuth配置存在时添加Google Provider
+if (!(enableDevUser && isDevelopment) && env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET) {
   providers.push(
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,

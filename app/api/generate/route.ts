@@ -35,8 +35,9 @@ const CreateGenerateSchema = z.object({
     model.general,
     model.freeSchnell,
     model.kreaDev,
+    model.clothingTryon,
   ]),
-  inputPrompt: z.string(),
+  inputPrompt: z.string().optional(), // clothing-tryon 不需要 prompt
   aspectRatio: z.enum([
     Ratio.r1,
     Ratio.r2,
@@ -45,11 +46,24 @@ const CreateGenerateSchema = z.object({
     Ratio.r5,
     Ratio.r6,
     Ratio.r7,
-  ]),
+  ]).optional(), // clothing-tryon 不需要 aspectRatio
   isPrivate: z.number().default(0),
   locale: z.string().default("en"),
   loraName: z.string().optional(),
   inputImageUrl: z.string().url().optional(),
+  // clothing-tryon 专用字段
+  userPhotoUrl: z.string().url().optional(), // 全身自拍照（必选，但在这里设为optional，在逻辑中验证）
+  topClothesUrl: z.string().url().optional(), // 上衣图片（可选）
+  bottomClothesUrl: z.string().url().optional(), // 下衣图片（可选）
+}).refine((data) => {
+  // 对于 clothing-tryon 模型，userPhotoUrl 是必选的
+  if (data.model === model.clothingTryon) {
+    return !!data.userPhotoUrl;
+  }
+  // 对于其他模型，inputPrompt 是必选的
+  return !!data.inputPrompt;
+}, {
+  message: "clothing-tryon 模型需要 userPhotoUrl，其他模型需要 inputPrompt"
 });
 
 export async function POST(req: NextRequest, { params }: Params) {
@@ -78,6 +92,9 @@ export async function POST(req: NextRequest, { params }: Params) {
       locale,
       loraName,
       inputImageUrl,
+      userPhotoUrl,
+      topClothesUrl,
+      bottomClothesUrl,
     } = CreateGenerateSchema.parse(data);
 
     if (modelName === model.freeSchnell) {
@@ -122,10 +139,10 @@ export async function POST(req: NextRequest, { params }: Params) {
         data: {
           userId,
           replicateId: "", // 暂时留空，等 AI Gateway 响应后更新
-          inputPrompt,
-          executePrompt: inputPrompt,
+          inputPrompt: inputPrompt || "", // clothing-tryon 可能没有 prompt
+          executePrompt: inputPrompt || "",
           model: modelName,
-          aspectRatio,
+          aspectRatio: aspectRatio || Ratio.r1, // 默认值
           taskStatus: "Processing",
           executeStartTime: BigInt(Date.now()),
           locale,
@@ -137,51 +154,109 @@ export async function POST(req: NextRequest, { params }: Params) {
     });
 
     try {
-      console.log("🚀 开始调用 Cloudflare AI Gateway + Replicate 生成图片...");
-      
-      // 使用 Cloudflare AI Gateway 调用 Replicate
-      const res = await aiGateway.generateImageViaReplicate({
-        model: modelName,
-        input_image_url: inputImageUrl,
-        input_prompt: inputPrompt,
-        aspect_ratio: aspectRatio,
-        is_private: Number(isPrivate) || 0,
-        user_id: userId,
-        lora_name: loraName,
-        locale,
-      });
+      let taskId: string;
 
-      if (!res?.replicate_id && res.error) {
-        // 如果 AI Gateway 调用失败，删除已创建的记录
+      if (modelName === model.clothingTryon) {
+        // 使用 RunningHub 调用 clothing-tryon 工作流
+        console.log("🚀 开始调用 RunningHub clothing-tryon 工作流...");
+        
+        if (!userPhotoUrl) {
+          throw new Error("userPhotoUrl is required for clothing-tryon model");
+        }
+
+        const res = await aiGateway.generateImageViaRunningHub({
+          userPhotoUrl,
+          topClothesUrl,
+          bottomClothesUrl,
+          is_private: Number(isPrivate) || 0,
+          user_id: userId,
+          locale,
+        });
+
+        if (!res?.runninghub_task_id && res.error) {
+          await withRetry(async () => {
+            return await prisma.fluxData.delete({
+              where: { id: fluxData.id },
+            });
+          });
+          return NextResponse.json(
+            { error: res.error || "Create RunningHub Task Error" },
+            { status: 400 },
+          );
+        }
+
+        taskId = res.runninghub_task_id;
+        
+        // 更新 fluxData 记录，使用 replicateId 字段存储 runninghub_task_id
         await withRetry(async () => {
-          return await prisma.fluxData.delete({
+          return await prisma.fluxData.update({
             where: { id: fluxData.id },
+            data: {
+              replicateId: taskId, // 复用字段存储 runninghub_task_id
+            },
           });
         });
-        return NextResponse.json(
-          { error: res.error || "Create Generator Error" },
-          { status: 400 },
-        );
+
+        console.log('✅ RunningHub 任务创建成功，task_id:', taskId);
+      } else {
+        // 使用 Cloudflare AI Gateway 调用 Replicate
+        console.log("🚀 开始调用 Cloudflare AI Gateway + Replicate 生成图片...");
+        
+        const res = await aiGateway.generateImageViaReplicate({
+          model: modelName,
+          input_image_url: inputImageUrl,
+          input_prompt: inputPrompt!,
+          aspect_ratio: aspectRatio!,
+          is_private: Number(isPrivate) || 0,
+          user_id: userId,
+          lora_name: loraName,
+          locale,
+        });
+
+        if (!res?.replicate_id && res.error) {
+          await withRetry(async () => {
+            return await prisma.fluxData.delete({
+              where: { id: fluxData.id },
+            });
+          });
+          return NextResponse.json(
+            { error: res.error || "Create Generator Error" },
+            { status: 400 },
+          );
+        }
+
+        taskId = res.replicate_id;
+
+        // 更新 fluxData 记录，添加 replicate_id
+        await withRetry(async () => {
+          return await prisma.fluxData.update({
+            where: { id: fluxData.id },
+            data: {
+              replicateId: taskId,
+            },
+          });
+        });
+
+        console.log('✅ AI Gateway 调用成功，replicate_id:', taskId);
       }
 
-      // 更新 fluxData 记录，添加 replicate_id
-      await withRetry(async () => {
-        return await prisma.fluxData.update({
-          where: { id: fluxData.id },
-          data: {
-            replicateId: res.replicate_id,
-          },
-        });
-      });
-
-      console.log('✅ AI Gateway 调用成功，replicate_id:', res?.replicate_id);
-
       // 检查是否为开发模式，如果是则跳过积分扣除
-      const isDevMode = env.GOOGLE_CLIENT_ID === "google-client-id-placeholder" || 
-                        env.GOOGLE_CLIENT_SECRET === "google-client-secret-placeholder";
+      const enableDevUser = env.ENABLE_DEV_USER === "true" || env.ENABLE_DEV_USER === "1";
+      const isDevelopment = process.env.NODE_ENV === "development";
+      const devUserId = "dev-user-local";
+      const isDevUser = enableDevUser && isDevelopment && userId === devUserId;
       
-      if (!isDevMode || userId !== "dev-user-123") {
-        // 执行积分扣除和账单记录（非开发模式用户）
+      // 如果不是开发用户，执行积分扣除和账单记录
+      if (!isDevUser) {
+        // 检查 account.id 是否是有效的数字
+        if (!account.id || typeof account.id === "string" || isNaN(Number(account.id))) {
+          console.error("❌ 无效的 account.id:", account.id);
+          return NextResponse.json(
+            { error: "Invalid account ID" },
+            { status: 500 }
+          );
+        }
+        
         try {
           await prisma.$transaction(async (tx) => {
             const newAccount = await tx.userCredit.update({

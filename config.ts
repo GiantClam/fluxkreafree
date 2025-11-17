@@ -24,6 +24,7 @@ export const pathnames: Pathnames<typeof locales> = {
   "/flux-prompt-generator": "/flux-prompt-generator",
 };
 
+// API 路由不应该有国际化前缀
 export const localePrefix: LocalePrefix<typeof locales> = "always";
 
 export const port = process.env.PORT || 3000;

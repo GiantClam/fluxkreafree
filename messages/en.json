@@ -294,7 +294,8 @@
         "pro": "FLUX.1 Pro - Best Quality",
         "dev": "FLUX.1 Dev - Balanced",
         "schnell": "FLUX.1 Schnell - Fastest",
-        "kreaDev": "FLUX.1 Krea Dev - Cost Effective"
+        "kreaDev": "FLUX.1 Krea Dev - Cost Effective",
+        "clothingTryon": "Clothing Try-On - AI Virtual Try-On"
       },
       "lora": {
         "label": "Style",
@@ -311,6 +312,16 @@
       "inputImage": "Image",
       "inputImageTooltip": "Input image for image-to-image mode. The aspect ratio of your output will match this image",
       "inputImagePlaceholder": "Upload input image",
+      "userPhoto": "Full-Body Photo",
+      "userPhotoTooltip": "Upload a full-body photo for virtual try-on",
+      "userPhotoPlaceholder": "Upload full-body photo",
+      "topClothes": "Top Clothes",
+      "topClothesTooltip": "Upload a photo of the top clothing item (optional)",
+      "topClothesPlaceholder": "Upload top clothing photo",
+      "bottomClothes": "Bottom Clothes",
+      "bottomClothesTooltip": "Upload a photo of the bottom clothing item (optional)",
+      "bottomClothesPlaceholder": "Upload bottom clothing photo",
+      "clothingTryonHint": "Upload at least one clothing item (top or bottom) along with your full-body photo to generate the try-on result.",
       "private": {
         "label": "Private Generation"
       },

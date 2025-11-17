@@ -1,4 +1,5 @@
 import { env } from "@/env.mjs";
+import { runningHubService } from "@/lib/runninghub";
 
 export interface ReplicateImageRequest {
   model: string;
@@ -33,6 +34,21 @@ export interface GeminiTextResponse {
       content: string;
     };
   }>;
+  error?: string;
+}
+
+export interface RunningHubImageRequest {
+  userPhotoUrl: string;
+  topClothesUrl?: string;
+  bottomClothesUrl?: string;
+  is_private: number;
+  user_id: string;
+  locale: string;
+}
+
+export interface RunningHubImageResponse {
+  runninghub_task_id: string;
+  output?: string[];
   error?: string;
 }
 
@@ -114,6 +130,65 @@ class CloudflareAIGateway {
       return result;
     } catch (error) {
       this.logError('Replicate Image Generation', error, Date.now() - startTime);
+      throw error;
+    }
+  }
+
+  /**
+   * 通过 RunningHub 调用 clothing-tryon 工作流
+   */
+  async generateImageViaRunningHub(
+    request: RunningHubImageRequest
+  ): Promise<RunningHubImageResponse> {
+    const startTime = Date.now();
+    
+    try {
+      this.logRequest('RunningHub Clothing Tryon', request);
+      
+      // 构建 webhook URL（如果配置了 webhook secret，则传递 webhook URL）
+      // 这样即使前端关闭，后端也能通过 webhook 自动更新任务状态
+      const webhookUrl = env.RUNNINGHUB_WEBHOOK_SECRET
+        ? `${env.NEXT_PUBLIC_SITE_URL}/api/webhooks/runninghub`
+        : undefined;
+
+      const taskResult = await runningHubService.createClothingTryonTask(
+        {
+          userPhotoUrl: request.userPhotoUrl,
+          topClothesUrl: request.topClothesUrl,
+          bottomClothesUrl: request.bottomClothesUrl,
+        },
+        webhookUrl
+      );
+
+      const result = {
+        runninghub_task_id: taskResult.taskId,
+        output: undefined,
+        error: undefined,
+      };
+
+      this.logResponse('RunningHub Clothing Tryon', result, Date.now() - startTime);
+      return result;
+    } catch (error) {
+      this.logError('RunningHub Clothing Tryon', error, Date.now() - startTime);
+      throw error;
+    }
+  }
+
+  /**
+   * 通过 RunningHub 获取任务状态
+   */
+  async getRunningHubTaskStatus(taskId: string): Promise<any> {
+    const startTime = Date.now();
+    
+    try {
+      this.logRequest('Get RunningHub Task Status', { taskId });
+      
+      const statusResult = await runningHubService.getTaskStatus(taskId);
+      
+      this.logResponse('Get RunningHub Task Status', statusResult, Date.now() - startTime);
+      return statusResult;
+    } catch (error) {
+      this.logError('Get RunningHub Task Status', error, Date.now() - startTime);
       throw error;
     }
   }

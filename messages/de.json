@@ -328,7 +328,8 @@
         "pro": "FLUX.1 Pro - Beste Qualität",
         "dev": "FLUX.1 Dev - Ausgewogen",
         "schnell": "FLUX.1 Schnell - Schnellste",
-        "kreaDev": "FLUX.1 Krea Dev - Kostengünstig"
+        "kreaDev": "FLUX.1 Krea Dev - Kostengünstig",
+        "clothingTryon": "Clothing Try-On - KI-Virtuelles Anprobieren"
       },
       "lora": {
         "label": "Stil",

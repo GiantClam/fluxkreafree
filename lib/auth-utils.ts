@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { env } from "@/env.mjs";
 import { shouldSkipDatabaseQuery } from "@/lib/build-check";
-import { prisma } from "@/db/prisma";
+import { withRetry } from "@/lib/db-connection";
 
 export async function getUser() {
   const session = await getServerSession(authOptions);
@@ -19,34 +19,96 @@ export async function getCurrentUser() {
   }
 
   try {
-    // 开发模式：如果 Google OAuth 配置是占位符，创建一个测试用户
-    const isDevMode = env.GOOGLE_CLIENT_ID === "google-client-id-placeholder" || 
-                      env.GOOGLE_CLIENT_SECRET === "google-client-secret-placeholder";
+    // 开发模式：如果启用了 ENABLE_DEV_USER，直接返回默认开发用户
+    const enableDevUser = env.ENABLE_DEV_USER === "true" || env.ENABLE_DEV_USER === "1";
+    const isDevelopment = process.env.NODE_ENV === "development";
     
-    if (isDevMode && process.env.NODE_ENV === "development") {
-      console.log("🔧 开发模式：使用测试用户账户");
+    if (enableDevUser && isDevelopment) {
+      console.log("🔧 开发模式：使用默认开发用户（无需 Google Auth）");
       
-      const testUserId = "dev-user-123";
-      const testUserEmail = "dev@localhost.com";
+      const devUserId = "dev-user-local";
+      const devUserEmail = "dev@localhost.local";
       
       try {
-        // 确保测试用户在数据库中存在
-        let user = await prisma.user.findUnique({
-          where: { id: testUserId },
+        const { prisma } = await import("@/lib/db-connection");
+        // 确保开发用户在数据库中存在
+        let user = await withRetry(async () => {
+          return await prisma.user.findUnique({
+            where: { id: devUserId },
+          });
         });
         
         if (!user) {
-          // 创建测试用户
-          user = await prisma.user.create({
-            data: {
-              id: testUserId,
-              email: testUserEmail,
-              name: "开发测试用户",
-              emailVerified: new Date(),
-              isAdmin: false,
-            },
+          // 创建开发用户
+          user = await withRetry(async () => {
+            return await prisma.user.create({
+              data: {
+                id: devUserId,
+                email: devUserEmail,
+                name: "本地开发用户",
+                emailVerified: new Date(),
+                isAdmin: false,
+              },
+            });
           });
-          console.log("✅ 已创建开发模式测试用户");
+          console.log("✅ 已创建本地开发用户");
+          
+          // 为开发用户创建积分记录，给予充足的积分（100000）
+          try {
+            await withRetry(async () => {
+              const existingCredit = await prisma.userCredit.findFirst({
+                where: { userId: devUserId },
+              });
+              
+              if (existingCredit) {
+                return await prisma.userCredit.update({
+                  where: { id: existingCredit.id },
+                  data: { credit: 100000 },
+                });
+              } else {
+                return await prisma.userCredit.create({
+                  data: {
+                    userId: devUserId,
+                    credit: 100000, // 开发环境给予充足积分
+                  },
+                });
+              }
+            });
+            console.log("✅ 已为开发用户设置充足积分（100000）");
+          } catch (creditError) {
+            console.error("❌ 设置开发用户积分失败:", creditError);
+          }
+        } else {
+          // 如果用户已存在，确保积分充足（每次检查时更新为 100000）
+          try {
+            const userCredit = await withRetry(async () => {
+              return await prisma.userCredit.findFirst({
+                where: { userId: devUserId },
+              });
+            });
+            
+            if (!userCredit || userCredit.credit < 10000) {
+              // 如果积分不足 10000，更新为 100000
+              await withRetry(async () => {
+                if (userCredit) {
+                  return await prisma.userCredit.update({
+                    where: { id: userCredit.id },
+                    data: { credit: 100000 },
+                  });
+                } else {
+                  return await prisma.userCredit.create({
+                    data: {
+                      userId: devUserId,
+                      credit: 100000,
+                    },
+                  });
+                }
+              });
+              console.log("✅ 已为开发用户补充积分至 100000");
+            }
+          } catch (creditError) {
+            console.error("❌ 检查/更新开发用户积分失败:", creditError);
+          }
         }
         
         return {
@@ -56,17 +118,18 @@ export async function getCurrentUser() {
           image: user.image,
         };
       } catch (error) {
-        console.error("❌ 创建开发模式用户失败:", error);
-        // 如果数据库操作失败，仍然返回测试用户对象
+        console.error("❌ 创建开发用户失败:", error);
+        // 如果数据库操作失败，仍然返回开发用户对象
         return {
-          id: testUserId,
-          email: testUserEmail,
-          name: "开发测试用户",
+          id: devUserId,
+          email: devUserEmail,
+          name: "本地开发用户",
           image: null,
         };
       }
     }
     
+    // 生产模式：使用正常的 Google Auth 认证
     const session = await getServerSession(authOptions);
     if (!session?.user) return null;
     
@@ -84,6 +147,28 @@ export async function getCurrentUser() {
 
 export async function auth() {
   try {
+    // 开发模式：如果启用了 ENABLE_DEV_USER，直接返回默认开发用户
+    const enableDevUser = env.ENABLE_DEV_USER === "true" || env.ENABLE_DEV_USER === "1";
+    const isDevelopment = process.env.NODE_ENV === "development";
+    
+    if (enableDevUser && isDevelopment) {
+      const devUserId = "dev-user-local";
+      const devUserEmail = "dev@localhost.local";
+      
+      return {
+        userId: devUserId,
+        user: {
+          id: devUserId,
+          email: devUserEmail,
+          name: "本地开发用户",
+          image: null,
+        },
+        protect: () => {
+          // 开发模式下不抛出错误
+        }
+      };
+    }
+    
     const session = await getServerSession(authOptions);
     return {
       userId: session?.user?.id || null,

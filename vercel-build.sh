@@ -2,6 +2,17 @@
 
 echo "🚀 开始Vercel构建..."
 
+# 初始化并更新 Git submodules
+echo "📦 初始化 Git submodules..."
+git submodule update --init --recursive
+
+# 检查 submodules 是否初始化成功
+if [ -d "modules/runninghub" ]; then
+    echo "✅ Git submodules 初始化成功"
+else
+    echo "⚠️ 警告: Git submodules 可能未正确初始化"
+fi
+
 # 确保Prisma Client是最新的
 echo "📦 生成Prisma Client..."
 npx prisma generate

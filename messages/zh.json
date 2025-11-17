@@ -328,7 +328,8 @@
         "pro": "FLUX.1 Pro - 最佳质量",
         "dev": "FLUX.1 Dev - 平衡",
         "schnell": "FLUX.1 Schnell - 最快",
-        "kreaDev": "FLUX.1 Krea Dev - 经济实惠"
+        "kreaDev": "FLUX.1 Krea Dev - 经济实惠",
+        "clothingTryon": "Clothing Try-On - AI 虚拟试衣"
       },
       "lora": {
         "label": "风格",
@@ -345,6 +346,16 @@
       "inputImage": "图像",
       "inputImageTooltip": "图像到图像模式的输入图像。您的输出纵横比将与此图像匹配",
       "inputImagePlaceholder": "上传输入图像",
+      "userPhoto": "全身自拍照",
+      "userPhotoTooltip": "上传一张全身自拍照，用于虚拟试衣",
+      "userPhotoPlaceholder": "上传全身自拍照",
+      "topClothes": "上衣",
+      "topClothesTooltip": "上传上衣图片（可选）",
+      "topClothesPlaceholder": "上传上衣图片",
+      "bottomClothes": "下衣",
+      "bottomClothesTooltip": "上传下衣图片（可选）",
+      "bottomClothesPlaceholder": "上传下衣图片",
+      "clothingTryonHint": "请至少上传一件衣服（上衣或下衣）以及您的全身自拍照，以生成试穿效果。",
       "private": {
         "label": "私有生成"
       },

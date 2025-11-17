@@ -4,6 +4,8 @@ import { getServerSession } from "next-auth";
 import { unstable_setRequestLocale } from "next-intl/server";
 
 import { authOptions } from "@/lib/auth";
+import { getCurrentUser } from "@/lib/auth-utils";
+import { env } from "@/env.mjs";
 import { Container } from "@/components/layout/container";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { SignInForm } from "./signin-form";
@@ -15,10 +17,22 @@ type Props = {
 export default async function SignInPage({ params: { locale } }: Props) {
   unstable_setRequestLocale(locale);
   
+  // 开发模式：如果启用了开发用户，自动登录并跳转
+  const enableDevUser = env.ENABLE_DEV_USER === "true" || env.ENABLE_DEV_USER === "1";
+  const isDevelopment = process.env.NODE_ENV === "development";
+  
+  if (enableDevUser && isDevelopment) {
+    const user = await getCurrentUser();
+    if (user) {
+      console.log("🔧 开发模式：自动登录，跳转到应用页面");
+      redirect(`/${locale}/app`);
+    }
+  }
+  
   const session = await getServerSession(authOptions);
   
   if (session) {
-    redirect("/app");
+    redirect(`/${locale}/app`);
   }
 
   return (

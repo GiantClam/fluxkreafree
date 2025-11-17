@@ -17,7 +17,7 @@ const searchParamsSchema = z.object({
   page: z.coerce.number().default(1),
   pageSize: z.coerce.number().default(10),
   sort: z.string().optional(),
-  model: z.enum([model.dev, model.pro, model.schnell, model.kreaDev]).optional(),
+  model: z.enum([model.dev, model.pro, model.schnell, model.kreaDev, model.clothingTryon]).optional(),
 });
 
 export async function GET(req: NextRequest) {

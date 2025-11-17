@@ -14,10 +14,12 @@ export function DownloadAction({
   id,
   disabled,
   showText,
+  skipAuthCheck = false, // 新增参数：跳过认证检查（用于已登录页面）
 }: {
   id: string;
   disabled?: boolean;
-  showText?: boolean
+  showText?: boolean;
+  skipAuthCheck?: boolean; // 新增参数
 }) {
   const t = useTranslations("History");
   const [isDownloading, startDownloadTransition] = useTransition();
@@ -28,6 +30,7 @@ export function DownloadAction({
     if (isDownloading || isPending) {
       return;
     }
+    // 阻止事件冒泡，避免触发父元素的点击事件
     startDownloadTransition(() => {
       toast.promise(
         async () => {
@@ -43,6 +46,7 @@ export function DownloadAction({
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
+          window.URL.revokeObjectURL(url);
         },
         {
           loading: t("action.downloadLoading"),
@@ -59,21 +63,35 @@ export function DownloadAction({
     });
   };
 
+  const button = (
+    <button
+      aria-label={t("action.download")}
+      disabled={disabled}
+      className="focus-ring text-content-strong border-stroke-strong hover:border-stroke-stronger data-[state=open]:bg-surface-alpha-light inline-flex h-8 items-center justify-center whitespace-nowrap rounded-lg border bg-transparent px-2.5 text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-50"
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation(); // 阻止事件冒泡
+        download(id!);
+      }}
+    >
+      {isDownloading || isPending ? (
+        <Loader2 className="icon-xs animate-spin" />
+      ) : (
+        <ArrowDownToLine className="icon-xs" />
+      )}
+      {showText && <span className="ml-2">{t("action.download")}</span>}
+    </button>
+  );
+
+  // 如果跳过认证检查（用于已登录页面），直接返回按钮
+  if (skipAuthCheck) {
+    return button;
+  }
+
+  // 否则使用 SignBox 包裹（用于需要认证的页面）
   return (
     <SignBox>
-      <button
-        aria-label={t("action.download")}
-        disabled={disabled}
-        className="focus-ring text-content-strong border-stroke-strong hover:border-stroke-stronger data-[state=open]:bg-surface-alpha-light inline-flex h-8 items-center justify-center whitespace-nowrap rounded-lg border bg-transparent px-2.5 text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-50"
-        onClick={() => download(id!)}
-      >
-        {isDownloading || isPending ? (
-          <Loader2 className="icon-xs animate-spin" />
-        ) : (
-          <ArrowDownToLine className="icon-xs" />
-        )}
-        {showText && <span className="ml-2">{t("action.download")}</span>}
-      </button>
+      {button}
     </SignBox>
   );
 }

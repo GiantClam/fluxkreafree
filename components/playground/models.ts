@@ -1,6 +1,6 @@
 import { model, ModelName } from "@/config/constants";
 
-export const types = ["Flux AI"] as const;
+export const types = ["Flux AI", "Workflow"] as const;
 
 export type ModelType = (typeof types)[number];
 
@@ -50,5 +50,12 @@ export const models: Model<ModelType>[] = [
     description:
       "FLUX Krea Dev - 经济实惠的开发版本，成本优化，适合大量生成和测试",
     type: "Flux AI",
+  },
+  {
+    id: model.clothingTryon,
+    name: ModelName[model.clothingTryon],
+    description:
+      "Clothing Try-On - AI 虚拟试衣，上传全身自拍照和衣服图片，生成试穿效果",
+    type: "Workflow",
   },
 ];

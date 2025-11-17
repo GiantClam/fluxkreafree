@@ -14,19 +14,54 @@ export async function getUserCredit(userId: string) {
     });
   }
 
-  // 开发模式：为测试用户提供无限信用
-  const isDevMode = env.GOOGLE_CLIENT_ID === "google-client-id-placeholder" || 
-                    env.GOOGLE_CLIENT_SECRET === "google-client-secret-placeholder";
+  // 开发模式：为开发用户提供充足积分
+  const enableDevUser = env.ENABLE_DEV_USER === "true" || env.ENABLE_DEV_USER === "1";
+  const isDevelopment = process.env.NODE_ENV === "development";
+  const devUserId = "dev-user-local";
   
-  if (isDevMode && process.env.NODE_ENV === "development" && userId === "dev-user-123") {
-    console.log("🔧 开发模式：为测试用户提供 1000 信用额度");
-    return {
-      id: "dev-credit-123",
-      userId: "dev-user-123",
-      credit: 1000, // 开发模式提供充足的信用额度
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
+  if (enableDevUser && isDevelopment && userId === devUserId) {
+    console.log("🔧 开发模式：为开发用户提供充足积分（100000）");
+    // 确保数据库中有充足的积分
+    try {
+      const { prisma } = await import("@/lib/db-connection");
+      const userCredit = await withRetry(async () => {
+        return await prisma.userCredit.findFirst({
+          where: { userId: devUserId },
+        });
+      });
+      
+      if (!userCredit || userCredit.credit < 10000) {
+        // 如果积分不足 10000，更新为 100000
+        const updatedCredit = await withRetry(async () => {
+          if (userCredit) {
+            return await prisma.userCredit.update({
+              where: { id: userCredit.id },
+              data: { credit: 100000 },
+            });
+          } else {
+            return await prisma.userCredit.create({
+              data: {
+                userId: devUserId,
+                credit: 100000,
+              },
+            });
+          }
+        });
+        return updatedCredit;
+      }
+      
+      return userCredit;
+    } catch (error) {
+      console.error("❌ 获取开发用户积分失败:", error);
+      // 返回默认值
+      return {
+        id: "dev-credit-local",
+        userId: devUserId,
+        credit: 100000,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+    }
   }
   
   try {

@@ -6,7 +6,8 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  directUrl = env("POSTGRES_URL_NON_POOLING")
+  // directUrl 是可选的，用于迁移时使用非连接池连接
+  // 如果未设置，Prisma 会使用 url 进行迁移
 }
 
 // NextAuth.js required tables

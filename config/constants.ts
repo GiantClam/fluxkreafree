@@ -11,6 +11,7 @@ export enum model {
   general = "lucataco/flux-dev-lora",
   freeSchnell = "siliconflow/flux-schnell",
   kreaDev = "black-forest-labs/flux-krea-dev",
+  clothingTryon = "clothing-tryon",
 }
 
 export enum loras {
@@ -41,6 +42,7 @@ export const Credits = {
   [model.general]: 8,
   [model.freeSchnell]: 0,
   [model.kreaDev]: 3,
+  [model.clothingTryon]: 5,
 };
 
 export const ModelName = {
@@ -50,6 +52,7 @@ export const ModelName = {
   [model.general]: "FLUX.1 General",
   [model.freeSchnell]: "FLUX.1 [schnell]",
   [model.kreaDev]: "FLUX.1 [krea-dev]",
+  [model.clothingTryon]: "Clothing Try-On",
 };
 
 export enum Ratio {

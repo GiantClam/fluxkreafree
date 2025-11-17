@@ -73,11 +73,22 @@ export const useGetLicenseSts = (config?: {
 
   return useMutation({
     mutationFn: async (values: any = {}) => {
-      return fetch(`/api/s3/sts`, {
+      // 使用绝对路径，避免国际化路由前缀问题
+      const apiUrl = `/api/s3/sts`;
+      return fetch(apiUrl, {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(values),
         credentials: 'include',
-      }).then((res) => res.json());
+      }).then(async (res) => {
+        if (!res.ok) {
+          const errorText = await res.text();
+          throw new Error(`API error: ${res.status} ${errorText}`);
+        }
+        return res.json();
+      });
     },
     onSuccess: async (result) => {
       config?.onSuccess(result);
@@ -116,22 +127,119 @@ const FormUpload = (props: FormUploadProps) => {
           toast.error(res.error || "Failed to get upload information. Please try again later.");
           return;
         }
-        const formData = new FormData();
-        formData.append("file", file);
-        await Promise.all([
-          fetch(res.data.putUrl, {
+
+        let uploadResult: { url: string; key: string; completedUrl: string };
+        
+        try {
+          // 尝试直接上传到 R2（预签名 URL）
+          const uploadResponse = await fetch(res.data.putUrl, {
             body: file,
             method: "PUT",
             headers: {
               "Content-Type": file.type,
             },
-          }),
-        ]);
+          });
+
+          if (!uploadResponse.ok) {
+            throw new Error(`Upload failed: ${uploadResponse.status}`);
+          }
+
+          uploadResult = {
+            url: res.data.url,
+            key: res.data.key,
+            completedUrl: res.data.completedUrl,
+          };
+        } catch (error: any) {
+          // 如果直接上传失败（可能是 CORS 问题），先验证文件是否实际上传成功
+          const isCorsError = error?.message?.includes('CORS') || 
+                             error?.message?.includes('Failed to fetch') ||
+                             error?.name === 'TypeError';
+          
+          if (isCorsError) {
+            // CORS 错误时，文件可能实际上传成功了，先验证文件是否存在
+            try {
+              const verifyResponse = await fetch(res.data.completedUrl, {
+                method: "HEAD",
+              });
+              
+              if (verifyResponse.ok) {
+                // 文件存在，说明上传成功了（只是 CORS 预检失败）
+                console.log("File uploaded successfully despite CORS error, using direct URL");
+                uploadResult = {
+                  url: res.data.url,
+                  key: res.data.key,
+                  completedUrl: res.data.completedUrl,
+                };
+              } else {
+                // 文件不存在，使用服务器端代理上传
+                throw new Error("File not found, will use server-side upload");
+              }
+            } catch (verifyError) {
+              // 验证失败，使用服务器端代理上传
+              console.warn("Direct upload failed and file verification failed, falling back to server-side upload:", error);
+              
+              const formData = new FormData();
+              formData.append("file", file);
+              formData.append("key", key);
+
+              const proxyResponse = await fetch("/api/s3/upload", {
+                method: "POST",
+                body: formData,
+                credentials: "include",
+              });
+
+              if (!proxyResponse.ok) {
+                const errorText = await proxyResponse.text();
+                throw new Error(`Server-side upload failed: ${errorText}`);
+              }
+
+              const proxyResult = await proxyResponse.json();
+              if (proxyResult.error) {
+                throw new Error(proxyResult.error);
+              }
+
+              uploadResult = {
+                url: proxyResult.data.url,
+                key: proxyResult.data.key,
+                completedUrl: proxyResult.data.completedUrl,
+              };
+            }
+          } else {
+            // 非 CORS 错误，直接使用服务器端代理上传
+            console.warn("Direct upload failed, falling back to server-side upload:", error);
+            
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("key", key);
+
+            const proxyResponse = await fetch("/api/s3/upload", {
+              method: "POST",
+              body: formData,
+              credentials: "include",
+            });
+
+            if (!proxyResponse.ok) {
+              const errorText = await proxyResponse.text();
+              throw new Error(`Server-side upload failed: ${errorText}`);
+            }
+
+            const proxyResult = await proxyResponse.json();
+            if (proxyResult.error) {
+              throw new Error(proxyResult.error);
+            }
+
+            uploadResult = {
+              url: proxyResult.data.url,
+              key: proxyResult.data.key,
+              completedUrl: proxyResult.data.completedUrl,
+            };
+          }
+        }
 
         const newValue = {
-          url: res?.data?.url,
-          key: res?.data?.key,
-          completedUrl: res?.data?.completedUrl,
+          url: uploadResult.url,
+          key: uploadResult.key,
+          completedUrl: uploadResult.completedUrl,
           id: nanoid(12),
           originFile: file,
         };

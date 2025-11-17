@@ -328,7 +328,8 @@
         "pro": "FLUX.1 Pro - 最高品質",
         "dev": "FLUX.1 Dev - バランス",
         "schnell": "FLUX.1 Schnell - 最速",
-        "kreaDev": "FLUX.1 Krea Dev - コスト効率"
+        "kreaDev": "FLUX.1 Krea Dev - コスト効率",
+        "clothingTryon": "Clothing Try-On - AI 仮想試着"
       },
       "lora": {
         "label": "スタイル",

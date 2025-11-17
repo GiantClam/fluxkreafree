@@ -4,7 +4,7 @@ import { z } from "zod";
 
 import { model } from "@/config/constants";
 import { FluxHashids } from "@/db/dto/flux.dto";
-import { prisma } from "@/db/prisma";
+import { withRetry } from "@/lib/db-connection";
 import { FluxTaskStatus } from "@/db/type";
 import { getErrorMessage } from "@/lib/handle-error";
 import { Prisma } from "@prisma/client";
@@ -13,18 +13,26 @@ export const searchParamsSchema = z.object({
   page: z.coerce.number().default(1),
   pageSize: z.coerce.number().default(12),
   sort: z.string().optional(),
-  model: z.enum([model.dev, model.pro, model.schnell, model.kreaDev]).optional(),
+  model: z.enum([model.dev, model.pro, model.schnell, model.kreaDev, model.clothingTryon]).optional(),
 });
 
 export async function getFluxById(fluxId: string) {
-  const [id] = FluxHashids.decode(fluxId)
-  const fluxData = await prisma.fluxData.findUnique({
-    where: { id: id as number },
-  });
-  if (!fluxData) {
+  try {
+    const { prisma } = await import("@/lib/db-connection");
+    const [id] = FluxHashids.decode(fluxId)
+    const fluxData = await withRetry(async () => {
+      return await prisma.fluxData.findUnique({
+        where: { id: id as number },
+      });
+    });
+    if (!fluxData) {
+      return null;
+    }
+    return { ...fluxData, id: fluxId };
+  } catch (error) {
+    console.error("❌ getFluxById 数据库查询错误:", error);
     return null;
   }
-  return { ...fluxData, id: fluxId };
 }
 
 export async function getFluxDataByPage(params: {
@@ -34,6 +42,7 @@ export async function getFluxDataByPage(params: {
 }) {
 
   try {
+    const { prisma } = await import("@/lib/db-connection");
     const { page, pageSize, model } = params;
     const offset = (page - 1) * pageSize;
     const whereConditions: Prisma.FluxDataWhereInput = {
@@ -47,13 +56,17 @@ export async function getFluxDataByPage(params: {
     }
 
     const [fluxData, total] = await Promise.all([
-      prisma.fluxData.findMany({
-        where: whereConditions,
-        take: pageSize,
-        skip: offset,
-        orderBy: { createdAt: "desc" },
+      withRetry(async () => {
+        return await prisma.fluxData.findMany({
+          where: whereConditions,
+          take: pageSize,
+          skip: offset,
+          orderBy: { createdAt: "desc" },
+        });
       }),
-      prisma.fluxData.count({ where: whereConditions }),
+      withRetry(async () => {
+        return await prisma.fluxData.count({ where: whereConditions });
+      }),
     ]);
 
     return {
