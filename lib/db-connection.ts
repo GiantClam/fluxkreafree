@@ -1,9 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 
-// 在开发模式下使用全局缓存，避免热重载时创建多个 Prisma 客户端实例
+// 在开发和生产模式下都使用全局缓存，避免创建多个 Prisma 客户端实例
+// 这在 Vercel 等 serverless 环境中特别重要，因为每次函数调用可能创建新实例
 declare global {
   // eslint-disable-next-line no-var
-  var __prisma__: PrismaClient;
+  var __prisma__: PrismaClient | undefined;
 }
 
 // 数据库连接管理类
@@ -13,46 +14,49 @@ class DatabaseConnectionManager {
   private isConnected: boolean = false;
 
   private constructor() {
-    // 在开发模式下使用全局缓存的 Prisma 客户端，避免热重载时创建多个实例
-    if (process.env.NODE_ENV === 'development') {
-      if (!global.__prisma__) {
-        // 获取数据库 URL，如果是 PostgreSQL，添加参数来避免 prepared statement 冲突
-        let databaseUrl = process.env.DATABASE_URL || '';
-        
-        // 如果是 PostgreSQL 连接，添加参数来避免 prepared statement 缓存冲突
-        if (databaseUrl.startsWith('postgresql://') || databaseUrl.startsWith('postgres://')) {
-          // 添加 ?pgbouncer=true 或使用连接池参数
-          // 或者添加 ?prepared_statements=false 来禁用 prepared statements
-          // 但更好的方式是使用连接池，让每个连接使用不同的 prepared statement 名称
+    // 在开发和生产模式下都使用全局缓存，避免创建多个 Prisma 客户端实例
+    // 这在 Vercel 等 serverless 环境中特别重要，因为每次函数调用可能创建新实例
+    if (!global.__prisma__) {
+      // 获取数据库 URL，如果是 PostgreSQL，添加参数来避免 prepared statement 冲突
+      let databaseUrl = process.env.DATABASE_URL || '';
+      
+      // 如果是 PostgreSQL 连接，添加参数来避免 prepared statement 缓存冲突
+      if (databaseUrl.startsWith('postgresql://') || databaseUrl.startsWith('postgres://')) {
+        try {
           const urlObj = new URL(databaseUrl);
-          // 不修改 URL，而是通过 Prisma 配置来处理
+          // 添加 connection_limit 和 pool_timeout 参数来优化连接池
+          // 添加 ?pgbouncer=true 如果使用 PgBouncer
+          // 或者添加 ?prepared_statements=false 来禁用 prepared statements（不推荐，性能较差）
+          // 最佳实践：使用连接池管理器（如 PgBouncer）或确保只有一个 Prisma 实例
+          if (!urlObj.searchParams.has('connection_limit')) {
+            urlObj.searchParams.set('connection_limit', '10');
+          }
+          if (!urlObj.searchParams.has('pool_timeout')) {
+            urlObj.searchParams.set('pool_timeout', '10');
+          }
+          databaseUrl = urlObj.toString();
+        } catch (e) {
+          // URL 解析失败，使用原始 URL
+          console.warn('无法解析 DATABASE_URL，使用原始 URL');
         }
-        
-        global.__prisma__ = new PrismaClient({
-          datasources: {
-            db: {
-              url: databaseUrl,
-            },
-          },
-          log: ['error', 'warn'],
-          // 在开发模式下，使用较小的连接池以减少 prepared statement 冲突
-          // Prisma 会自动管理连接池，但我们可以通过环境变量配置
-        });
-        console.log('✅ 开发模式：创建全局缓存的 Prisma 客户端');
       }
-      this.prisma = global.__prisma__;
-    } else {
-      // 生产环境创建新的 Prisma 客户端
-      this.prisma = new PrismaClient({
+      
+      global.__prisma__ = new PrismaClient({
         datasources: {
           db: {
-            url: process.env.DATABASE_URL,
+            url: databaseUrl,
           },
         },
-        log: ['error'],
+        log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
+        // 配置连接池以避免 prepared statement 冲突
+        // Prisma 会自动管理连接池，但我们可以通过环境变量配置
       });
-      console.log('✅ 生产模式：创建新的 Prisma 客户端');
+      
+      const env = process.env.NODE_ENV === 'development' ? '开发' : '生产';
+      console.log(`✅ ${env}模式：创建全局缓存的 Prisma 客户端`);
     }
+    
+    this.prisma = global.__prisma__;
 
     // 设置连接事件监听
     this.setupEventListeners();
