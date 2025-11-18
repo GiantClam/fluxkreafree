@@ -115,6 +115,20 @@ const nextConfig = {
     //   }),
     // );
 
+    // 确保 modules 目录中的依赖能够正确解析到主项目的 node_modules
+    config.resolve = {
+      ...config.resolve,
+      alias: {
+        ...config.resolve?.alias,
+        // 确保 modules 目录中的导入能够解析到主项目的依赖
+      },
+      // 确保解析 modules 目录时也查找主项目的 node_modules
+      modules: [
+        ...(config.resolve?.modules || []),
+        'node_modules',
+      ],
+    };
+
     config.experiments = {
       ...config.experiments,
       topLevelAwait: true,
