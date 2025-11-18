@@ -11,6 +11,7 @@ import { UserBillingHashids } from "@/db/dto/billing.dto";
 import { FluxHashids } from "@/db/dto/flux.dto";
 import { prisma } from "@/db/prisma";
 import { getErrorMessage } from "@/lib/handle-error";
+import { withRetry } from "@/lib/db-connection";
 
 const searchParamsSchema = z.object({
   page: z.coerce.number().default(1),
@@ -45,13 +46,17 @@ export async function GET(req: NextRequest) {
     }
 
     const [data, total] = await Promise.all([
-      prisma.userBilling.findMany({
-        where: whereConditions,
-        take: pageSize,
-        skip: offset,
-        orderBy: { createdAt: "desc" },
+      withRetry(async () => {
+        return await prisma.userBilling.findMany({
+          where: whereConditions,
+          take: pageSize,
+          skip: offset,
+          orderBy: { createdAt: "desc" },
+        });
       }),
-      prisma.userBilling.count({ where: whereConditions }),
+      withRetry(async () => {
+        return await prisma.userBilling.count({ where: whereConditions });
+      }),
     ]);
 
     return NextResponse.json({
@@ -67,8 +72,21 @@ export async function GET(req: NextRequest) {
       },
     });
   } catch (error) {
+    console.error("❌ /api/billings 错误:", error);
+    const errorMessage = getErrorMessage(error);
+    
+    // 如果是数据库连接错误，返回 503
+    if (errorMessage.includes('prepared statement') || 
+        errorMessage.includes('connection') ||
+        errorMessage.includes('timeout')) {
+      return NextResponse.json(
+        { error: "Database service temporarily unavailable. Please try again." },
+        { status: 503 },
+      );
+    }
+    
     return NextResponse.json(
-      { error: getErrorMessage(error) },
+      { error: errorMessage },
       { status: 400 },
     );
   }

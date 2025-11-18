@@ -48,12 +48,25 @@ export async function GET(req: NextRequest) {
       ...accountInfo,
       id: AccountHashids.encode(Number(accountInfo.id)),
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error("❌ /api/account 错误:", error);
+    const errorMessage = String(error?.message || error || 'Unknown error');
     
-    // 在构建时或出现错误时返回503
+    // 在构建时跳过数据库查询
     if (shouldSkipDatabaseQuery()) {
       return NextResponse.json({ error: "Service temporarily unavailable" }, { status: 503 });
+    }
+    
+    // 如果是数据库连接错误，返回 503
+    if (errorMessage.includes('prepared statement') || 
+        errorMessage.includes('connection') ||
+        errorMessage.includes('timeout') ||
+        errorMessage.includes('42P05') ||
+        errorMessage.includes('08P01')) {
+      return NextResponse.json(
+        { error: "Database service temporarily unavailable. Please try again." },
+        { status: 503 },
+      );
     }
     
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });

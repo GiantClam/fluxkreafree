@@ -12,19 +12,29 @@ export function isVercelBuild(): boolean {
 }
 
 export function shouldSkipDatabaseQuery(): boolean {
+  // 检查是否有任何数据库连接 URL（支持多种环境变量名称）
+  const hasDatabaseUrl = !!(
+    process.env.DATABASE_URL || 
+    process.env.POSTGRES_PRISMA_URL || 
+    process.env.POSTGRES_URL
+  );
+  
   // 添加详细的调试日志
   console.log("🔍 构建检查调试信息:", {
     NODE_ENV: process.env.NODE_ENV,
     VERCEL: process.env.VERCEL,
     SKIP_DB_BUILD: process.env.SKIP_DB_BUILD,
     DATABASE_URL: process.env.DATABASE_URL ? "已设置" : "未设置",
-    IS_BUILD_TIME: process.env.NODE_ENV === "production" && !process.env.DATABASE_URL
+    POSTGRES_PRISMA_URL: process.env.POSTGRES_PRISMA_URL ? "已设置" : "未设置",
+    POSTGRES_URL: process.env.POSTGRES_URL ? "已设置" : "未设置",
+    HAS_DATABASE_URL: hasDatabaseUrl,
+    IS_BUILD_TIME: process.env.NODE_ENV === "production" && !hasDatabaseUrl
   });
   
   // 只在构建时跳过数据库查询，运行时应该正常工作
   
   // 检查是否在构建时（没有数据库连接）
-  if (process.env.NODE_ENV === "production" && !process.env.DATABASE_URL) {
+  if (process.env.NODE_ENV === "production" && !hasDatabaseUrl) {
     console.log("🔧 构建时（无数据库连接）：跳过数据库查询");
     return true;
   }
