@@ -258,40 +258,43 @@ export async function POST(req: NextRequest, { params }: Params) {
         }
         
         try {
-          await prisma.$transaction(async (tx) => {
-            const newAccount = await tx.userCredit.update({
-              where: { id: Number(account.id) },
-              data: {
-                credit: {
-                  decrement: needCredit,
+          // 使用 withRetry 包装整个事务，以处理 prepared statement 错误
+          await withRetry(async () => {
+            return await prisma.$transaction(async (tx) => {
+              const newAccount = await tx.userCredit.update({
+                where: { id: Number(account.id) },
+                data: {
+                  credit: {
+                    decrement: needCredit,
+                  },
                 },
-              },
-            });
-            const billing = await tx.userBilling.create({
-              data: {
-                userId,
-                fluxId: fluxData.id,
-                state: "Done",
-                amount: -needCredit,
-                type: BillingType.Withdraw,
-                description: `Generate ${modelName} - ${aspectRatio} Withdraw`,
-              },
-            });
+              });
+              const billing = await tx.userBilling.create({
+                data: {
+                  userId,
+                  fluxId: fluxData.id,
+                  state: "Done",
+                  amount: -needCredit,
+                  type: BillingType.Withdraw,
+                  description: `Generate ${modelName} - ${aspectRatio} Withdraw`,
+                },
+              });
 
-            await tx.userCreditTransaction.create({
-              data: {
-                userId,
-                credit: -needCredit,
-                balance: newAccount.credit,
-                billingId: billing.id,
-                type: "Generate",
-              },
+              await tx.userCreditTransaction.create({
+                data: {
+                  userId,
+                  credit: -needCredit,
+                  balance: newAccount.credit,
+                  billingId: billing.id,
+                  type: "Generate",
+                },
+              });
+            }, {
+              // 添加事务配置
+              maxWait: 5000, // 最大等待时间
+              timeout: 10000, // 事务超时时间
+              isolationLevel: 'ReadCommitted', // 隔离级别
             });
-          }, {
-            // 添加事务配置
-            maxWait: 5000, // 最大等待时间
-            timeout: 10000, // 事务超时时间
-            isolationLevel: 'ReadCommitted', // 隔离级别
           });
         } catch (transactionError) {
           console.error('事务执行失败:', transactionError);

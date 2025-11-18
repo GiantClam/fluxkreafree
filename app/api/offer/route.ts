@@ -5,7 +5,7 @@ import { Prisma } from "@prisma/client";
 
 import { z } from "zod";
 
-import { prisma } from "@/db/prisma";
+import { prisma, withRetry } from "@/lib/db-connection";
 import { getUserCredit } from "@/db/queries/account";
 import { Currency, OrderPhase, PaymentChannelType } from "@/db/type";
 import { getErrorMessage } from "@/lib/handle-error";
@@ -122,9 +122,10 @@ export async function POST(req: NextRequest) {
 
     const account = await getUserCredit(userId);
 
-    await prisma.$transaction(async (tx) => {
-      let totalCredit = 0;
-      const claimedOrders = charOrders.map((order) => {
+    await withRetry(async () => {
+      return await prisma.$transaction(async (tx) => {
+        let totalCredit = 0;
+        const claimedOrders = charOrders.map((order) => {
         const credit = order.credit * activityCredit;
         totalCredit = totalCredit + credit;
 
@@ -149,8 +150,8 @@ export async function POST(req: NextRequest) {
           channel: PaymentChannelType.ActivityCredit,
           phase: OrderPhase.Paid,
         },
-      });
-      const newUserCredit = await tx.userCredit.update({
+        });
+        const newUserCredit = await tx.userCredit.update({
         where: {
           id: Number(account.id),
         },
@@ -159,8 +160,8 @@ export async function POST(req: NextRequest) {
             increment: totalCredit,
           },
         },
-      });
-      const transaction = await tx.userCreditTransaction.create({
+        });
+        const transaction = await tx.userCreditTransaction.create({
         data: {
           userId: userId,
           credit: totalCredit,

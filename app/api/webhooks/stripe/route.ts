@@ -3,7 +3,7 @@ import { headers } from "next/headers";
 import Stripe from "stripe";
 
 import { getErrorMessage } from "@/lib/handle-error";
-import { prisma } from "@/db/prisma";
+import { prisma, withRetry } from "@/lib/db-connection";
 import { stripe } from "@/lib/stripe";
 import { env } from "@/env.mjs";
 import { OrderPhase, PaymentChannelType } from "@/db/type";
@@ -116,9 +116,10 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
     }
 
     // 更新订单状态为已支付
-    await prisma.$transaction(async (tx) => {
-      // 更新订单状态
-      await tx.chargeOrder.update({
+    await withRetry(async () => {
+      return await prisma.$transaction(async (tx) => {
+        // 更新订单状态
+        await tx.chargeOrder.update({
         where: { id: order.id },
         data: {
           phase: OrderPhase.Paid,
@@ -126,42 +127,43 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
         },
       });
 
-      // 增加用户积分
-      const userCredit = await tx.userCredit.findFirst({
-        where: { userId: userId },
-      });
-
-      if (userCredit) {
-        await tx.userCredit.update({
-          where: { id: userCredit.id },
-          data: {
-            credit: {
-              increment: order.credit,
-            },
-          },
+        // 增加用户积分
+        const userCredit = await tx.userCredit.findFirst({
+          where: { userId: userId },
         });
-      } else {
-        await tx.userCredit.create({
+
+        if (userCredit) {
+          await tx.userCredit.update({
+            where: { id: userCredit.id },
+            data: {
+              credit: {
+                increment: order.credit,
+              },
+            },
+          });
+        } else {
+          await tx.userCredit.create({
+            data: {
+              userId: userId,
+              credit: order.credit,
+            },
+          });
+        }
+
+        // 记录积分交易
+        const updatedCredit = await tx.userCredit.findFirst({
+          where: { userId: userId },
+        });
+
+        await tx.userCreditTransaction.create({
           data: {
             userId: userId,
             credit: order.credit,
+            balance: updatedCredit?.credit || order.credit,
+            type: "Charge",
+            billingId: order.id,
           },
         });
-      }
-
-      // 记录积分交易
-      const updatedCredit = await tx.userCredit.findFirst({
-        where: { userId: userId },
-      });
-
-      await tx.userCreditTransaction.create({
-        data: {
-          userId: userId,
-          credit: order.credit,
-          balance: updatedCredit?.credit || order.credit,
-          type: "Charge",
-          billingId: order.id,
-        },
       });
     });
 

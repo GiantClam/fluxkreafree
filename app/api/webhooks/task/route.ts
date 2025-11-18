@@ -79,8 +79,9 @@ export async function POST(req: Request) {
       return new Response("", { status: 200 });
     }
 
-    await prisma.$transaction(async (tx) => {
-      const billingData = await tx.userBilling.findFirst({
+    await withRetry(async () => {
+      return await prisma.$transaction(async (tx) => {
+        const billingData = await tx.userBilling.findFirst({
         where: {
           AND: [
             {
@@ -117,15 +118,16 @@ export async function POST(req: Request) {
           type: "Refund",
         },
       });
-      await tx.userCredit.update({
-        where: {
-          id: Number(account.id),
-        },
-        data: {
-          credit: {
-            decrement: billingAmount,
+        await tx.userCredit.update({
+          where: {
+            id: Number(account.id),
           },
-        },
+          data: {
+            credit: {
+              decrement: billingAmount,
+            },
+          },
+        });
       });
     });
     await logsnag.track({

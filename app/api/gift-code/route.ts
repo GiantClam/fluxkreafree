@@ -5,7 +5,7 @@ import { getCurrentUser } from "@/lib/auth-utils";
 import { z } from "zod";
 
 import { ChargeOrderHashids } from "@/db/dto/charge-order.dto";
-import { prisma } from "@/db/prisma";
+import { prisma, withRetry } from "@/lib/db-connection";
 import { getUserCredit } from "@/db/queries/account";
 
 import { Currency, OrderPhase } from "@/db/type";
@@ -63,7 +63,8 @@ export async function POST(req: NextRequest) {
     }
     const account = await getUserCredit(userId);
 
-    await prisma.$transaction(async (tx) => {
+    await withRetry(async () => {
+      return await prisma.$transaction(async (tx) => {
       await tx.chargeOrder.create({
         data: {
           userId,
@@ -78,20 +79,20 @@ export async function POST(req: NextRequest) {
           channel: "GiftCode",
           phase: OrderPhase.Paid,
         },
-      });
+        });
 
-      const newUserCredit = await tx.userCredit.update({
-        where: {
-          id: Number(account.id),
-        },
-        data: {
-          credit: {
-            increment: giftCodeData.creditAmount,
+        const newUserCredit = await tx.userCredit.update({
+          where: {
+            id: Number(account.id),
           },
-        },
-      });
-      const transaction = await tx.userCreditTransaction.create({
-        data: {
+          data: {
+            credit: {
+              increment: giftCodeData.creditAmount,
+            },
+          },
+        });
+        const transaction = await tx.userCreditTransaction.create({
+          data: {
           userId: userId,
           credit: giftCodeData.creditAmount,
           balance: newUserCredit.credit,
