@@ -62,17 +62,19 @@ export async function POST(req: Request) {
     }
     const account = await getUserCredit(fluxData.userId);
 
-    const billingData = await prisma.userBilling.findFirst({
-      where: {
-        AND: [
-          {
-            fluxId: fluxData.id,
-          },
-          {
-            type: BillingType.Refund,
-          },
-        ],
-      },
+    const billingData = await withRetry(async () => {
+      return await prisma.userBilling.findFirst({
+        where: {
+          AND: [
+            {
+              fluxId: fluxData.id,
+            },
+            {
+              type: BillingType.Refund,
+            },
+          ],
+        },
+      });
     });
 
     if (billingData) {

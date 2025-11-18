@@ -199,28 +199,63 @@ class DatabaseConnectionManager {
 
   // 从 Prisma 错误对象中提取错误代码
   private extractErrorCode(error: any): string {
+    // Prisma ConnectorError 结构在 JavaScript 中可能以不同方式表示
     // 尝试从多个可能的位置提取错误代码
-    // Prisma 错误结构可能是：
-    // 1. error.cause?.code (PostgreSQL 原生错误)
-    // 2. error.meta?.code
-    // 3. error.code
-    return String(
-      error?.cause?.code || 
-      error?.meta?.code || 
-      error?.code || 
-      ''
-    );
+    // 1. 尝试从错误消息字符串中提取（最可靠的方法）
+    const errorStr = String(error?.message || JSON.stringify(error) || '');
+    const codeMatch = errorStr.match(/code:\s*"([^"]+)"/) || errorStr.match(/code:\s*(\w+)/);
+    if (codeMatch) {
+      return codeMatch[1];
+    }
+    
+    // 2. 尝试从对象属性中提取
+    if (error?.kind?.QueryError?.PostgresError?.code) {
+      return String(error.kind.QueryError.PostgresError.code);
+    }
+    if (error?.kind?.PostgresError?.code) {
+      return String(error.kind.PostgresError.code);
+    }
+    if (error?.cause?.code) {
+      return String(error.cause.code);
+    }
+    if (error?.meta?.code) {
+      return String(error.meta.code);
+    }
+    if (error?.code) {
+      return String(error.code);
+    }
+    return '';
   }
 
   // 从 Prisma 错误对象中提取错误消息
   private extractErrorMessage(error: any): string {
+    // Prisma ConnectorError 结构在 JavaScript 中可能以不同方式表示
     // 尝试从多个可能的位置提取错误消息
-    return String(
-      error?.cause?.message || 
-      error?.meta?.message || 
-      error?.message || 
-      ''
-    ).toLowerCase();
+    let message = '';
+    
+    // 1. 尝试从对象属性中提取
+    if (error?.kind?.QueryError?.PostgresError?.message) {
+      message = error.kind.QueryError.PostgresError.message;
+    } else if (error?.kind?.PostgresError?.message) {
+      message = error.kind.PostgresError.message;
+    } else if (error?.cause?.message) {
+      message = error.cause.message;
+    } else if (error?.meta?.message) {
+      message = error.meta.message;
+    } else if (error?.message) {
+      message = error.message;
+    }
+    
+    // 2. 如果仍然没有消息，尝试从字符串表示中提取
+    if (!message) {
+      const errorStr = String(error || '');
+      const messageMatch = errorStr.match(/message:\s*"([^"]+)"/) || errorStr.match(/message:\s*([^,}]+)/);
+      if (messageMatch) {
+        message = messageMatch[1];
+      }
+    }
+    
+    return String(message).toLowerCase();
   }
 
   private isRetryableError(error: any): boolean {
