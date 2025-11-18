@@ -7,9 +7,18 @@ echo "🚀 开始Vercel构建..."
 # 初始化并更新 Git submodules
 echo "📦 初始化 Git submodules..."
 if [ -f ".gitmodules" ]; then
-    git submodule update --init --recursive || {
-        echo "⚠️ 警告: Git submodules 初始化失败，继续构建..."
+    # 强制更新到最新的 submodule 提交
+    echo "🔄 更新 submodules 到最新版本..."
+    git submodule update --init --recursive --remote || {
+        echo "⚠️ 使用 --remote 失败，尝试标准更新..."
+        git submodule update --init --recursive || {
+            echo "⚠️ 警告: Git submodules 初始化失败，继续构建..."
+        }
     }
+    
+    # 显示当前 submodule 的提交信息
+    echo "📋 当前 submodule 状态:"
+    git submodule status || true
 else
     echo "ℹ️ 未找到 .gitmodules 文件，跳过 submodule 初始化"
 fi

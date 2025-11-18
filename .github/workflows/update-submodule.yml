@@ -1,0 +1,55 @@
+name: Update Submodule and Trigger Vercel
+
+on:
+  repository_dispatch:
+    types: [submodule-updated]
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - '.gitmodules'
+      - 'modules'
+
+jobs:
+  update-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update submodule reference
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # 更新 submodule 到最新
+          git submodule update --remote --merge
+          
+          # 如果有更改，提交并推送
+          if [ -n "$(git status --porcelain)" ]; then
+            git add modules
+            git commit -m "chore: update submodule to latest version [skip ci]"
+            git push
+            echo "✅ Submodule updated and pushed"
+          else
+            echo "ℹ️ No submodule updates needed"
+          fi
+
+      - name: Trigger Vercel deployment
+        if: success()
+        run: |
+          # 如果配置了 Vercel Deploy Hook，可以在这里触发
+          if [ -n "${{ secrets.VERCEL_DEPLOY_HOOK_URL }}" ]; then
+            echo "🚀 Triggering Vercel deployment..."
+            curl -X POST "${{ secrets.VERCEL_DEPLOY_HOOK_URL }}"
+          else
+            echo "ℹ️ VERCEL_DEPLOY_HOOK_URL not set, skipping direct trigger"
+            echo "ℹ️ Vercel will auto-deploy on git push"
+          fi
+
