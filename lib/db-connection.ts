@@ -104,8 +104,9 @@ class DatabaseConnectionManager {
           },
         },
         log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
-        // 配置连接池以避免 prepared statement 冲突
-        // Prisma 会自动管理连接池，但我们可以通过环境变量配置
+        // 在 serverless 环境中禁用 prepared statements 以避免冲突
+        // 通过连接字符串参数 pgbouncer=true 已经实现了这一点
+        // 但为了更安全，我们还可以通过环境变量配置
       });
       
       const env = process.env.NODE_ENV === 'development' ? '开发' : '生产';
@@ -137,8 +138,8 @@ class DatabaseConnectionManager {
   // 带重试机制的数据库操作
   public async withRetry<T>(
     operation: () => Promise<T>,
-    maxRetries: number = 3,
-    delay: number = 1000
+    maxRetries: number = 5,
+    delay: number = 500
   ): Promise<T> {
     let lastError: any;
     
@@ -150,21 +151,40 @@ class DatabaseConnectionManager {
         
         // 检查是否是预处理语句错误或其他连接相关错误
         if (this.isRetryableError(error)) {
-          const errorCode = error?.code || '';
-          const errorMessage = error?.message || '';
+          // 从多个可能的位置提取错误代码和消息
+          const errorCode = this.extractErrorCode(error);
+          const errorMessage = this.extractErrorMessage(error);
           
-          // 对于 prepared statement 错误，使用更长的等待时间
+          // 对于 prepared statement 错误，使用更长的等待时间和更激进的重试策略
           const isPreparedStatementError = errorCode === '42P05' || errorMessage.includes('prepared statement');
           
           if (attempt < maxRetries) {
             console.warn(`数据库操作重试 ${attempt}/${maxRetries}: ${errorMessage.substring(0, 100)}`);
             
-            // 对于 prepared statement 错误，使用更长的等待时间让连接池清理
+            // 对于 prepared statement 错误，使用指数退避，但等待时间更长
+            // 第一次重试等待 1 秒，第二次 2 秒，第三次 4 秒，以此类推
             const waitTime = isPreparedStatementError 
-              ? delay * Math.pow(2, attempt) * 2  // 更长的等待时间
-              : delay * Math.pow(2, attempt - 1);
+              ? delay * Math.pow(2, attempt) * 2  // 1s, 2s, 4s, 8s, 16s
+              : delay * Math.pow(2, attempt - 1);   // 0.5s, 1s, 2s, 4s, 8s
             
+            // 在 serverless 环境中，prepared statement 错误可能需要更长的清理时间
             await new Promise(resolve => setTimeout(resolve, waitTime));
+            
+            // 如果是 prepared statement 错误且是最后一次重试前，尝试断开并重新连接
+            if (isPreparedStatementError && attempt === maxRetries - 1) {
+              try {
+                console.log('尝试断开并重新连接数据库以清理 prepared statements...');
+                await this.prisma.$disconnect();
+                // 等待一小段时间让连接完全关闭
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                // 重新连接（Prisma 会自动重新连接）
+                await this.prisma.$connect();
+                console.log('数据库重新连接成功');
+              } catch (reconnectError) {
+                console.warn('数据库重新连接失败，继续重试:', reconnectError);
+              }
+            }
+            
             continue;
           }
         }
@@ -177,20 +197,60 @@ class DatabaseConnectionManager {
     throw lastError;
   }
 
+  // 从 Prisma 错误对象中提取错误代码
+  private extractErrorCode(error: any): string {
+    // 尝试从多个可能的位置提取错误代码
+    // Prisma 错误结构可能是：
+    // 1. error.cause?.code (PostgreSQL 原生错误)
+    // 2. error.meta?.code
+    // 3. error.code
+    return String(
+      error?.cause?.code || 
+      error?.meta?.code || 
+      error?.code || 
+      ''
+    );
+  }
+
+  // 从 Prisma 错误对象中提取错误消息
+  private extractErrorMessage(error: any): string {
+    // 尝试从多个可能的位置提取错误消息
+    return String(
+      error?.cause?.message || 
+      error?.meta?.message || 
+      error?.message || 
+      ''
+    ).toLowerCase();
+  }
+
   private isRetryableError(error: any): boolean {
     const retryableErrors = [
       'prepared statement',
       '42P05', // PostgreSQL prepared statement already exists
+      '08P01', // Protocol violation (bind message supplies wrong parameters)
       'ECONNRESET',
       'ECONNREFUSED',
       'ETIMEDOUT',
       'ENOTFOUND',
+      'Connection',
+      'timeout',
     ];
 
-    return retryableErrors.some(pattern => 
-      error?.message?.includes(pattern) || 
-      error?.code === pattern
-    );
+    // 使用辅助方法提取错误代码和消息
+    const errorCode = this.extractErrorCode(error);
+    const errorMessage = this.extractErrorMessage(error);
+    
+    // 检查错误代码
+    if (retryableErrors.includes(errorCode)) {
+      return true;
+    }
+    
+    // 检查错误消息
+    if (retryableErrors.some(pattern => errorMessage.includes(pattern.toLowerCase()))) {
+      return true;
+    }
+
+    return false;
   }
 
   // 健康检查
