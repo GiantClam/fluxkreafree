@@ -1,7 +1,7 @@
 import { NextAuthOptions } from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import GoogleProvider from "next-auth/providers/google";
-import { prisma } from "@/db/prisma";
+import { prismaWithRetry } from "@/lib/db-connection";
 import { env } from "@/env.mjs";
 import { shouldSkipDatabaseQuery } from "@/lib/build-check";
 
@@ -24,8 +24,8 @@ if (!(enableDevUser && isDevelopment) && env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIE
 
 export const authOptions: NextAuthOptions = {
   // 只在数据库URL存在且不在构建时且prisma客户端可用时使用Prisma适配器
-  ...(env.DATABASE_URL && !shouldSkipDatabaseQuery() && prisma && typeof prisma === 'object' && Object.keys(prisma).length > 0 && {
-    adapter: PrismaAdapter(prisma) as any,
+  ...(env.DATABASE_URL && !shouldSkipDatabaseQuery() && prismaWithRetry && typeof prismaWithRetry === 'object' && Object.keys(prismaWithRetry).length > 0 && {
+    adapter: PrismaAdapter(prismaWithRetry) as any,
   }),
   providers,
   debug: process.env.NODE_ENV === "development",

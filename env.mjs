@@ -89,8 +89,13 @@ export const env = createEnv({
     NEXT_PUBLIC_GA_ID: z.string().optional(),
   },
   runtimeEnv: {
-    DATABASE_URL: process.env.DATABASE_URL || "file:./dev.db",
-    DIRECT_URL: process.env.DIRECT_URL,
+    // 支持多种环境变量名称：DATABASE_URL > POSTGRES_PRISMA_URL > POSTGRES_URL
+    DATABASE_URL: process.env.DATABASE_URL || 
+                   process.env.POSTGRES_PRISMA_URL || 
+                   process.env.POSTGRES_URL || 
+                   "file:./dev.db",
+    // DIRECT_URL 用于 Prisma 迁移，支持 DIRECT_URL > POSTGRES_URL_NON_POOLING
+    DIRECT_URL: process.env.DIRECT_URL || process.env.POSTGRES_URL_NON_POOLING,
     HASHID_SALT: process.env.HASHID_SALT || "your-hashid-salt-here",
     LOG_SNAG_TOKEN: process.env.LOG_SNAG_TOKEN || "log-snag-token-placeholder",
     RESEND_API_KEY: process.env.RESEND_API_KEY || "re_placeholder",

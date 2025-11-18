@@ -17,25 +17,29 @@ class DatabaseConnectionManager {
     // 在开发和生产模式下都使用全局缓存，避免创建多个 Prisma 客户端实例
     // 这在 Vercel 等 serverless 环境中特别重要，因为每次函数调用可能创建新实例
     if (!global.__prisma__) {
-      // 获取数据库 URL，如果是 PostgreSQL，添加参数来避免 prepared statement 冲突
-      let databaseUrl = process.env.DATABASE_URL || '';
+      // 获取数据库 URL，支持多种环境变量名称
+      // 优先级：DATABASE_URL > POSTGRES_PRISMA_URL > POSTGRES_URL
+      let databaseUrl = process.env.DATABASE_URL || 
+                        process.env.POSTGRES_PRISMA_URL || 
+                        process.env.POSTGRES_URL || 
+                        '';
       
       // 如果是 PostgreSQL 连接，优化配置以支持 Supabase 和 serverless 环境
       if (databaseUrl.startsWith('postgresql://') || databaseUrl.startsWith('postgres://')) {
+        // 在 Vercel serverless 环境中，Supabase 必须使用连接池模式
+        // 这是解决 prepared statement 冲突的关键
+        // 注意：Vercel 环境变量可能在不同阶段有不同的值，所以同时检查多个条件
+        // 在 Vercel 中，VERCEL 环境变量总是存在（值为 "1"）
+        const isServerless = !!process.env.VERCEL || 
+                             process.env.NODE_ENV === 'production' ||
+                             !!process.env.VERCEL_ENV;
+        
         try {
           const urlObj = new URL(databaseUrl);
           const hostname = urlObj.hostname.toLowerCase();
           
           // 检测 Supabase 连接
           const isSupabase = hostname.includes('supabase.co') || hostname.includes('supabase.com');
-          
-          // 在 Vercel serverless 环境中，Supabase 必须使用连接池模式
-          // 这是解决 prepared statement 冲突的关键
-          // 注意：Vercel 环境变量可能在不同阶段有不同的值，所以同时检查多个条件
-          // 在 Vercel 中，VERCEL 环境变量总是存在（值为 "1"）
-          const isServerless = !!process.env.VERCEL || 
-                               process.env.NODE_ENV === 'production' ||
-                               !!process.env.VERCEL_ENV;
           
           if (isServerless && isSupabase) {
             const hasPooler = hostname.includes('pooler');
@@ -93,13 +97,22 @@ class DatabaseConnectionManager {
                                  hostname.includes('pooler');
             if (!hasPgBouncer) {
               console.log('⚠️ 在 serverless 环境中，建议使用连接池（PgBouncer）以避免 prepared statement 冲突');
+              // 即使不是 Supabase，在 serverless 环境中也强制添加 pgbouncer=true
+              urlObj.searchParams.set('pgbouncer', 'true');
+              databaseUrl = urlObj.toString();
+              console.log('✅ 已为非 Supabase 连接添加 pgbouncer=true 参数');
             }
           }
           
           databaseUrl = urlObj.toString();
         } catch (e) {
-          // URL 解析失败，使用原始 URL
-          console.warn('无法解析 DATABASE_URL，使用原始 URL');
+          // URL 解析失败，尝试手动添加 pgbouncer 参数
+          console.warn('无法解析 DATABASE_URL，尝试手动添加 pgbouncer 参数');
+          if (isServerless && !databaseUrl.includes('pgbouncer=true')) {
+            const separator = databaseUrl.includes('?') ? '&' : '?';
+            databaseUrl = `${databaseUrl}${separator}pgbouncer=true`;
+            console.log('✅ 已手动添加 pgbouncer=true 参数');
+          }
         }
       }
       
@@ -146,6 +159,59 @@ class DatabaseConnectionManager {
 
   public getClient(): PrismaClient {
     return this.prisma;
+  }
+
+  // 获取带重试包装的 Prisma Client（用于 NextAuth 等需要自动重试的场景）
+  public getClientWithRetry(): PrismaClient {
+    return this.createPrismaProxy(this.prisma);
+  }
+
+  // 创建 Prisma Client 代理，自动为所有查询方法添加重试逻辑
+  private createPrismaProxy(prisma: PrismaClient): PrismaClient {
+    const handler: ProxyHandler<PrismaClient> = {
+      get(target, prop, receiver) {
+        const original = Reflect.get(target, prop, receiver);
+        
+        // 如果是模型（如 account, user, session 等），包装其方法
+        if (prop && typeof prop === 'string' && !prop.startsWith('$') && !prop.startsWith('_')) {
+          // 检查是否是模型对象（有 findUnique, findFirst, create 等方法）
+          if (original && typeof original === 'object' && 'findUnique' in original) {
+            return new Proxy(original, {
+              get(modelTarget, modelProp, modelReceiver) {
+                const modelMethod = Reflect.get(modelTarget, modelProp, modelReceiver);
+                
+                // 包装所有异步查询方法
+                if (typeof modelMethod === 'function' && 
+                    ['findUnique', 'findFirst', 'findMany', 'create', 'update', 'upsert', 'delete', 'deleteMany', 'updateMany', 'count', 'aggregate'].includes(modelProp as string)) {
+                  return async (...args: any[]) => {
+                    const dbManager = DatabaseConnectionManager.getInstance();
+                    return dbManager.withRetry(async () => {
+                      return await modelMethod.apply(modelTarget, args);
+                    });
+                  };
+                }
+                
+                return modelMethod;
+              }
+            });
+          }
+        }
+        
+        // 对于其他属性（如 $transaction, $queryRaw 等），也进行包装
+        if (typeof original === 'function' && ['$transaction', '$queryRaw', '$executeRaw'].includes(prop as string)) {
+          return async (...args: any[]) => {
+            const dbManager = DatabaseConnectionManager.getInstance();
+            return dbManager.withRetry(async () => {
+              return await original.apply(target, args);
+            });
+          };
+        }
+        
+        return original;
+      }
+    };
+    
+    return new Proxy(prisma, handler) as PrismaClient;
   }
 
   // 带重试机制的数据库操作
@@ -339,6 +405,9 @@ class DatabaseConnectionManager {
 // 导出单例实例
 export const dbManager = DatabaseConnectionManager.getInstance();
 export const prisma = dbManager.getClient();
+
+// 导出带重试包装的 Prisma Client（用于 NextAuth 等需要自动重试的场景）
+export const prismaWithRetry = dbManager.getClientWithRetry();
 
 // 导出便捷的重试函数
 export const withRetry = dbManager.withRetry.bind(dbManager); 
