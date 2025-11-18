@@ -3,12 +3,9 @@ import type { NextRequest } from "next/server";
 import createMiddleware from "next-intl/middleware";
 import { withAuth } from "next-auth/middleware";
 
-import { kvKeys } from "@/config/kv";
 import { env } from "@/env.mjs";
 import countries from "@/lib/countries.json";
 import { getIP } from "@/lib/ip";
-import { redis } from "@/lib/redis";
-import { isCloudflareEnvironment } from "@/lib/cloudflare-bindings";
 
 import { defaultLocale, localePrefix, locales } from "./config";
 
@@ -106,32 +103,7 @@ export default withAuth(
       // }
     }
 
-    // 检测并记录访问者信息（支持Cloudflare和传统环境）
-    if (geo && !isApi && env.VERCEL_ENV !== "development") {
-      console.log("geo-->", geo);
-      const country = geo.country;
-      const city = geo.city;
-
-      const countryInfo = countries.find((x) => x.cca2 === country);
-      if (countryInfo) {
-        const flag = countryInfo.flag;
-        try {
-          // 判断是否在Cloudflare环境中运行
-          if (isCloudflareEnvironment() && (req as any).cf && (req as any).cf.env?.KV) {
-            // 在Cloudflare Worker环境中使用绑定
-            console.log('🌐 Middleware: 使用Cloudflare KV绑定存储访问者信息');
-            const kv = (req as any).cf.env.KV;
-            await kv.put(kvKeys.currentVisitor, JSON.stringify({ country, city, flag }));
-          } else {
-            // 在传统环境中使用redis客户端
-            console.log('💻 Middleware: 使用Redis存储访问者信息');
-            await redis.set(kvKeys.currentVisitor, { country, city, flag });
-          }
-        } catch (error) {
-          console.error('⚠️ 存储访问者信息失败:', error);
-        }
-      }
-    }
+    // 不再缓存访问者信息（项目只部署在 Vercel，不需要此功能）
     
     if (isApi) {
       return;

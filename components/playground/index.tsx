@@ -8,6 +8,7 @@ import copy from "copy-to-clipboard";
 import { debounce } from "lodash-es";
 import { Copy } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { signIn } from "next-auth/react";
 import { toast } from "sonner";
 
 import BlurFade from "@/components/magicui/blur-fade";
@@ -217,6 +218,17 @@ export default function Playground({
           queryClient.invalidateQueries({ queryKey: ["queryUserPoints"] });
         } else {
           let error = res.error;
+          // 如果用户不存在（需要重新登录），引导用户登录
+          if (res.code === 1000401 || res.error?.includes("sign in") || res.error?.includes("User not found")) {
+            toast.error(t("error.pleaseSignIn") || "Please sign in to continue");
+            // 触发登录流程
+            signIn("google", {
+              callbackUrl: window.location.href,
+              redirect: true,
+            });
+            return;
+          }
+          // 如果积分不足，打开套餐选择框
           if (res.code === 1000402) {
             setPricingCardOpen(true);
             error = t("error.insufficientCredits") ?? res.error;
@@ -244,6 +256,17 @@ export default function Playground({
           queryClient.invalidateQueries({ queryKey: ["queryUserPoints"] });
         } else {
           let error = res.error;
+          // 如果用户不存在（需要重新登录），引导用户登录
+          if (res.code === 1000401 || res.error?.includes("sign in") || res.error?.includes("User not found")) {
+            toast.error(t("error.pleaseSignIn") || "Please sign in to continue");
+            // 触发登录流程
+            signIn("google", {
+              callbackUrl: window.location.href,
+              redirect: true,
+            });
+            return;
+          }
+          // 如果积分不足，打开套餐选择框
           if (res.code === 1000402) {
             setPricingCardOpen(true);
             error = t("error.insufficientCredits") ?? res.error;
@@ -251,8 +274,21 @@ export default function Playground({
           toast.error(error);
         }
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log("error", error);
+      // 检查是否是 401 错误或用户需要登录
+      if (error?.message?.includes("401") || 
+          error?.message?.includes("Not authenticated") ||
+          error?.message?.includes("sign in") ||
+          error?.message?.includes("User not found")) {
+        toast.error(t("error.pleaseSignIn") || "Please sign in to continue");
+        // 触发登录流程
+        signIn("google", {
+          callbackUrl: window.location.href,
+          redirect: true,
+        });
+        return;
+      }
       toast.error("An error occurred");
     } finally {
       setLoading(false);

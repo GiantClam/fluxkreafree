@@ -77,8 +77,22 @@ export async function getUserCredit(userId: string) {
     });
 
     if (!accountInfo?.id) {
-      // 如果用户不存在，创建新用户记录
+      // 如果 userCredit 不存在，先确保 User 记录存在
+      // 然后创建 userCredit 记录
       accountInfo = await withRetry(async () => {
+        // 先检查 User 是否存在
+        const user = await prisma.user.findUnique({
+          where: { id: userId },
+        });
+        
+        // 如果 User 不存在，抛出错误，让调用方处理（通常是让用户重新登录）
+        if (!user) {
+          const error = new Error(`User ${userId} does not exist in database. Please sign in again.`);
+          (error as any).code = 'USER_NOT_FOUND';
+          throw error;
+        }
+        
+        // 现在可以安全地创建 userCredit 记录
         return await prisma.userCredit.create({
           data: {
             userId: userId,

@@ -14,10 +14,10 @@ export const env = createEnv({
     VERCEL_ENV: z
       .enum(["development", "preview", "production"])
       .default("development"),
-    // Cloudflare KV Configuration
-    CLOUDFLARE_KV_NAMESPACE_ID: z.string().min(1).default("placeholder"),
-    CLOUDFLARE_KV_ACCOUNT_ID: z.string().min(1).default("placeholder"),
-    CLOUDFLARE_KV_API_TOKEN: z.string().min(1).default("placeholder"),
+    // Cloudflare KV Configuration (可选，仅用于速率限制)
+    CLOUDFLARE_KV_NAMESPACE_ID: z.string().optional(),
+    CLOUDFLARE_KV_ACCOUNT_ID: z.string().optional(),
+    CLOUDFLARE_KV_API_TOKEN: z.string().optional(),
     LINK_PREVIEW_API_BASE_URL: z.string().optional(),
     SITE_NOTIFICATION_EMAIL_TO: z.string().optional(),
 
@@ -100,7 +100,7 @@ export const env = createEnv({
     LOG_SNAG_TOKEN: process.env.LOG_SNAG_TOKEN || "log-snag-token-placeholder",
     RESEND_API_KEY: process.env.RESEND_API_KEY || "re_placeholder",
     VERCEL_ENV: process.env.VERCEL_ENV,
-    // Cloudflare KV Configuration
+    // Cloudflare KV Configuration (可选，仅用于速率限制)
     CLOUDFLARE_KV_NAMESPACE_ID: process.env.CLOUDFLARE_KV_NAMESPACE_ID,
     CLOUDFLARE_KV_ACCOUNT_ID: process.env.CLOUDFLARE_KV_ACCOUNT_ID,
     CLOUDFLARE_KV_API_TOKEN: process.env.CLOUDFLARE_KV_API_TOKEN,

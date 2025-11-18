@@ -1,7 +1,8 @@
 import { env } from "@/env.mjs";
 
 // 检测是否在构建时（静态生成）
-const isBuildTime = process.env.NODE_ENV === 'production' && process.env.VERCEL === undefined && process.env.CF_PAGES === undefined;
+// 项目只部署在 Vercel，所以只检查 VERCEL 环境变量
+const isBuildTime = process.env.NODE_ENV === 'production' && process.env.VERCEL === undefined;
 
 interface KVClient {
   get<T = any>(key: string): Promise<T | null>;
@@ -357,53 +358,29 @@ const createKVClient = (kvBinding?: any): KVClient => {
     return new MockKVClient();
   }
 
-  // 在 Cloudflare Workers/Pages 环境中，优先使用 Workers 绑定
+  // 项目只部署在 Vercel，不支持 Cloudflare Workers 绑定
+  // 如果传入了绑定（不应该发生），忽略它并使用 API 方式
   if (kvBinding) {
-    console.log('🌐 使用 Cloudflare Workers KV 绑定');
-    return new WorkersKVClient(kvBinding);
+    console.log('⚠️ 检测到 KV 绑定，但项目只部署在 Vercel，将使用 API 方式');
   }
 
-  // 在本地开发环境中，检查环境变量
+  // 项目只部署在 Vercel，只使用 API 调用方式
   const namespaceId = env.CLOUDFLARE_KV_NAMESPACE_ID;
   const accountId = env.CLOUDFLARE_KV_ACCOUNT_ID;
   const apiToken = env.CLOUDFLARE_KV_API_TOKEN;
   
-  if (!namespaceId || !accountId || !apiToken || 
-      namespaceId.includes('placeholder') || 
-      accountId.includes('placeholder') || 
-      apiToken.includes('placeholder')) {
-    // 在构建过程中，如果缺少配置，使用模拟客户端而不是抛出错误
-    if (process.env.NODE_ENV === 'production') {
-      console.log('🏗️ 生产构建时使用模拟 KV 客户端（配置不完整）');
-      return new MockKVClient();
-    }
-    
-    throw new Error(`
-      🔧 本地开发环境 Cloudflare KV 配置不完整！
-      
-      请在 .env.local 中设置以下环境变量：
-      - CLOUDFLARE_KV_NAMESPACE_ID=${namespaceId || '你的KV命名空间ID'}
-      - CLOUDFLARE_KV_ACCOUNT_ID=${accountId || '你的账户ID'}  
-      - CLOUDFLARE_KV_API_TOKEN=${apiToken || '你的API_Token'}
-      
-      💡 获取这些值：
-      1. 运行: wrangler kv:namespace create "next-money-kv"
-      2. 复制返回的 Namespace ID
-      3. 运行: wrangler whoami 查看 Account ID
-      4. 在 Cloudflare Dashboard 创建 API Token
-      
-      📝 或者复制 env.template 为 .env.local 并按照 CLOUDFLARE_QUICK_SETUP.md 填写
-      
-      🚀 部署到 Cloudflare 时将自动使用 wrangler.toml 中的绑定配置
-    `);
+  // 如果 KV 未配置（可选），使用模拟客户端（速率限制将失效，但不影响其他功能）
+  if (!namespaceId || !accountId || !apiToken) {
+    console.log('⚠️ Cloudflare KV 未配置，使用模拟客户端（速率限制将失效）');
+    return new MockKVClient();
   }
   
-  console.log('💻 使用本地开发模式 - Cloudflare API 调用');
+  console.log('💻 使用 Cloudflare KV API（速率限制已启用）');
   return new CloudflareKVClient(namespaceId, accountId, apiToken);
 };
 
 // 导出客户端实例
-// 在 Workers 环境中可以传入 env.KV，在本地环境中自动使用环境变量
+// 项目只部署在 Vercel，使用 API 方式调用 Cloudflare KV（仅用于速率限制）
 export const kv = createKVClient();
 
 // 用于 Workers 环境的辅助函数

@@ -121,7 +121,22 @@ export async function POST(req: NextRequest, { params }: Params) {
       }
     }
 
-    const account = await getUserCredit(userId);
+    let account;
+    try {
+      account = await getUserCredit(userId);
+    } catch (error: any) {
+      // 如果用户不存在，返回 401，让用户重新登录
+      if (error?.code === 'USER_NOT_FOUND' || error?.message?.includes('does not exist')) {
+        console.log(`⚠️ User ${userId} 不存在，需要重新登录`);
+        return NextResponse.json(
+          { error: "User not found. Please sign in again.", code: 1000401 },
+          { status: 401 },
+        );
+      }
+      // 其他错误，重新抛出
+      throw error;
+    }
+    
     const needCredit = Credits[modelName];
     if (
       (!account.credit && modelName !== model.freeSchnell) ||

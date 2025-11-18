@@ -142,6 +142,24 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
             },
           });
         } else {
+          // 在创建 userCredit 之前，确保 User 记录存在
+          const user = await tx.user.findUnique({
+            where: { id: userId },
+          });
+          
+          if (!user) {
+            console.log(`⚠️ User ${userId} 不存在，正在创建...`);
+            await tx.user.create({
+              data: {
+                id: userId,
+                email: order.userInfo ? JSON.parse(order.userInfo).email : null,
+                name: order.userInfo ? JSON.parse(order.userInfo).fullName : null,
+                isAdmin: false,
+              },
+            });
+            console.log(`✅ 已创建 User 记录: ${userId}`);
+          }
+          
           await tx.userCredit.create({
             data: {
               userId: userId,

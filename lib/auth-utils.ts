@@ -133,8 +133,32 @@ export async function getCurrentUser() {
     const session = await getServerSession(authOptions);
     if (!session?.user) return null;
     
+    const userId = session.user.id!;
+    
+    // 检查 User 记录是否在数据库中存在
+    // 如果不存在，说明用户还没有完成完整的登录流程，应该让用户重新登录
+    try {
+      const { prisma } = await import("@/lib/db-connection");
+      const user = await withRetry(async () => {
+        return await prisma.user.findUnique({
+          where: { id: userId },
+        });
+      });
+      
+      // 如果 User 不存在，返回 null，让用户重新登录
+      // 这样可以确保用户完成完整的 NextAuth 登录流程，创建 User 记录
+      if (!user) {
+        console.log(`⚠️ User ${userId} 在数据库中不存在，需要用户重新登录`);
+        return null;
+      }
+    } catch (error) {
+      console.error("❌ 检查 User 记录时出错:", error);
+      // 如果检查失败，返回 null，让用户重新登录
+      return null;
+    }
+    
     return {
-      id: session.user.id!,
+      id: userId,
       email: session.user.email,
       name: session.user.name,
       image: session.user.image,
