@@ -4,10 +4,12 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-  // directUrl 是可选的，用于迁移时使用非连接池连接
-  // 如果未设置，Prisma 会使用 url 进行迁移
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  // directUrl 用于数据库迁移，使用直接连接（非连接池）
+  // 在 Supabase 中，应该使用直接连接 URL（端口 5432）进行迁移
+  // 在 Vercel 等 serverless 环境中，应用使用连接池 URL（端口 6543 或 pooler）
+  directUrl = env("DIRECT_URL")
 }
 
 // NextAuth.js required tables

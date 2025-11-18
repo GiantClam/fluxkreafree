@@ -6,6 +6,9 @@ export const env = createEnv({
     // This is optional because it's only used in development.
     // See https://next-auth.js.org/deployment.
     DATABASE_URL: z.string().min(1).default("file:./dev.db"),
+    // DIRECT_URL 用于 Prisma 迁移，使用直接连接（非连接池）
+    // 在 Supabase 中，使用端口 5432 的直接连接 URL
+    DIRECT_URL: z.string().min(1).optional(),
     RESEND_API_KEY: z.string().min(1).default("re_placeholder"),
     HASHID_SALT: z.string().min(1).default("your-hashid-salt-here"),
     VERCEL_ENV: z
@@ -87,6 +90,7 @@ export const env = createEnv({
   },
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL || "file:./dev.db",
+    DIRECT_URL: process.env.DIRECT_URL,
     HASHID_SALT: process.env.HASHID_SALT || "your-hashid-salt-here",
     LOG_SNAG_TOKEN: process.env.LOG_SNAG_TOKEN || "log-snag-token-placeholder",
     RESEND_API_KEY: process.env.RESEND_API_KEY || "re_placeholder",
