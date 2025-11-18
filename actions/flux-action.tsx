@@ -75,8 +75,9 @@ export async function getFluxDataByPage(params: {
         page,
         pageSize,
         data: fluxData.map(
-          ({ id, executeEndTime, executeStartTime, loraUrl, ...rest }) => ({
+          ({ id, executeEndTime, executeStartTime, loraUrl, aspectRatio, ...rest }) => ({
             ...rest,
+            aspectRatio: aspectRatio || "1:1", // 确保 aspectRatio 不为 null
             executeTime:
               executeEndTime && executeStartTime
                 ? Number(`${executeEndTime - executeStartTime}`)

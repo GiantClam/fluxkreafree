@@ -150,90 +150,45 @@ const FormUpload = (props: FormUploadProps) => {
             completedUrl: res.data.completedUrl,
           };
         } catch (error: any) {
-          // 如果直接上传失败（可能是 CORS 问题），先验证文件是否实际上传成功
+          // 如果直接上传失败（可能是 CORS 问题），立即使用服务器端代理上传
+          // CORS 错误通常意味着预检请求失败，文件不会实际上传成功
           const isCorsError = error?.message?.includes('CORS') || 
-                             error?.message?.includes('Failed to fetch') ||
-                             error?.name === 'TypeError';
+                             error?.message?.includes('cors') ||
+                             error?.message?.includes('Access-Control-Allow-Origin') ||
+                             (error?.name === 'TypeError' && error?.message?.includes('Failed to fetch'));
           
           if (isCorsError) {
-            // CORS 错误时，文件可能实际上传成功了，先验证文件是否存在
-            try {
-              const verifyResponse = await fetch(res.data.completedUrl, {
-                method: "HEAD",
-              });
-              
-              if (verifyResponse.ok) {
-                // 文件存在，说明上传成功了（只是 CORS 预检失败）
-                console.log("File uploaded successfully despite CORS error, using direct URL");
-                uploadResult = {
-                  url: res.data.url,
-                  key: res.data.key,
-                  completedUrl: res.data.completedUrl,
-                };
-              } else {
-                // 文件不存在，使用服务器端代理上传
-                throw new Error("File not found, will use server-side upload");
-              }
-            } catch (verifyError) {
-              // 验证失败，使用服务器端代理上传
-              console.warn("Direct upload failed and file verification failed, falling back to server-side upload:", error);
-              
-              const formData = new FormData();
-              formData.append("file", file);
-              formData.append("key", key);
-
-              const proxyResponse = await fetch("/api/s3/upload", {
-                method: "POST",
-                body: formData,
-                credentials: "include",
-              });
-
-              if (!proxyResponse.ok) {
-                const errorText = await proxyResponse.text();
-                throw new Error(`Server-side upload failed: ${errorText}`);
-              }
-
-              const proxyResult = await proxyResponse.json();
-              if (proxyResult.error) {
-                throw new Error(proxyResult.error);
-              }
-
-              uploadResult = {
-                url: proxyResult.data.url,
-                key: proxyResult.data.key,
-                completedUrl: proxyResult.data.completedUrl,
-              };
-            }
+            console.log("CORS error detected, using server-side proxy upload");
           } else {
-            // 非 CORS 错误，直接使用服务器端代理上传
             console.warn("Direct upload failed, falling back to server-side upload:", error);
-            
-            const formData = new FormData();
-            formData.append("file", file);
-            formData.append("key", key);
-
-            const proxyResponse = await fetch("/api/s3/upload", {
-              method: "POST",
-              body: formData,
-              credentials: "include",
-            });
-
-            if (!proxyResponse.ok) {
-              const errorText = await proxyResponse.text();
-              throw new Error(`Server-side upload failed: ${errorText}`);
-            }
-
-            const proxyResult = await proxyResponse.json();
-            if (proxyResult.error) {
-              throw new Error(proxyResult.error);
-            }
-
-            uploadResult = {
-              url: proxyResult.data.url,
-              key: proxyResult.data.key,
-              completedUrl: proxyResult.data.completedUrl,
-            };
           }
+          
+          // 统一使用服务器端代理上传作为回退方案
+          const formData = new FormData();
+          formData.append("file", file);
+          formData.append("key", key);
+
+          const proxyResponse = await fetch("/api/s3/upload", {
+            method: "POST",
+            body: formData,
+            credentials: "include",
+          });
+
+          if (!proxyResponse.ok) {
+            const errorText = await proxyResponse.text();
+            throw new Error(`Server-side upload failed: ${errorText}`);
+          }
+
+          const proxyResult = await proxyResponse.json();
+          if (proxyResult.error) {
+            throw new Error(proxyResult.error);
+          }
+
+          uploadResult = {
+            url: proxyResult.data.url,
+            key: proxyResult.data.key,
+            completedUrl: proxyResult.data.completedUrl,
+          };
         }
 
         const newValue = {
