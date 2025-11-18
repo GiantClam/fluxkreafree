@@ -102,7 +102,7 @@ const nextConfig = {
     removeConsole: process.env.NODE_ENV === 'production',
   },
 
-  webpack: (config, { webpack }) => {
+  webpack: (config, { webpack, isServer }) => {
     // config.plugins.push(
     //   new webpack.IgnorePlugin({
     //     resourceRegExp: /^pg-native$|^cloudflare:sockets$|^onnxruntime-node$/,
@@ -120,14 +120,35 @@ const nextConfig = {
       ...config.resolve,
       alias: {
         ...config.resolve?.alias,
-        // 确保 modules 目录中的导入能够解析到主项目的依赖
       },
-      // 确保解析 modules 目录时也查找主项目的 node_modules
+      // 确保解析时优先查找主项目的 node_modules
       modules: [
-        ...(config.resolve?.modules || []),
-        'node_modules',
+        'node_modules', // 优先查找主项目的 node_modules
+        ...(config.resolve?.modules || []).filter(m => m !== 'node_modules'),
       ],
+      // 防止从 modules 子目录的 package.json 解析依赖
+      symlinks: false,
     };
+
+    // 忽略对 aws-sdk 的解析请求（因为代码已经使用 @aws-sdk/client-s3）
+    config.plugins = config.plugins || [];
+    config.plugins.push(
+      new webpack.IgnorePlugin({
+        resourceRegExp: /^aws-sdk$/,
+        contextRegExp: /modules/,
+      })
+    );
+
+    // 如果 webpack 尝试解析 aws-sdk，重定向到 @aws-sdk/client-s3
+    config.plugins.push(
+      new webpack.NormalModuleReplacementPlugin(
+        /^aws-sdk$/,
+        (resource) => {
+          // 重定向到 AWS SDK v3
+          resource.request = '@aws-sdk/client-s3';
+        }
+      )
+    );
 
     config.experiments = {
       ...config.experiments,
