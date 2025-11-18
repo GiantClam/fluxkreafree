@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 import { z } from "zod";
 
-import { prisma } from "@/db/prisma";
+import { prisma, withRetry } from "@/lib/db-connection";
 import { getUserCredit } from "@/db/queries/account";
 import { BillingType, FluxTaskStatus } from "@/db/type";
 import { env } from "@/env.mjs";
@@ -41,10 +41,12 @@ export async function POST(req: Request) {
     const { replicateId, taskStatus } = body;
     // Do something with the payload
     // For this guide, you simply log the payload to the console
-    const fluxData = await prisma.fluxData.findFirst({
-      where: {
-        replicateId,
-      },
+    const fluxData = await withRetry(async () => {
+      return await prisma.fluxData.findFirst({
+        where: {
+          replicateId,
+        },
+      });
     });
     if (!fluxData || !fluxData.id) {
       return NextResponse.json(

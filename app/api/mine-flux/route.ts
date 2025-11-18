@@ -9,7 +9,7 @@ import { z } from "zod";
 
 import { model } from "@/config/constants";
 import { FluxHashids } from "@/db/dto/flux.dto";
-import { prisma } from "@/db/prisma";
+import { prisma, withRetry } from "@/lib/db-connection";
 import { FluxTaskStatus } from "@/db/type";
 import { getErrorMessage } from "@/lib/handle-error";
 
@@ -49,13 +49,17 @@ export async function GET(req: NextRequest) {
     }
 
     const [fluxData, total] = await Promise.all([
-      prisma.fluxData.findMany({
-        where: whereConditions,
-        take: pageSize,
-        skip: offset,
-        orderBy: { createdAt: "desc" },
+      withRetry(async () => {
+        return await prisma.fluxData.findMany({
+          where: whereConditions,
+          take: pageSize,
+          skip: offset,
+          orderBy: { createdAt: "desc" },
+        });
       }),
-      prisma.fluxData.count({ where: whereConditions }),
+      withRetry(async () => {
+        return await prisma.fluxData.count({ where: whereConditions });
+      }),
     ]);
 
     return NextResponse.json({

@@ -182,7 +182,13 @@ export default function Playground({
     const queryData = queryClient.getQueryData([
       "queryUserPoints",
     ]) as UserCreditSelectDto;
-    if (queryData?.credit <= 0) {
+    
+    // 检查积分是否足够支付所选模型的费用
+    const needCredit = Credits[selectedModel.id] || 0;
+    const currentCredit = queryData?.credit ?? 0;
+    
+    // 如果积分不足，显示错误并打开套餐选择框
+    if (currentCredit < needCredit) {
       t("error.insufficientCredits") &&
         toast.error(t("error.insufficientCredits"));
       setPricingCardOpen(true);

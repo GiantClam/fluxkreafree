@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { getErrorMessage } from "@/lib/handle-error";
-import { prisma } from "@/db/prisma";
+import { prisma, withRetry } from "@/lib/db-connection";
 import { env } from "@/env.mjs";
 
 export async function POST(req: NextRequest) {
@@ -49,10 +49,12 @@ export async function POST(req: NextRequest) {
     console.log(`🔍 查找 FluxData 记录，replicateId: ${body.id}`);
     let fluxData;
     try {
-      fluxData = await prisma.fluxData.findFirst({
-        where: {
-          replicateId: body.id,
-        },
+      fluxData = await withRetry(async () => {
+        return await prisma.fluxData.findFirst({
+          where: {
+            replicateId: body.id,
+          },
+        });
       });
     } catch (dbError) {
       console.error("❌ 数据库查询失败:", {

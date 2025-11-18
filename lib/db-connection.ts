@@ -29,11 +29,13 @@ class DatabaseConnectionManager {
           // 检测 Supabase 连接
           const isSupabase = hostname.includes('supabase.co') || hostname.includes('supabase.com');
           
-          // 在 Vercel serverless 环境中，Supabase 需要使用连接池模式
+          // 在 Vercel serverless 环境中，Supabase 必须使用连接池模式
+          // 这是解决 prepared statement 冲突的关键
           if ((process.env.VERCEL || process.env.NODE_ENV === 'production') && isSupabase) {
-            // Supabase 连接池 URL 通常使用 pooler.supabase.co 或添加 ?pgbouncer=true
-            // 如果当前不是连接池 URL，尝试转换为连接池模式
-            if (!hostname.includes('pooler') && !urlObj.searchParams.has('pgbouncer')) {
+            const hasPooler = hostname.includes('pooler');
+            const hasPgBouncerParam = urlObj.searchParams.has('pgbouncer');
+            
+            if (!hasPooler && !hasPgBouncerParam) {
               // Supabase 连接池 URL 格式：db.xxx.pooler.supabase.com:6543
               // 将 db.xxx.supabase.co 替换为 db.xxx.pooler.supabase.com
               if (hostname.includes('.supabase.co')) {
@@ -44,24 +46,39 @@ class DatabaseConnectionManager {
                   urlObj.hostname = `db.${projectRef}.pooler.supabase.com`;
                   // Supabase 连接池使用端口 6543
                   urlObj.port = '6543';
-                  // 添加 pgbouncer 参数
+                  // 添加 pgbouncer 参数（必需）
                   urlObj.searchParams.set('pgbouncer', 'true');
                   databaseUrl = urlObj.toString();
-                  console.log('✅ 检测到 Supabase，已转换为连接池模式（pooler）');
+                  console.log(`✅ Supabase 连接已转换为连接池模式: ${urlObj.hostname}:${urlObj.port}`);
                 } else {
-                  // 如果格式不匹配，尝试添加 pgbouncer 参数
+                  // 如果格式不匹配，至少添加 pgbouncer 参数
                   urlObj.searchParams.set('pgbouncer', 'true');
                   databaseUrl = urlObj.toString();
-                  console.log('✅ 已为 Supabase 连接添加 pgbouncer 参数');
+                  console.log('⚠️ Supabase 连接格式不匹配，已添加 pgbouncer 参数');
+                }
+              } else if (hostname.includes('.supabase.com')) {
+                // 处理 .supabase.com 域名
+                const match = hostname.match(/^db\.([^.]+)\.supabase\.com$/);
+                if (match) {
+                  const projectRef = match[1];
+                  urlObj.hostname = `db.${projectRef}.pooler.supabase.com`;
+                  urlObj.port = '6543';
+                  urlObj.searchParams.set('pgbouncer', 'true');
+                  databaseUrl = urlObj.toString();
+                  console.log(`✅ Supabase 连接已转换为连接池模式: ${urlObj.hostname}:${urlObj.port}`);
+                } else {
+                  urlObj.searchParams.set('pgbouncer', 'true');
+                  databaseUrl = urlObj.toString();
+                  console.log('⚠️ Supabase 连接格式不匹配，已添加 pgbouncer 参数');
                 }
               } else {
-                // 如果已经是 pooler 或无法识别，添加 pgbouncer 参数
+                // 如果无法识别，添加 pgbouncer 参数
                 urlObj.searchParams.set('pgbouncer', 'true');
                 databaseUrl = urlObj.toString();
-                console.log('✅ 已为 Supabase 连接添加 pgbouncer 参数');
+                console.log('⚠️ 无法识别 Supabase 连接格式，已添加 pgbouncer 参数');
               }
             } else {
-              console.log('✅ 检测到 Supabase 连接池 URL');
+              console.log('✅ 检测到 Supabase 连接池 URL（已配置）');
             }
           } else if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
             // 非 Supabase 的 PostgreSQL 连接，检查是否使用连接池
