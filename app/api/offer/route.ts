@@ -135,45 +135,46 @@ export async function POST(req: NextRequest) {
           credit: order.credit * activityCredit,
           chargeOrderId: order.id,
         };
-      });
-      await tx.chargeOrder.create({
-        data: {
-          userId,
-          userInfo: JSON.stringify({
-            fullName: user.name,
-            email: user.email,
-            username: user.email,
-          }),
-          currency: Currency.USD,
-          amount: 0,
-          credit: totalCredit,
-          channel: PaymentChannelType.ActivityCredit,
-          phase: OrderPhase.Paid,
-        },
+        });
+        await tx.chargeOrder.create({
+          data: {
+            userId,
+            userInfo: JSON.stringify({
+              fullName: user.name,
+              email: user.email,
+              username: user.email,
+            }),
+            currency: Currency.USD,
+            amount: 0,
+            credit: totalCredit,
+            channel: PaymentChannelType.ActivityCredit,
+            phase: OrderPhase.Paid,
+          },
         });
         const newUserCredit = await tx.userCredit.update({
-        where: {
-          id: Number(account.id),
-        },
-        data: {
-          credit: {
-            increment: totalCredit,
+          where: {
+            id: Number(account.id),
           },
-        },
+          data: {
+            credit: {
+              increment: totalCredit,
+            },
+          },
         });
         const transaction = await tx.userCreditTransaction.create({
-        data: {
-          userId: userId,
-          credit: totalCredit,
-          balance: newUserCredit.credit,
-          type: "EventCharge",
-        },
-      });
-      await tx.claimedActivityOrder.createMany({
-        data: claimedOrders.map((item) => ({
-          ...item,
-          transactionId: transaction.id,
-        })),
+          data: {
+            userId: userId,
+            credit: totalCredit,
+            balance: newUserCredit.credit,
+            type: "EventCharge",
+          },
+        });
+        await tx.claimedActivityOrder.createMany({
+          data: claimedOrders.map((item) => ({
+            ...item,
+            transactionId: transaction.id,
+          })),
+        });
       });
     });
 
