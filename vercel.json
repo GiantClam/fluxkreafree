@@ -1,6 +1,16 @@
 {
   "buildCommand": "bash vercel-build.sh",
   "installCommand": "npm install",
-  "framework": "nextjs"
+  "framework": "nextjs",
+  "git": {
+    "deploymentEnabled": {
+      "main": true
+    }
+  },
+  "functions": {
+    "app/api/**/*.ts": {
+      "maxDuration": 30
+    }
+  }
 }
 

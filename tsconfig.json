@@ -40,10 +40,13 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".contentlayer/generated",
-    "contentlayer.config.ts"
+    "contentlayer.config.ts",
+    "modules/**/*.ts"
   ],
   "exclude": [
     "node_modules",
-    "modules"
+    "modules/node_modules",
+    "modules/dist",
+    "modules/examples"
   ]
 }
