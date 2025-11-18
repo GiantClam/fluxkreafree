@@ -65,20 +65,20 @@ export async function POST(req: NextRequest) {
 
     await withRetry(async () => {
       return await prisma.$transaction(async (tx) => {
-      await tx.chargeOrder.create({
-        data: {
-          userId,
-          userInfo: JSON.stringify({
-            fullName: user.name,
-            email: user.email,
-            username: user.email,
-          }),
-          currency: Currency.USD,
-          amount: 0,
-          credit: giftCodeData.creditAmount,
-          channel: "GiftCode",
-          phase: OrderPhase.Paid,
-        },
+        await tx.chargeOrder.create({
+          data: {
+            userId,
+            userInfo: JSON.stringify({
+              fullName: user.name,
+              email: user.email,
+              username: user.email,
+            }),
+            currency: Currency.USD,
+            amount: 0,
+            credit: giftCodeData.creditAmount,
+            channel: "GiftCode",
+            phase: OrderPhase.Paid,
+          },
         });
 
         const newUserCredit = await tx.userCredit.update({
@@ -93,23 +93,24 @@ export async function POST(req: NextRequest) {
         });
         const transaction = await tx.userCreditTransaction.create({
           data: {
-          userId: userId,
-          credit: giftCodeData.creditAmount,
-          balance: newUserCredit.credit,
-          type: "Charge",
-        },
-      });
+            userId: userId,
+            credit: giftCodeData.creditAmount,
+            balance: newUserCredit.credit,
+            type: "Charge",
+          },
+        });
 
-      await tx.giftCode.update({
-        where: {
-          id: giftCodeData.id,
-        },
-        data: {
-          used: true,
-          usedBy: userId,
-          usedAt: new Date(),
-          transactionId: transaction.id,
-        },
+        await tx.giftCode.update({
+          where: {
+            id: giftCodeData.id,
+          },
+          data: {
+            used: true,
+            usedBy: userId,
+            usedAt: new Date(),
+            transactionId: transaction.id,
+          },
+        });
       });
     });
 
