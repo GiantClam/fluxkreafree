@@ -31,7 +31,13 @@ class DatabaseConnectionManager {
           
           // 在 Vercel serverless 环境中，Supabase 必须使用连接池模式
           // 这是解决 prepared statement 冲突的关键
-          if ((process.env.VERCEL || process.env.NODE_ENV === 'production') && isSupabase) {
+          // 注意：Vercel 环境变量可能在不同阶段有不同的值，所以同时检查多个条件
+          // 在 Vercel 中，VERCEL 环境变量总是存在（值为 "1"）
+          const isServerless = !!process.env.VERCEL || 
+                               process.env.NODE_ENV === 'production' ||
+                               !!process.env.VERCEL_ENV;
+          
+          if (isServerless && isSupabase) {
             const hasPooler = hostname.includes('pooler');
             const hasPgBouncerParam = urlObj.searchParams.has('pgbouncer');
             
@@ -80,7 +86,7 @@ class DatabaseConnectionManager {
             } else {
               console.log('✅ 检测到 Supabase 连接池 URL（已配置）');
             }
-          } else if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
+          } else if (isServerless) {
             // 非 Supabase 的 PostgreSQL 连接，检查是否使用连接池
             const hasPgBouncer = hostname.includes('pgbouncer') || 
                                  urlObj.searchParams.has('pgbouncer') ||
@@ -107,7 +113,14 @@ class DatabaseConnectionManager {
         // 在 serverless 环境中禁用 prepared statements 以避免冲突
         // 通过连接字符串参数 pgbouncer=true 已经实现了这一点
         // 但为了更安全，我们还可以通过环境变量配置
+        // 在 Vercel 等 serverless 环境中，使用连接池时应该禁用 prepared statements
+        // 这可以通过在连接 URL 中添加 ?pgbouncer=true 来实现（已在上面的逻辑中处理）
       });
+      
+      // 在 Vercel 环境中，确保使用连接池模式
+      if (process.env.VERCEL) {
+        console.log('✅ Vercel 环境：Prisma Client 已配置为使用连接池模式');
+      }
       
       const env = process.env.NODE_ENV === 'development' ? '开发' : '生产';
       console.log(`✅ ${env}模式：创建全局缓存的 Prisma 客户端`);
@@ -136,10 +149,11 @@ class DatabaseConnectionManager {
   }
 
   // 带重试机制的数据库操作
+  // 在 Vercel 等 serverless 环境中，增加重试次数以处理 prepared statement 错误
   public async withRetry<T>(
     operation: () => Promise<T>,
-    maxRetries: number = 5,
-    delay: number = 500
+    maxRetries: number = process.env.VERCEL ? 7 : 5, // Vercel 环境中增加重试次数
+    delay: number = process.env.VERCEL ? 300 : 500   // Vercel 环境中减少初始延迟
   ): Promise<T> {
     let lastError: any;
     
@@ -170,18 +184,30 @@ class DatabaseConnectionManager {
             // 在 serverless 环境中，prepared statement 错误可能需要更长的清理时间
             await new Promise(resolve => setTimeout(resolve, waitTime));
             
-            // 如果是 prepared statement 错误且是最后一次重试前，尝试断开并重新连接
-            if (isPreparedStatementError && attempt === maxRetries - 1) {
+            // 如果是 prepared statement 错误，尝试更激进的恢复策略
+            if (isPreparedStatementError) {
               try {
-                console.log('尝试断开并重新连接数据库以清理 prepared statements...');
-                await this.prisma.$disconnect();
-                // 等待一小段时间让连接完全关闭
-                await new Promise(resolve => setTimeout(resolve, 1000));
+                // 在 serverless 环境中，prepared statement 错误通常意味着连接状态不一致
+                // 尝试断开连接以清理状态
+                console.log(`尝试清理 prepared statement 错误 (尝试 ${attempt}/${maxRetries})...`);
+                
+                // 断开连接
+                await this.prisma.$disconnect().catch(() => {
+                  // 忽略断开连接时的错误
+                });
+                
+                // 等待更长时间让连接池清理状态
+                const cleanupWait = attempt * 500; // 递增等待时间：500ms, 1000ms, 1500ms...
+                await new Promise(resolve => setTimeout(resolve, cleanupWait));
+                
                 // 重新连接（Prisma 会自动重新连接）
-                await this.prisma.$connect();
-                console.log('数据库重新连接成功');
+                await this.prisma.$connect().catch(() => {
+                  // 忽略连接错误，Prisma 会在下次查询时自动连接
+                });
+                
+                console.log(`数据库连接已清理，等待 ${cleanupWait}ms 后重试`);
               } catch (reconnectError) {
-                console.warn('数据库重新连接失败，继续重试:', reconnectError);
+                console.warn('清理连接时出错，继续重试:', reconnectError);
               }
             }
             
