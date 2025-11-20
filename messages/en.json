@@ -317,10 +317,10 @@
       "userPhotoPlaceholder": "Upload full-body photo",
       "topClothes": "Top Clothes",
       "topClothesTooltip": "Upload a photo of the top clothing item (optional)",
-      "topClothesPlaceholder": "Upload top clothing photo",
+      "topClothesPlaceholder": "Upload top clothing photo (supports batch upload)",
       "bottomClothes": "Bottom Clothes",
       "bottomClothesTooltip": "Upload a photo of the bottom clothing item (optional)",
-      "bottomClothesPlaceholder": "Upload bottom clothing photo",
+      "bottomClothesPlaceholder": "Upload bottom clothing photo (supports batch upload)",
       "clothingTryonHint": "Upload at least one clothing item (top or bottom) along with your full-body photo to generate the try-on result.",
       "private": {
         "label": "Private Generation"
@@ -360,6 +360,10 @@
       "download": "Download image",
       "downloadSuccess": "Image downloaded.",
       "downloadLoading": "Downloading...",
+      "downloadAll": "Download All",
+      "downloadAllLoading": "Downloading {count} images...",
+      "downloadAllSuccess": "Successfully downloaded {count} images",
+      "downloadAllError": "Failed to download all images",
       "upgrade": "Enhance your art with the limited monthly free trials of Schnell. For watermark-free, premium model experiences click here to upgrade."
     },
     "schnell_faq": {
@@ -419,6 +423,17 @@
       "download": "Download Image",
       "downloadSuccess": "Image downloaded.",
       "downloadLoading": "Downloading..."
+    },
+    "status": {
+      "succeeded": "Succeeded",
+      "processing": "Processing",
+      "failed": "Failed",
+      "canceled": "Canceled",
+      "noImage": "No image available"
+    },
+    "error": {
+      "taskFailed": "Task failed",
+      "taskCanceled": "Task canceled"
     }
   },
   "Billings": {
@@ -670,5 +685,22 @@
   "BlogPage": {
     "title": "Blog",
     "description": "The latest news and updates from Flux Krea Free"
+  },
+  "Upload": {
+    "dragSingle": "Drag and drop files here or click to upload",
+    "dragMultiple": "Drag multiple files here or click to upload",
+    "selectFile": "Select File",
+    "uploading": "Uploading...",
+    "fileSizeLimit": "Supports {accept} format, max {size} MB per file",
+    "multipleAllowed": " (multiple files allowed)",
+    "fileSizeExceeded": "The following files exceed the size limit of {size} MB:\n{files}",
+    "maxFilesExceeded": "Maximum {max} files allowed. Only the first {max} files will be selected.",
+    "filesLimited": "Only {count} files can be added (maximum {max} files total).",
+    "uploadSuccess": "Successfully uploaded {count} file(s)",
+    "uploadFailed": "Upload failed! Please try again later."
+  },
+  "Batch": {
+    "tasksCreated": "Created {count} batch tasks, will execute sequentially",
+    "atLeastOneClothing": "At least one clothing item (top or bottom) is required"
   }
 }

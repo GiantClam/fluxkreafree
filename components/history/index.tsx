@@ -23,9 +23,11 @@ import { cn, createRatio } from "@/lib/utils";
 
 import { FluxTaskStatus } from "../playground";
 import { Button } from "../ui/button";
+import { Badge } from "../ui/badge";
 import Container from "./container";
 import { DownloadAction } from "./download-action";
 import LoadMoreLoading from "./loading";
+import { AlertCircle, CheckCircle2, XCircle, Loader2 } from "lucide-react";
 
 const useQueryMineFluxMutation = (config?: {
   explore?: boolean;
@@ -154,7 +156,27 @@ export default function History({ locale, explore }: { locale: string, explore?:
                     >
                       <PlaygroundLoading />
                     </div>
-                  ) : (
+                  ) : item.taskStatus === FluxTaskStatus.Failed || item.taskStatus === FluxTaskStatus.Canceled ? (
+                    <div
+                      className={`bg-pattern flex w-full items-center justify-center rounded-xl ${createRatio(item.aspectRatio as Ratio)} pointer-events-none bg-gray-100 dark:bg-gray-800`}
+                    >
+                      <div className="flex flex-col items-center justify-center space-y-2 p-8 text-center">
+                        {item.taskStatus === FluxTaskStatus.Failed ? (
+                          <XCircle className="h-12 w-12 text-red-500" />
+                        ) : (
+                          <AlertCircle className="h-12 w-12 text-yellow-500" />
+                        )}
+                        <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                          {item.taskStatus === FluxTaskStatus.Failed ? t("error.taskFailed") : t("error.taskCanceled")}
+                        </p>
+                        {item.errorMsg && (
+                          <p className="text-xs text-gray-500 dark:text-gray-500 max-w-xs truncate">
+                            {item.errorMsg}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  ) : item.imageUrl ? (
                     <BlurFade
                       key={item?.imageUrl!}
                       delay={0.25 + (idx % pageParams.pageSize) * 0.05}
@@ -167,6 +189,17 @@ export default function History({ locale, explore }: { locale: string, explore?:
                         className={`w-full rounded-xl object-cover ${createRatio(item.aspectRatio as Ratio)} pointer-events-none`}
                       />
                     </BlurFade>
+                  ) : (
+                    <div
+                      className={`bg-pattern flex w-full items-center justify-center rounded-xl ${createRatio(item.aspectRatio as Ratio)} pointer-events-none bg-gray-100 dark:bg-gray-800`}
+                    >
+                      <div className="flex flex-col items-center justify-center space-y-2 p-8 text-center">
+                        <AlertCircle className="h-12 w-12 text-gray-400" />
+                        <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                          {t("status.noImage")}
+                        </p>
+                      </div>
+                    </div>
                   )}
                   <Link
                     className="absolute right-1 top-1 !m-0"
@@ -182,9 +215,48 @@ export default function History({ locale, explore }: { locale: string, explore?:
                   {
                     !explore && (
                       <>
+                        <div className="flex flex-row items-center justify-between px-4 pt-4">
+                          <Badge
+                            variant={
+                              item.taskStatus === FluxTaskStatus.Succeeded
+                                ? "default"
+                                : item.taskStatus === FluxTaskStatus.Processing
+                                ? "secondary"
+                                : item.taskStatus === FluxTaskStatus.Failed
+                                ? "destructive"
+                                : "outline"
+                            }
+                            className="text-xs"
+                          >
+                            {item.taskStatus === FluxTaskStatus.Succeeded && (
+                              <>
+                                <CheckCircle2 className="mr-1 h-3 w-3" />
+                                {t("status.succeeded")}
+                              </>
+                            )}
+                            {item.taskStatus === FluxTaskStatus.Processing && (
+                              <>
+                                <Loader2 className="mr-1 h-3 w-3 animate-spin" />
+                                {t("status.processing")}
+                              </>
+                            )}
+                            {item.taskStatus === FluxTaskStatus.Failed && (
+                              <>
+                                <XCircle className="mr-1 h-3 w-3" />
+                                {t("status.failed")}
+                              </>
+                            )}
+                            {item.taskStatus === FluxTaskStatus.Canceled && (
+                              <>
+                                <AlertCircle className="mr-1 h-3 w-3" />
+                                {t("status.canceled")}
+                              </>
+                            )}
+                          </Badge>
+                        </div>
                         <div className="text-content-light inline-block px-4 py-2 text-sm">
                           <p className="line-clamp-4 italic md:line-clamp-6 lg:line-clamp-[8]">
-                            {item.inputPrompt}
+                            {item.inputPrompt || item.errorMsg || "无描述"}
                           </p>
                         </div>
                         <div className="flex flex-row flex-wrap space-x-1 px-2">

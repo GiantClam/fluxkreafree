@@ -377,6 +377,10 @@
       "download": "Descargar Imagen",
       "downloadSuccess": "Imagen descargada.",
       "downloadLoading": "Descargando...",
+      "downloadAll": "Descargar Todo",
+      "downloadAllLoading": "Descargando {count} imágenes...",
+      "downloadAllSuccess": "{count} imágenes descargadas exitosamente",
+      "downloadAllError": "Error al descargar",
       "upgrade": "Eleva tu arte con las pruebas gratuitas mensuales limitadas de Schnell. Para experiencias de modelo premium sin marca, haz clic aquí para actualizar."
     }
   },
@@ -407,6 +411,17 @@
       "download": "Descargar Imagen",
       "downloadSuccess": "Imagen descargada.",
       "downloadLoading": "Descargando..."
+    },
+    "status": {
+      "succeeded": "Exitoso",
+      "processing": "Procesando",
+      "failed": "Fallido",
+      "canceled": "Cancelado",
+      "noImage": "No hay imagen disponible"
+    },
+    "error": {
+      "taskFailed": "Tarea fallida",
+      "taskCanceled": "Tarea cancelada"
     }
   },
   "Billings": {
@@ -658,5 +673,22 @@
   "BlogPage": {
     "title": "Blog",
     "description": "Las últimas noticias y actualizaciones de Nuestro"
+  },
+  "Upload": {
+    "dragSingle": "Arrastra y suelta archivos aquí o haz clic para subir",
+    "dragMultiple": "Arrastra y suelta varios archivos aquí o haz clic para subir",
+    "selectFile": "Seleccionar Archivo",
+    "uploading": "Subiendo...",
+    "fileSizeLimit": "Soporta formato {accept}, máx {size} MB por archivo",
+    "multipleAllowed": " (varios archivos permitidos)",
+    "fileSizeExceeded": "Los siguientes archivos exceden el límite de tamaño de {size} MB:\n{files}",
+    "maxFilesExceeded": "Se permiten máximo {max} archivos. Solo se seleccionarán los primeros {max} archivos.",
+    "filesLimited": "Solo se pueden agregar {count} archivos (máximo {max} archivos en total).",
+    "uploadSuccess": "{count} archivo(s) subido(s) exitosamente",
+    "uploadFailed": "¡Error al subir! Por favor, inténtalo de nuevo más tarde."
+  },
+  "Batch": {
+    "tasksCreated": "{count} tareas por lotes creadas, se ejecutarán secuencialmente",
+    "atLeastOneClothing": "Se requiere al menos un artículo de ropa (superior o inferior)"
   }
 }

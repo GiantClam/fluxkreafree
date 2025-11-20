@@ -377,6 +377,10 @@
       "download": "이미지 다운로드",
       "downloadSuccess": "이미지가 다운로드되었습니다.",
       "downloadLoading": "다운로드 중...",
+      "downloadAll": "모두 다운로드",
+      "downloadAllLoading": "{count}개의 이미지 다운로드 중...",
+      "downloadAllSuccess": "{count}개의 이미지를 성공적으로 다운로드했습니다",
+      "downloadAllError": "다운로드 실패",
       "upgrade": "Flux.1의 무료 평가판을 이용하여 높이세요. 로고 없는 프리미엄 모델 경험을 위해 여기를 클릭하여 업그레이드하세요."
     }
   },
@@ -407,6 +411,17 @@
       "download": "이미지 다운로드",
       "downloadSuccess": "이미지가 다운로드되었습니다.",
       "downloadLoading": "다운로드 중..."
+    },
+    "status": {
+      "succeeded": "성공",
+      "processing": "처리 중",
+      "failed": "실패",
+      "canceled": "취소됨",
+      "noImage": "이미지 없음"
+    },
+    "error": {
+      "taskFailed": "작업 실패",
+      "taskCanceled": "작업 취소됨"
     }
   },
   "Billings": {
@@ -658,5 +673,22 @@
   "BlogPage": {
     "title": "블로그",
     "description": "우리의 최신 뉴스와 업데이트"
+  },
+  "Upload": {
+    "dragSingle": "파일을 여기에 끌어다 놓거나 클릭하여 업로드",
+    "dragMultiple": "여러 파일을 여기에 끌어다 놓거나 클릭하여 업로드",
+    "selectFile": "파일 선택",
+    "uploading": "업로드 중...",
+    "fileSizeLimit": "{accept} 형식 지원, 파일당 최대 {size} MB",
+    "multipleAllowed": " (여러 파일 허용)",
+    "fileSizeExceeded": "다음 파일이 크기 제한 {size} MB를 초과합니다:\n{files}",
+    "maxFilesExceeded": "최대 {max}개의 파일만 허용됩니다. 처음 {max}개의 파일만 선택됩니다.",
+    "filesLimited": "{count}개의 파일만 추가할 수 있습니다(최대 {max}개).",
+    "uploadSuccess": "{count}개의 파일을 성공적으로 업로드했습니다",
+    "uploadFailed": "업로드 실패! 나중에 다시 시도해주세요."
+  },
+  "Batch": {
+    "tasksCreated": "{count}개의 배치 작업을 생성했습니다. 순차적으로 실행됩니다",
+    "atLeastOneClothing": "최소 하나의 의류 항목(상의 또는 하의)이 필요합니다"
   }
 }

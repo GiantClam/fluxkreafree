@@ -377,6 +377,10 @@
       "download": "下載圖像",
       "downloadSuccess": "圖像已下載。",
       "downloadLoading": "正在下載中...",
+      "downloadAll": "全部下載",
+      "downloadAllLoading": "正在下載 {count} 張圖片...",
+      "downloadAllSuccess": "成功下載 {count} 張圖片",
+      "downloadAllError": "下載失敗",
       "upgrade": "Flux.1 的免費試用版，讓您的藝術更上一層樓。若要體驗無標誌的 Premium 模型，請點擊這裡升級。"
     }
   },
@@ -407,6 +411,17 @@
       "download": "下載圖像",
       "downloadSuccess": "圖像已下載。",
       "downloadLoading": "正在下載中..."
+    },
+    "status": {
+      "succeeded": "成功",
+      "processing": "處理中",
+      "failed": "失敗",
+      "canceled": "已取消",
+      "noImage": "暫無圖片"
+    },
+    "error": {
+      "taskFailed": "任務失敗",
+      "taskCanceled": "任務已取消"
     }
   },
   "Billings": {
@@ -662,5 +677,22 @@
   "BlogPage": {
     "title": "博客",
     "description": "我們的最新新聞和更新"
+  },
+  "Upload": {
+    "dragSingle": "拖拽文件到這裡或點擊上傳",
+    "dragMultiple": "拖拽多個文件到這裡或點擊上傳",
+    "selectFile": "選擇文件",
+    "uploading": "上傳中...",
+    "fileSizeLimit": "支持 {accept} 格式，每張圖片最大 {size} MB",
+    "multipleAllowed": "（可多選）",
+    "fileSizeExceeded": "以下文件大小超過限制 {size} MB:\n{files}",
+    "maxFilesExceeded": "最多允許上傳 {max} 張圖片，將只選擇前 {max} 張。",
+    "filesLimited": "只能添加 {count} 張圖片（最多 {max} 張）。",
+    "uploadSuccess": "成功上傳 {count} 個文件",
+    "uploadFailed": "上傳失敗！請稍後再試。"
+  },
+  "Batch": {
+    "tasksCreated": "已創建 {count} 個批量任務，將順序執行",
+    "atLeastOneClothing": "至少需要提供一件衣服（上衣或下衣）"
   }
 }

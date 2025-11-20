@@ -60,5 +60,7 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
-  ...(env.NEXTAUTH_SECRET && { secret: env.NEXTAUTH_SECRET }),
+  // 在开发环境中，如果没有设置 NEXTAUTH_SECRET，使用默认值
+  // 在生产环境中，NEXTAUTH_SECRET 是必需的
+  secret: env.NEXTAUTH_SECRET || (isDevelopment ? "dev-secret-key-change-in-production" : undefined),
 }; 

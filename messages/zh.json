@@ -351,10 +351,10 @@
       "userPhotoPlaceholder": "上传全身自拍照",
       "topClothes": "上衣",
       "topClothesTooltip": "上传上衣图片（可选）",
-      "topClothesPlaceholder": "上传上衣图片",
+      "topClothesPlaceholder": "上传上衣图片（支持批量上传）",
       "bottomClothes": "下衣",
       "bottomClothesTooltip": "上传下衣图片（可选）",
-      "bottomClothesPlaceholder": "上传下衣图片",
+      "bottomClothesPlaceholder": "上传下衣图片（支持批量上传）",
       "clothingTryonHint": "请至少上传一件衣服（上衣或下衣）以及您的全身自拍照，以生成试穿效果。",
       "private": {
         "label": "私有生成"
@@ -389,6 +389,10 @@
       "download": "下载图像",
       "downloadSuccess": "图像已下载。",
       "downloadLoading": "正在下载...",
+      "downloadAll": "全部下载",
+      "downloadAllLoading": "正在下载 {count} 张图片...",
+      "downloadAllSuccess": "成功下载 {count} 张图片",
+      "downloadAllError": "下载失败",
       "upgrade": "通过 Schnell 的每月限量免费试用提升您的艺术创作。点击此处可体验无水印的高级模型。"
     }
   },
@@ -420,6 +424,17 @@
       "downloadSuccess": "图像已下载。",
       "downloadLoading": "正在下载...",
       "upgrade": "通过 Schnell 的每月限量免费试用提升您的艺术创作。点击此处体验无水印的高级模型。"
+    },
+    "status": {
+      "succeeded": "成功",
+      "processing": "处理中",
+      "failed": "失败",
+      "canceled": "已取消",
+      "noImage": "暂无图片"
+    },
+    "error": {
+      "taskFailed": "任务失败",
+      "taskCanceled": "任务已取消"
     }
   },
   "Billings": {
@@ -675,5 +690,22 @@
   "BlogPage": {
     "title": "博客",
     "description": "我们的最新新闻和更新"
+  },
+  "Upload": {
+    "dragSingle": "拖拽文件到这里或点击上传",
+    "dragMultiple": "拖拽多个文件到这里或点击上传",
+    "selectFile": "选择文件",
+    "uploading": "上传中...",
+    "fileSizeLimit": "支持 {accept} 格式，每张图片最大 {size} MB",
+    "multipleAllowed": "（可多选）",
+    "fileSizeExceeded": "以下文件大小超过限制 {size} MB:\n{files}",
+    "maxFilesExceeded": "最多允许上传 {max} 张图片，将只选择前 {max} 张。",
+    "filesLimited": "只能添加 {count} 张图片（最多 {max} 张）。",
+    "uploadSuccess": "成功上传 {count} 个文件",
+    "uploadFailed": "上传失败！请稍后再试。"
+  },
+  "Batch": {
+    "tasksCreated": "已创建 {count} 个批量任务，将顺序执行",
+    "atLeastOneClothing": "至少需要提供一件衣服（上衣或下衣）"
   }
 }

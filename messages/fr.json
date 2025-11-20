@@ -379,6 +379,10 @@
       "download": "Télécharger l'image",
       "downloadSuccess": "Image téléchargée.",
       "downloadLoading": "Téléchargement en cours...",
+      "downloadAll": "Tout télécharger",
+      "downloadAllLoading": "Téléchargement de {count} images...",
+      "downloadAllSuccess": "{count} images téléchargées avec succès",
+      "downloadAllError": "Échec du téléchargement",
       "upgrade": "Elevez votre art avec les essais gratuits mensuels limités de Schnell. Pour des expériences de modèle premium sans marque, cliquez ici pour mettre à niveau."
     }
   },
@@ -409,6 +413,17 @@
       "download": "Télécharger l'image",
       "downloadSuccess": "Image téléchargée.",
       "downloadLoading": "Téléchargement en cours..."
+    },
+    "status": {
+      "succeeded": "Réussi",
+      "processing": "En cours",
+      "failed": "Échoué",
+      "canceled": "Annulé",
+      "noImage": "Aucune image disponible"
+    },
+    "error": {
+      "taskFailed": "Tâche échouée",
+      "taskCanceled": "Tâche annulée"
     }
   },
   "Billings": {
@@ -660,5 +675,22 @@
   "BlogPage": {
     "title": "Blog",
     "description": "Les dernières nouvelles et mises à jour de notre équipe"
+  },
+  "Upload": {
+    "dragSingle": "Glissez-déposez des fichiers ici ou cliquez pour télécharger",
+    "dragMultiple": "Glissez-déposez plusieurs fichiers ici ou cliquez pour télécharger",
+    "selectFile": "Sélectionner un fichier",
+    "uploading": "Téléchargement en cours...",
+    "fileSizeLimit": "Prend en charge le format {accept}, max {size} MB par fichier",
+    "multipleAllowed": " (plusieurs fichiers autorisés)",
+    "fileSizeExceeded": "Les fichiers suivants dépassent la limite de taille de {size} MB:\n{files}",
+    "maxFilesExceeded": "Maximum {max} fichiers autorisés. Seuls les {max} premiers fichiers seront sélectionnés.",
+    "filesLimited": "Seulement {count} fichiers peuvent être ajoutés (maximum {max} fichiers au total).",
+    "uploadSuccess": "{count} fichier(s) téléchargé(s) avec succès",
+    "uploadFailed": "Échec du téléchargement ! Veuillez réessayer plus tard."
+  },
+  "Batch": {
+    "tasksCreated": "{count} tâches par lots créées, seront exécutées séquentiellement",
+    "atLeastOneClothing": "Au moins un article de vêtement (haut ou bas) est requis"
   }
 }

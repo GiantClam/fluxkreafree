@@ -379,6 +379,10 @@
       "download": "Bild herunterladen",
       "downloadSuccess": "Bild heruntergeladen.",
       "downloadLoading": "Wird heruntergeladen...",
+      "downloadAll": "Alle herunterladen",
+      "downloadAllLoading": "Lade {count} Bilder herunter...",
+      "downloadAllSuccess": "{count} Bilder erfolgreich heruntergeladen",
+      "downloadAllError": "Download fehlgeschlagen",
       "upgrade": "Verbessern Sie Ihre Kunst mit den begrenzten monatlichen kostenlosen Tests von Schnell. Für markenfreie, premium-Modell-Erlebnisse klicken Sie hier, um zu upgraden."
     }
   },
@@ -409,6 +413,17 @@
       "download": "Bild herunterladen",
       "downloadSuccess": "Bild heruntergeladen.",
       "downloadLoading": "Wird heruntergeladen..."
+    },
+    "status": {
+      "succeeded": "Erfolgreich",
+      "processing": "Wird verarbeitet",
+      "failed": "Fehlgeschlagen",
+      "canceled": "Abgebrochen",
+      "noImage": "Kein Bild verfügbar"
+    },
+    "error": {
+      "taskFailed": "Aufgabe fehlgeschlagen",
+      "taskCanceled": "Aufgabe abgebrochen"
     }
   },
   "Billings": {
@@ -660,5 +675,22 @@
   "BlogPage": {
     "title": "Blog",
     "description": "Die neuesten Nachrichten und Updates von Our"
+  },
+  "Upload": {
+    "dragSingle": "Dateien hierher ziehen oder klicken zum Hochladen",
+    "dragMultiple": "Mehrere Dateien hierher ziehen oder klicken zum Hochladen",
+    "selectFile": "Datei auswählen",
+    "uploading": "Wird hochgeladen...",
+    "fileSizeLimit": "Unterstützt {accept} Format, max {size} MB pro Datei",
+    "multipleAllowed": " (mehrere Dateien erlaubt)",
+    "fileSizeExceeded": "Die folgenden Dateien überschreiten die Größenbeschränkung von {size} MB:\n{files}",
+    "maxFilesExceeded": "Maximal {max} Dateien erlaubt. Es werden nur die ersten {max} Dateien ausgewählt.",
+    "filesLimited": "Nur {count} Dateien können hinzugefügt werden (maximal {max} Dateien insgesamt).",
+    "uploadSuccess": "{count} Datei(en) erfolgreich hochgeladen",
+    "uploadFailed": "Upload fehlgeschlagen! Bitte versuchen Sie es später erneut."
+  },
+  "Batch": {
+    "tasksCreated": "{count} Batch-Aufgaben erstellt, werden sequenziell ausgeführt",
+    "atLeastOneClothing": "Mindestens ein Kleidungsstück (Oberteil oder Unterteil) ist erforderlich"
   }
 }

@@ -377,6 +377,10 @@
       "download": "تنزيل الصورة",
       "downloadSuccess": "تم تنزيل الصورة.",
       "downloadLoading": "جارٍ التنزيل...",
+      "downloadAll": "تنزيل الكل",
+      "downloadAllLoading": "جاري تنزيل {count} صورة...",
+      "downloadAllSuccess": "تم تنزيل {count} صورة بنجاح",
+      "downloadAllError": "فشل التنزيل",
       "upgrade": "ارتقِ بفنك مع التجارب المجانية الشهرية المحدودة من Schnell. للحصول على تجارب نموذجية متميزة خالية من العلامات المائية، انقر هنا للترقية."
     }
   },
@@ -407,6 +411,17 @@
       "download": "تنزيل الصورة",
       "downloadSuccess": "تم تنزيل الصورة.",
       "downloadLoading": "جارٍ التنزيل..."
+    },
+    "status": {
+      "succeeded": "نجح",
+      "processing": "قيد المعالجة",
+      "failed": "فشل",
+      "canceled": "ملغى",
+      "noImage": "لا توجد صورة متاحة"
+    },
+    "error": {
+      "taskFailed": "فشلت المهمة",
+      "taskCanceled": "تم إلغاء المهمة"
     }
   },
   "Billings": {
@@ -658,5 +673,22 @@
   "BlogPage": {
     "title": "المدونة",
     "description": "أحدث الأخبار والتحديثات من خلالنا"
+  },
+  "Upload": {
+    "dragSingle": "اسحب الملفات هنا أو انقر للتحميل",
+    "dragMultiple": "اسحب عدة ملفات هنا أو انقر للتحميل",
+    "selectFile": "اختر ملف",
+    "uploading": "جارٍ التحميل...",
+    "fileSizeLimit": "يدعم تنسيق {accept}، الحد الأقصى {size} ميجابايت لكل ملف",
+    "multipleAllowed": " (السماح بملفات متعددة)",
+    "fileSizeExceeded": "الملفات التالية تتجاوز حد الحجم {size} ميجابايت:\n{files}",
+    "maxFilesExceeded": "يُسمح بحد أقصى {max} ملف. سيتم تحديد أول {max} ملف فقط.",
+    "filesLimited": "يمكن إضافة {count} ملف فقط (حد أقصى {max} ملف إجمالاً).",
+    "uploadSuccess": "تم تحميل {count} ملف(ملفات) بنجاح",
+    "uploadFailed": "فشل التحميل! يرجى المحاولة مرة أخرى لاحقًا."
+  },
+  "Batch": {
+    "tasksCreated": "تم إنشاء {count} مهام دفعة، سيتم تنفيذها بالتسلسل",
+    "atLeastOneClothing": "يُطلب عنصر ملابس واحد على الأقل (أعلى أو أسفل)"
   }
 }

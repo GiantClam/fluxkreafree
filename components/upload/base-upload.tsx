@@ -5,17 +5,20 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Upload, X, FileIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 
 interface BaseUploadProps {
-  onFileSelect: (file: File) => void;
+  onFileSelect: (files: File[]) => void;
   onFileRemove: () => void;
   accept?: string;
   maxSize?: number;
+  maxFiles?: number;
   isUploading?: boolean;
   uploadProgress?: number;
   selectedFile?: File | null;
   className?: string;
+  multiple?: boolean;
 }
 
 export function BaseUpload({
@@ -23,11 +26,14 @@ export function BaseUpload({
   onFileRemove,
   accept = "image/*",
   maxSize = 10 * 1024 * 1024, // 10MB
+  maxFiles,
   isUploading = false,
   uploadProgress = 0,
   selectedFile,
   className,
+  multiple = false,
 }: BaseUploadProps) {
+  const t = useTranslations("Upload");
   const [dragOver, setDragOver] = useState(false);
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -44,25 +50,44 @@ export function BaseUpload({
     e.preventDefault();
     setDragOver(false);
     
-    const files = e.dataTransfer.files;
+    const files = Array.from(e.dataTransfer.files);
     if (files.length > 0) {
-      handleFileSelect(files[0]);
+      handleFileSelect(files);
     }
   };
 
-  const handleFileSelect = (file: File) => {
-    if (file.size > maxSize) {
-      alert(`文件大小不能超过 ${maxSize / (1024 * 1024)} MB`);
+  const handleFileSelect = (files: File | File[]) => {
+    const fileArray = Array.isArray(files) ? files : [files];
+    
+    // 检查文件数量限制
+    if (maxFiles && fileArray.length > maxFiles) {
+      const sizeInMB = maxSize / (1024 * 1024);
+      alert(t("maxFilesExceeded", { max: maxFiles, size: sizeInMB }));
+      // 只选择允许的文件数量
+      const filesToSelect = fileArray.slice(0, maxFiles);
+      onFileSelect(filesToSelect);
       return;
     }
     
-    onFileSelect(file);
+    // 检查文件大小
+    const oversizedFiles = fileArray.filter(file => file.size > maxSize);
+    if (oversizedFiles.length > 0) {
+      const sizeInMB = maxSize / (1024 * 1024);
+      const fileNames = oversizedFiles.map(f => f.name).join('\n');
+      alert(t("fileSizeExceeded", { size: sizeInMB, files: fileNames }));
+      return;
+    }
+    
+    // 如果 multiple 为 false，只选择第一个文件
+    const filesToSelect = multiple ? fileArray : fileArray.slice(0, 1);
+    onFileSelect(filesToSelect);
   };
 
   const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      handleFileSelect(file);
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      const fileArray = Array.from(files);
+      handleFileSelect(fileArray);
     }
   };
 
@@ -88,7 +113,7 @@ export function BaseUpload({
             <div className="mt-4 space-y-2">
               <Progress value={uploadProgress} className="h-2" />
               <p className="text-sm text-muted-foreground">
-                上传中... {uploadProgress}%
+                {t("uploading")} {uploadProgress}%
               </p>
             </div>
           )}
@@ -112,19 +137,22 @@ export function BaseUpload({
         <div className="flex flex-col items-center justify-center space-y-4">
           <Upload className="h-10 w-10 text-muted-foreground" />
           <div className="text-center">
-            <p className="text-sm font-medium">拖拽文件到这里或点击上传</p>
+            <p className="text-sm font-medium">
+              {multiple ? t("dragMultiple") : t("dragSingle")}
+            </p>
             <p className="text-xs text-muted-foreground">
-              支持 {accept} 格式，最大 {maxSize / (1024 * 1024)} MB
+              {t("fileSizeLimit", { accept, size: maxSize / (1024 * 1024) })}{multiple ? t("multipleAllowed") : ""}
             </p>
           </div>
           <Button variant="outline" asChild>
             <label className="cursor-pointer">
-              选择文件
+              {t("selectFile")}
               <input
                 type="file"
                 className="hidden"
                 accept={accept}
                 onChange={handleFileInput}
+                multiple={multiple}
               />
             </label>
           </Button>

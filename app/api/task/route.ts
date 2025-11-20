@@ -28,7 +28,7 @@ function getKey(id: string) {
 }
 
 const QueryTaskSchema = z.object({
-  fluxId: z.string(),
+  fluxId: z.union([z.string(), z.number()]).transform((val) => String(val)),
 });
 
 export async function POST(req: NextRequest) {

@@ -376,7 +376,11 @@
       "copySuccess": "Prompt copiado para a área de transferência.",
       "download": "Baixar Imagem",
       "downloadSuccess": "Imagem baixada.",
-      "downloadLoading": "Baixando..."
+      "downloadLoading": "Baixando...",
+      "downloadAll": "Baixar Tudo",
+      "downloadAllLoading": "Baixando {count} imagens...",
+      "downloadAllSuccess": "{count} imagens baixadas com sucesso",
+      "downloadAllError": "Falha ao baixar"
     }
   },
   "GiftCode": {
@@ -407,6 +411,17 @@
       "downloadSuccess": "Imagem baixada.",
       "downloadLoading": "Baixando...",
       "upgrade": "Eleve seu estilo com as testes gratuitos mensais limitados de Flux.1. Para experiências de modelo premium sem marca, clique aqui para atualizar."
+    },
+    "status": {
+      "succeeded": "Sucesso",
+      "processing": "Processando",
+      "failed": "Falhou",
+      "canceled": "Cancelado",
+      "noImage": "Nenhuma imagem disponível"
+    },
+    "error": {
+      "taskFailed": "Tarefa falhou",
+      "taskCanceled": "Tarefa cancelada"
     }
   },
   "Billings": {
@@ -661,5 +676,22 @@
   "BlogPage": {
     "title": "Blog",
     "description": "As últimas notícias e atualizações de Nossa"
+  },
+  "Upload": {
+    "dragSingle": "Arraste e solte arquivos aqui ou clique para fazer upload",
+    "dragMultiple": "Arraste e solte vários arquivos aqui ou clique para fazer upload",
+    "selectFile": "Selecionar Arquivo",
+    "uploading": "Fazendo upload...",
+    "fileSizeLimit": "Suporta formato {accept}, máx {size} MB por arquivo",
+    "multipleAllowed": " (vários arquivos permitidos)",
+    "fileSizeExceeded": "Os seguintes arquivos excedem o limite de tamanho de {size} MB:\n{files}",
+    "maxFilesExceeded": "Máximo de {max} arquivos permitidos. Apenas os primeiros {max} arquivos serão selecionados.",
+    "filesLimited": "Apenas {count} arquivos podem ser adicionados (máximo de {max} arquivos no total).",
+    "uploadSuccess": "{count} arquivo(s) enviado(s) com sucesso",
+    "uploadFailed": "Upload falhou! Por favor, tente novamente mais tarde."
+  },
+  "Batch": {
+    "tasksCreated": "{count} tarefas em lote criadas, serão executadas sequencialmente",
+    "atLeastOneClothing": "Pelo menos um item de roupa (superior ou inferior) é necessário"
   }
 }

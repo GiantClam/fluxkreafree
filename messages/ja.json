@@ -379,6 +379,10 @@
       "download": "画像をダウンロード",
       "downloadSuccess": "画像をダウンロードしました。",
       "downloadLoading": "ダウンロード中...",
+      "downloadAll": "すべてダウンロード",
+      "downloadAllLoading": "{count} 枚の画像をダウンロード中...",
+      "downloadAllSuccess": "{count} 枚の画像を正常にダウンロードしました",
+      "downloadAllError": "ダウンロードに失敗しました",
       "upgrade": "Flux.1の無料試用版を利用して、あなたの芸術を高めましょう。ロゴなしのプレミアムモデル体験のために、こちらをクリックしてアップグレードしてください。"
     }
   },
@@ -409,6 +413,17 @@
       "download": "画像をダウンロード",
       "downloadSuccess": "画像をダウンロードしました。",
       "downloadLoading": "ダウンロード中..."
+    },
+    "status": {
+      "succeeded": "成功",
+      "processing": "処理中",
+      "failed": "失敗",
+      "canceled": "キャンセル済み",
+      "noImage": "画像がありません"
+    },
+    "error": {
+      "taskFailed": "タスクが失敗しました",
+      "taskCanceled": "タスクがキャンセルされました"
     }
   },
   "Billings": {
@@ -660,5 +675,22 @@
   "BlogPage": {
     "title": "ブログ",
     "description": "当社からの最新ニュースとアップデート"
+  },
+  "Upload": {
+    "dragSingle": "ファイルをここにドラッグ＆ドロップするか、クリックしてアップロード",
+    "dragMultiple": "複数のファイルをここにドラッグ＆ドロップするか、クリックしてアップロード",
+    "selectFile": "ファイルを選択",
+    "uploading": "アップロード中...",
+    "fileSizeLimit": "{accept} 形式をサポート、1ファイルあたり最大 {size} MB",
+    "multipleAllowed": "（複数ファイル可）",
+    "fileSizeExceeded": "以下のファイルがサイズ制限 {size} MB を超えています:\n{files}",
+    "maxFilesExceeded": "最大 {max} ファイルまで許可されています。最初の {max} ファイルのみが選択されます。",
+    "filesLimited": "{count} ファイルのみ追加できます（最大 {max} ファイル）。",
+    "uploadSuccess": "{count} 個のファイルをアップロードしました",
+    "uploadFailed": "アップロードに失敗しました！後でもう一度お試しください。"
+  },
+  "Batch": {
+    "tasksCreated": "{count} 個のバッチタスクを作成しました。順次実行されます",
+    "atLeastOneClothing": "少なくとも1つの衣類アイテム（上着または下着）が必要です"
   }
 }

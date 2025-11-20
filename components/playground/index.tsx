@@ -6,7 +6,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import copy from "copy-to-clipboard";
 import { debounce } from "lodash-es";
-import { Copy } from "lucide-react";
+import { Copy, ArrowDownToLine } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { signIn } from "next-auth/react";
 import { toast } from "sonner";
@@ -41,6 +41,7 @@ import { Icons } from "../shared/icons";
 import Upload from "../upload";
 import ComfortingMessages from "./comforting";
 import Loading from "./loading";
+import JSZip from "jszip";
 
 const aspectRatios = [Ratio.r1, Ratio.r2, Ratio.r3, Ratio.r4, Ratio.r5];
 
@@ -88,6 +89,9 @@ export default function Playground({
   const [loading, setLoading] = useState(false);
   const [fluxId, setFluxId] = useState("");
   const [fluxData, setFluxData] = useState<FluxSelectDto>();
+  // 批量任务的结果（用于 clothing try-on 多图展示）
+  const [batchTaskIds, setBatchTaskIds] = useState<string[]>([]);
+  const [batchTaskData, setBatchTaskData] = useState<FluxSelectDto[]>([]);
   const useCreateTask = useCreateTaskMutation();
   const [uploadInputImage, setUploadInputImage] = useState<any[]>([]);
   // clothing-tryon 模型专用的上传状态
@@ -95,6 +99,7 @@ export default function Playground({
   const [uploadTopClothes, setUploadTopClothes] = useState<any[]>([]);
   const [uploadBottomClothes, setUploadBottomClothes] = useState<any[]>([]);
   const t = useTranslations("Playground");
+  const tBatch = useTranslations("Batch");
   const queryClient = useQueryClient();
   const [pricingCardOpen, setPricingCardOpen] = useState(false);
   const [lora, setLora] = React.useState<string>(loras.wukong);
@@ -102,12 +107,14 @@ export default function Playground({
   // 判断是否为 clothing-tryon 模型
   const isClothingTryon = selectedModel.id === model.clothingTryon;
   
-  // 当切换模型时，清空 clothing-tryon 专用的上传状态
+  // 当切换模型时，清空 clothing-tryon 专用的上传状态和批量任务数据
   useEffect(() => {
     if (!isClothingTryon) {
       setUploadUserPhoto([]);
       setUploadTopClothes([]);
       setUploadBottomClothes([]);
+      setBatchTaskIds([]);
+      setBatchTaskData([]);
     }
   }, [isClothingTryon]);
 
@@ -162,6 +169,43 @@ export default function Playground({
     setFluxData(queryTask?.data?.data);
   }, [queryTask.data]);
 
+  // 查询批量任务的结果
+  const batchTaskQueries = useQuery({
+    queryKey: ["queryBatchFluxTasks", batchTaskIds],
+    enabled: isClothingTryon && batchTaskIds.length > 1,
+    refetchInterval: (query) => {
+      // 如果还有任务在处理中，继续轮询
+      const allData = query.state.data as FluxSelectDto[] | undefined;
+      if (allData?.some(task => task.taskStatus === FluxTaskStatus.Processing)) {
+        return 2000;
+      }
+      return false;
+    },
+    queryFn: async () => {
+      const results = await Promise.all(
+        batchTaskIds.map(async (id) => {
+          const res = await fetch("/api/task", {
+            body: JSON.stringify({ fluxId: id }),
+            method: "POST",
+            credentials: 'include',
+          });
+          if (!res.ok) {
+            throw new Error("Network response error");
+          }
+          const data = await res.json();
+          return data.data;
+        })
+      );
+      return results;
+    },
+  });
+
+  useEffect(() => {
+    if (batchTaskQueries.data && batchTaskQueries.data.length > 0) {
+      setBatchTaskData(batchTaskQueries.data);
+    }
+  }, [batchTaskQueries.data]);
+
   const handleSubmit = async () => {
     // 对于 clothing-tryon 模型，验证用户照片
     if (isClothingTryon) {
@@ -201,39 +245,99 @@ export default function Playground({
       if (isClothingTryon) {
         // clothing-tryon 模型的请求参数
         const userPhotoUrl = uploadUserPhoto?.[0]?.completedUrl;
-        const topClothesUrl = uploadTopClothes?.[0]?.completedUrl;
-        const bottomClothesUrl = uploadBottomClothes?.[0]?.completedUrl;
+        const topClothesUrls = uploadTopClothes?.map(item => item.completedUrl) || [];
+        const bottomClothesUrls = uploadBottomClothes?.map(item => item.completedUrl) || [];
         
-        const res = await useCreateTask.mutateAsync({
-          model: selectedModel.id,
-          userPhotoUrl,
-          topClothesUrl,
-          bottomClothesUrl,
-          isPrivate: isPublic ? 0 : 1,
-          locale,
-        });
-        console.log("res--->", res);
-        if (!res.error) {
-          setFluxId(res.id);
-          queryClient.invalidateQueries({ queryKey: ["queryUserPoints"] });
+        // 计算需要创建的任务数量
+        const totalClothesCount = topClothesUrls.length + bottomClothesUrls.length;
+        
+        // 检查是否有批量上传的衣服
+        if (totalClothesCount > 1) {
+          // 批量创建任务
+          const res = await fetch("/api/generate/batch", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify({
+              model: selectedModel.id,
+              userPhotoUrl,
+              topClothesUrls,
+              bottomClothesUrls,
+              isPrivate: isPublic ? 0 : 1,
+              locale,
+            }),
+          });
+          
+          const result = await res.json();
+          
+          if (!result.error) {
+            toast.success(tBatch("tasksCreated", { count: result.data?.length || 0 }));
+            // 存储所有任务ID（用于多图展示）
+            if (result.data && result.data.length > 0) {
+              const taskIds = result.data.map((item: { id: string }) => item.id);
+              setBatchTaskIds(taskIds);
+              // 设置第一个任务的 ID 用于兼容单图展示逻辑
+              setFluxId(taskIds[0]);
+            }
+            queryClient.invalidateQueries({ queryKey: ["queryUserPoints"] });
+            queryClient.invalidateQueries({ queryKey: ["queryFluxTask"] });
+          } else {
+            let error = result.error;
+            // 如果用户不存在（需要重新登录），引导用户登录
+            if (result.code === 1000401 || result.error?.includes("sign in") || result.error?.includes("User not found")) {
+              toast.error(t("error.pleaseSignIn") || "Please sign in to continue");
+              // 触发登录流程
+              signIn("google", {
+                callbackUrl: window.location.href,
+                redirect: true,
+              });
+              return;
+            }
+            // 如果积分不足，打开套餐选择框
+            if (result.code === 1000402) {
+              setPricingCardOpen(true);
+              error = t("error.insufficientCredits") ?? result.error;
+            }
+            toast.error(error);
+          }
         } else {
-          let error = res.error;
-          // 如果用户不存在（需要重新登录），引导用户登录
-          if (res.code === 1000401 || res.error?.includes("sign in") || res.error?.includes("User not found")) {
-            toast.error(t("error.pleaseSignIn") || "Please sign in to continue");
-            // 触发登录流程
-            signIn("google", {
-              callbackUrl: window.location.href,
-              redirect: true,
-            });
-            return;
+          // 单个任务（保持原有逻辑）
+          const topClothesUrl = topClothesUrls[0];
+          const bottomClothesUrl = bottomClothesUrls[0];
+          
+          const res = await useCreateTask.mutateAsync({
+            model: selectedModel.id,
+            userPhotoUrl,
+            topClothesUrl,
+            bottomClothesUrl,
+            isPrivate: isPublic ? 0 : 1,
+            locale,
+          });
+          console.log("res--->", res);
+          if (!res.error) {
+            setFluxId(res.id);
+            queryClient.invalidateQueries({ queryKey: ["queryUserPoints"] });
+          } else {
+            let error = res.error;
+            // 如果用户不存在（需要重新登录），引导用户登录
+            if (res.code === 1000401 || res.error?.includes("sign in") || res.error?.includes("User not found")) {
+              toast.error(t("error.pleaseSignIn") || "Please sign in to continue");
+              // 触发登录流程
+              signIn("google", {
+                callbackUrl: window.location.href,
+                redirect: true,
+              });
+              return;
+            }
+            // 如果积分不足，打开套餐选择框
+            if (res.code === 1000402) {
+              setPricingCardOpen(true);
+              error = t("error.insufficientCredits") ?? res.error;
+            }
+            toast.error(error);
           }
-          // 如果积分不足，打开套餐选择框
-          if (res.code === 1000402) {
-            setPricingCardOpen(true);
-            error = t("error.insufficientCredits") ?? res.error;
-          }
-          toast.error(error);
         }
       } else {
         // 其他模型的请求参数
@@ -356,94 +460,6 @@ export default function Playground({
                 />
               </div>
             )}
-            {isClothingTryon && (
-              <div className="flex flex-col gap-4">
-                {/* 用户照片上传（必选） */}
-                <div className="flex flex-col gap-2">
-                  <HoverCard openDelay={200}>
-                    <HoverCardTrigger asChild>
-                      <Label htmlFor="userPhoto">
-                        {t("form.userPhoto") || "Full-Body Photo"} <span className="text-red-500">*</span>
-                      </Label>
-                    </HoverCardTrigger>
-                    <HoverCardContent
-                      align="start"
-                      className="w-[260px] text-sm"
-                      side="left"
-                    >
-                      {t("form.userPhotoTooltip") || "Upload a full-body photo of yourself"}
-                    </HoverCardContent>
-                  </HoverCard>
-                  <Upload
-                    maxFiles={1}
-                    maxSize={5 * 1024 * 1024}
-                    placeholder={t("form.userPhotoPlaceholder") || "Upload full-body photo"}
-                    value={uploadUserPhoto}
-                    onChange={setUploadUserPhoto}
-                    previewClassName="h-[120px]"
-                    accept={{
-                      "image/*": [],
-                    }}
-                  />
-                </div>
-                {/* 上衣上传（可选） */}
-                <div className="flex flex-col gap-2">
-                  <HoverCard openDelay={200}>
-                    <HoverCardTrigger asChild>
-                      <Label htmlFor="topClothes">
-                        {t("form.topClothes") || "Top Clothes"} <span className="text-gray-500">(Optional)</span>
-                      </Label>
-                    </HoverCardTrigger>
-                    <HoverCardContent
-                      align="start"
-                      className="w-[260px] text-sm"
-                      side="left"
-                    >
-                      {t("form.topClothesTooltip") || "Upload a photo of the top clothing item"}
-                    </HoverCardContent>
-                  </HoverCard>
-                  <Upload
-                    maxFiles={1}
-                    maxSize={5 * 1024 * 1024}
-                    placeholder={t("form.topClothesPlaceholder") || "Upload top clothing photo"}
-                    value={uploadTopClothes}
-                    onChange={setUploadTopClothes}
-                    previewClassName="h-[120px]"
-                    accept={{
-                      "image/*": [],
-                    }}
-                  />
-                </div>
-                {/* 下衣上传（可选） */}
-                <div className="flex flex-col gap-2">
-                  <HoverCard openDelay={200}>
-                    <HoverCardTrigger asChild>
-                      <Label htmlFor="bottomClothes">
-                        {t("form.bottomClothes") || "Bottom Clothes"} <span className="text-gray-500">(Optional)</span>
-                      </Label>
-                    </HoverCardTrigger>
-                    <HoverCardContent
-                      align="start"
-                      className="w-[260px] text-sm"
-                      side="left"
-                    >
-                      {t("form.bottomClothesTooltip") || "Upload a photo of the bottom clothing item"}
-                    </HoverCardContent>
-                  </HoverCard>
-                  <Upload
-                    maxFiles={1}
-                    maxSize={5 * 1024 * 1024}
-                    placeholder={t("form.bottomClothesPlaceholder") || "Upload bottom clothing photo"}
-                    value={uploadBottomClothes}
-                    onChange={setUploadBottomClothes}
-                    previewClassName="h-[120px]"
-                    accept={{
-                      "image/*": [],
-                    }}
-                  />
-                </div>
-              </div>
-            )}
 
             {/* <TemperatureSelector defaultValue={[0.56]} /> */}
             {/* <MaxLengthSelector defaultValue={[256]} /> */}
@@ -467,55 +483,95 @@ export default function Playground({
                   {isClothingTryon && (
                     <div className="flex flex-1 flex-col space-y-2">
                       <Label htmlFor="input">{t("form.input") || "Input"}</Label>
-                      <div className="flex-1 rounded-md border p-4 lg:min-h-[320px]">
-                        <div className="space-y-4">
-                          <div>
-                            <p className="text-sm font-medium mb-2">
-                              {t("form.userPhoto") || "Full-Body Photo"} <span className="text-red-500">*</span>
-                            </p>
-                            {uploadUserPhoto && uploadUserPhoto.length > 0 ? (
-                              <div className="text-sm text-gray-500">
-                                ✓ {uploadUserPhoto[0].filename || "Photo uploaded"}
-                              </div>
-                            ) : (
-                              <div className="text-sm text-gray-400">
-                                Please upload a full-body photo in the right panel
-                              </div>
-                            )}
-                          </div>
-                          <div>
-                            <p className="text-sm font-medium mb-2">
-                              {t("form.topClothes") || "Top Clothes"} <span className="text-gray-500">(Optional)</span>
-                            </p>
-                            {uploadTopClothes && uploadTopClothes.length > 0 ? (
-                              <div className="text-sm text-gray-500">
-                                ✓ {uploadTopClothes[0].filename || "Photo uploaded"}
-                              </div>
-                            ) : (
-                              <div className="text-sm text-gray-400">
-                                Optional: Upload top clothing photo
-                              </div>
-                            )}
-                          </div>
-                          <div>
-                            <p className="text-sm font-medium mb-2">
-                              {t("form.bottomClothes") || "Bottom Clothes"} <span className="text-gray-500">(Optional)</span>
-                            </p>
-                            {uploadBottomClothes && uploadBottomClothes.length > 0 ? (
-                              <div className="text-sm text-gray-500">
-                                ✓ {uploadBottomClothes[0].filename || "Photo uploaded"}
-                              </div>
-                            ) : (
-                              <div className="text-sm text-gray-400">
-                                Optional: Upload bottom clothing photo
-                              </div>
-                            )}
-                          </div>
-                          <div className="pt-2 border-t">
-                            <p className="text-xs text-gray-500">
-                              {t("form.clothingTryonHint") || "Upload at least one clothing item (top or bottom) along with your full-body photo to generate the try-on result."}
-                            </p>
-                          </div>
+                      <div className="flex-1 flex flex-col gap-4 rounded-md border p-4 lg:min-h-[320px]">
+                        {/* 用户照片上传（必选） */}
+                        <div className="flex flex-col gap-2">
+                          <HoverCard openDelay={200}>
+                            <HoverCardTrigger asChild>
+                              <Label htmlFor="userPhoto">
+                                {t("form.userPhoto") || "Full-Body Photo"} <span className="text-red-500">*</span>
+                              </Label>
+                            </HoverCardTrigger>
+                            <HoverCardContent
+                              align="start"
+                              className="w-[260px] text-sm"
+                              side="left"
+                            >
+                              {t("form.userPhotoTooltip") || "Upload a full-body photo of yourself"}
+                            </HoverCardContent>
+                          </HoverCard>
+                          <Upload
+                            maxFiles={1}
+                            maxSize={20 * 1024 * 1024}
+                            placeholder={t("form.userPhotoPlaceholder") || "Upload full-body photo"}
+                            value={uploadUserPhoto}
+                            onChange={setUploadUserPhoto}
+                            previewClassName="h-[120px]"
+                            accept={{
+                              "image/*": [],
+                            }}
+                          />
+                        </div>
+                        {/* 上衣上传（可选） */}
+                        <div className="flex flex-col gap-2">
+                          <HoverCard openDelay={200}>
+                            <HoverCardTrigger asChild>
+                              <Label htmlFor="topClothes">
+                                {t("form.topClothes") || "Top Clothes"} <span className="text-gray-500">(Optional)</span>
+                              </Label>
+                            </HoverCardTrigger>
+                            <HoverCardContent
+                              align="start"
+                              className="w-[260px] text-sm"
+                              side="left"
+                            >
+                              {t("form.topClothesTooltip") || "Upload a photo of the top clothing item"}
+                            </HoverCardContent>
+                          </HoverCard>
+                          <Upload
+                            maxFiles={50}
+                            maxSize={20 * 1024 * 1024}
+                            placeholder={t("form.topClothesPlaceholder")}
+                            value={uploadTopClothes}
+                            onChange={setUploadTopClothes}
+                            previewClassName="h-[120px]"
+                            accept={{
+                              "image/*": [],
+                            }}
+                          />
+                        </div>
+                        {/* 下衣上传（可选） */}
+                        <div className="flex flex-col gap-2">
+                          <HoverCard openDelay={200}>
+                            <HoverCardTrigger asChild>
+                              <Label htmlFor="bottomClothes">
+                                {t("form.bottomClothes") || "Bottom Clothes"} <span className="text-gray-500">(Optional)</span>
+                              </Label>
+                            </HoverCardTrigger>
+                            <HoverCardContent
+                              align="start"
+                              className="w-[260px] text-sm"
+                              side="left"
+                            >
+                              {t("form.bottomClothesTooltip") || "Upload a photo of the bottom clothing item"}
+                            </HoverCardContent>
+                          </HoverCard>
+                          <Upload
+                            maxFiles={50}
+                            maxSize={20 * 1024 * 1024}
+                            placeholder={t("form.bottomClothesPlaceholder")}
+                            value={uploadBottomClothes}
+                            onChange={setUploadBottomClothes}
+                            previewClassName="h-[120px]"
+                            accept={{
+                              "image/*": [],
+                            }}
+                          />
+                        </div>
+                        <div className="pt-2 border-t">
+                          <p className="text-xs text-gray-500">
+                            {t("form.clothingTryonHint") || "Upload at least one clothing item (top or bottom) along with your full-body photo to generate the try-on result."}
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -539,29 +595,78 @@ export default function Playground({
                         })}
                       >
                         {isClothingTryon ? (
-                          // Clothing Try-On 专用布局：图片铺满，标签和按钮在图片上
-                          <>
-                            {fluxData?.imageUrl && fluxId && (
-                              <BlurFade key={fluxData?.imageUrl} inView>
-                                <img
-                                  src={fluxData?.imageUrl}
-                                  alt="Generated Image"
-                                  className="pointer-events-none size-full rounded-md object-cover"
-                                />
-                              </BlurFade>
-                            )}
-                            {/* 标签和按钮容器 - 绝对定位在图片上方 */}
-                            <div className="absolute inset-0 flex items-start justify-between p-4">
-                              {/* 左上角：标签 */}
-                              <div className="bg-surface-alpha-strong text-content-base inline-flex items-center rounded-md border border-transparent px-1.5 py-0.5 font-mono text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
-                                {ModelName[fluxData?.model]}
-                              </div>
-                              {/* 右上角：下载按钮 */}
-                              <div className="flex items-center">
-                                <DownloadAction id={fluxData.id} skipAuthCheck={true} />
-                              </div>
+                          // Clothing Try-On 专用布局
+                          batchTaskData.length > 1 ? (
+                            // 多图列表展示（样式与上传控件一致）
+                            <div className="grid grid-cols-2 gap-4 p-4">
+                              {batchTaskData.map((task, index) => (
+                                <div
+                                  key={task.id}
+                                  className="dark:!bg-navy-700 relative flex h-[225px] w-full items-center justify-center rounded-xl border-gray-200 bg-gray-100 transition duration-300 dark:!border-none"
+                                >
+                                  {task.taskStatus === FluxTaskStatus.Succeeded && task.imageUrl ? (
+                                    <>
+                                      <img
+                                        src={task.imageUrl}
+                                        alt={`Generated Image ${index + 1}`}
+                                        className="aspect-auto h-full object-cover rounded-xl"
+                                      />
+                                      {/* 按钮容器 - 绝对定位在图片上方 */}
+                                      <div className="absolute inset-0 flex items-start justify-end p-2">
+                                        {/* 右上角：下载按钮 */}
+                                        <div className="flex items-center">
+                                          <DownloadAction id={task.id} skipAuthCheck={true} />
+                                        </div>
+                                      </div>
+                                    </>
+                                  ) : task.taskStatus === FluxTaskStatus.Processing ? (
+                                    <div className="flex size-full flex-col items-center justify-center">
+                                      <Loading />
+                                      <div className="text-content-light mt-3 px-4 text-center text-sm">
+                                        <ComfortingMessages language={locale as Locale} />
+                                      </div>
+                                    </div>
+                                  ) : task.taskStatus === FluxTaskStatus.Failed ? (
+                                    <div className="flex min-h-96 items-center justify-center">
+                                      <EmptyPlaceholder>
+                                        <EmptyPlaceholder.Icon name="Eraser" />
+                                        <EmptyPlaceholder.Title>
+                                          {t("empty.title")}
+                                        </EmptyPlaceholder.Title>
+                                        <EmptyPlaceholder.Description>
+                                          {t("empty.description", {
+                                            error: task.errorMsg ?? t("empty.errorPlaceholder"),
+                                          })}
+                                        </EmptyPlaceholder.Description>
+                                      </EmptyPlaceholder>
+                                    </div>
+                                  ) : (
+                                    <div className="text-sm text-gray-400">Waiting...</div>
+                                  )}
+                                </div>
+                              ))}
                             </div>
-                          </>
+                          ) : (
+                            // 单图展示（保持原有样式）
+                            <>
+                              {fluxData?.imageUrl && fluxId && (
+                                <BlurFade key={fluxData?.imageUrl} inView>
+                                  <img
+                                    src={fluxData?.imageUrl}
+                                    alt="Generated Image"
+                                    className="pointer-events-none size-full rounded-md object-cover"
+                                  />
+                                </BlurFade>
+                              )}
+                              {/* 按钮容器 - 绝对定位在图片上方 */}
+                              <div className="absolute inset-0 flex items-start justify-end p-4">
+                                {/* 右上角：下载按钮 */}
+                                <div className="flex items-center">
+                                  <DownloadAction id={fluxData.id} skipAuthCheck={true} />
+                                </div>
+                              </div>
+                            </>
+                          )
                         ) : (
                           // 其他模型的原有布局
                           <>
@@ -621,6 +726,72 @@ export default function Playground({
                       <div />
                     )}
                   </div>
+                  {/* 全部下载按钮（仅 clothing try-on 且有多图时显示） */}
+                  {isClothingTryon && batchTaskData.length > 1 && batchTaskData.some(task => task.taskStatus === FluxTaskStatus.Succeeded && task.imageUrl) && (
+                    <div className="flex justify-center mt-4">
+                      <Button
+                        variant="outline"
+                        onClick={async () => {
+                          let loadingToastId: string | number | undefined;
+                          try {
+                            const zip = new JSZip();
+                            const succeededTasks = batchTaskData.filter(
+                              task => task.taskStatus === FluxTaskStatus.Succeeded && task.imageUrl
+                            );
+                            
+                            loadingToastId = toast.loading(t("action.downloadAllLoading", { count: succeededTasks.length }));
+                            
+                            // 下载所有图片并添加到压缩包
+                            await Promise.all(
+                              succeededTasks.map(async (task, index) => {
+                                try {
+                                  const response = await fetch(`/api/download?fluxId=${task.id}`, {
+                                    credentials: 'include',
+                                  });
+                                  if (!response.ok) {
+                                    throw new Error(`Failed to download image ${index + 1}`);
+                                  }
+                                  const blob = await response.blob();
+                                  const fileName = `${task.id}_${index + 1}.${blob.type.split("/")[1] || "jpg"}`;
+                                  zip.file(fileName, blob);
+                                } catch (error) {
+                                  console.error(`Failed to download image ${index + 1}:`, error);
+                                }
+                              })
+                            );
+                            
+                            // 生成压缩包并下载
+                            const zipBlob = await zip.generateAsync({ type: "blob" });
+                            const url = window.URL.createObjectURL(zipBlob);
+                            const link = document.createElement("a");
+                            link.href = url;
+                            link.download = `clothing-tryon-results-${Date.now()}.zip`;
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                            window.URL.revokeObjectURL(url);
+                            
+                            // 先关闭 loading toast，再显示成功消息
+                            if (loadingToastId) {
+                              toast.dismiss(loadingToastId);
+                            }
+                            toast.success(t("action.downloadAllSuccess", { count: succeededTasks.length }));
+                          } catch (error) {
+                            console.error("Failed to download all images:", error);
+                            // 先关闭 loading toast，再显示错误消息
+                            if (loadingToastId) {
+                              toast.dismiss(loadingToastId);
+                            }
+                            toast.error(t("action.downloadAllError") || "Failed to download all images");
+                          }
+                        }}
+                        className="w-full sm:w-auto"
+                      >
+                        <ArrowDownToLine className="mr-2 size-4" />
+                        {t("action.downloadAll") || "Download All"}
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="flex items-center space-x-5">
