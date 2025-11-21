@@ -259,11 +259,12 @@ model UserBilling {
 }
 
 model UserCredit {
-  id        Int      @id @default(autoincrement())
-  userId    String   @map(name: "user_id")
-  credit    Int
-  createdAt DateTime @default(now()) @map(name: "created_at")
-  updatedAt DateTime @default(now()) @map(name: "updated_at")
+  id                Int       @id @default(autoincrement())
+  userId            String    @map(name: "user_id")
+  credit            Int
+  lastDailyRewardAt DateTime? @map(name: "last_daily_reward_at")
+  createdAt         DateTime  @default(now()) @map(name: "created_at")
+  updatedAt         DateTime  @default(now()) @map(name: "updated_at")
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 

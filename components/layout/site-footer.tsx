@@ -37,7 +37,7 @@ export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
           {t("footer.privacy")}
         </Link>
         <Link
-          href="mailto:support@fluxkrea.free"
+          href="mailto:contact@fluxkreafree.com"
           className="underline-offset-4 hover:underline"
           prefetch={false}
           title={t("footer.contact")}

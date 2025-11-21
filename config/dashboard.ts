@@ -4,7 +4,7 @@ export const dashboardConfig: DashboardConfig = {
   mainNav: [
     {
       title: "Support",
-      href: "mailto:support@fluxkrea.free",
+      href: "mailto:contact@fluxkreafree.com",
       disabled: false,
     },
   ],

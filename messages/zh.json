@@ -183,6 +183,80 @@
       "description": "Flux.1 [schnell] 是基础模型的精炼版本，运行速度比原版快10倍。它采用 Apache 2.0 许可，针对速度和效率进行了优化，满足那些需要快速生成图像而不影响质量的用户。这个模型非常适合本地开发和个人使用，在性能和可访问性之间达到了完美平衡。我们每月为用户提供5次免费机会，体验 Flux.1 [schnell] 模型的闪电般快速图像生成，让您亲身感受其令人难以置信的速度。",
       "action": "立即尝试"
     },
+    "creditsRewards": {
+      "badge": "🎉 限时福利",
+      "title": "免费积分大放送",
+      "description": "注册即送100积分，每日登录再送10积分！立即开始您的AI创作之旅。",
+      "signup": {
+        "title": "注册奖励",
+        "amount": "100积分",
+        "description": "新用户注册即可获得100积分，可用于所有AI模型生成。"
+      },
+      "daily": {
+        "title": "每日登录奖励",
+        "amount": "10积分",
+        "description": "每天首次登录自动获得10积分，持续累积，让创作更轻松。"
+      },
+      "cta": {
+        "signup": "立即注册",
+        "learnMore": "了解更多"
+      },
+      "stats": {
+        "total": "110积分",
+        "totalLabel": "新用户首次获得",
+        "daily": "10积分",
+        "dailyLabel": "每日登录奖励",
+        "free": "100%免费",
+        "freeLabel": "无需信用卡"
+      }
+    },
+    "batchTryon": {
+      "badge": "👔 电商专用",
+      "title": "批量虚拟试衣：革新电商产品摄影",
+      "description": "一次性上传最多50件服装，后台异步处理，批量下载结果。专为服装电商和跨境电商企业设计，大幅提升产品摄影效率。",
+      "features": {
+        "batch": {
+          "title": "批量上传",
+          "description": "一次性上传最多50件服装，支持上衣、下装或完整套装"
+        },
+        "async": {
+          "title": "异步处理",
+          "description": "后台自动处理，关闭页面后任务仍会继续运行"
+        },
+        "download": {
+          "title": "批量下载",
+          "description": "一键下载所有结果为ZIP文件，便于批量导入电商平台"
+        },
+        "quality": {
+          "title": "专业质量",
+          "description": "保留姿势、配饰和细节，生成可直接用于电商的专业图片"
+        }
+      },
+      "stats": {
+        "items": "50件",
+        "itemsLabel": "单次批量处理",
+        "time": "节省90%",
+        "timeLabel": "产品摄影时间",
+        "cost": "降低90%",
+        "costLabel": "摄影成本"
+      },
+      "useCases": {
+        "title": "适用场景",
+        "case1": {
+          "title": "新产品发布 - 快速生成一致的产品图片"
+        },
+        "case2": {
+          "title": "季节性目录更新 - 高效处理大批量商品"
+        },
+        "case3": {
+          "title": "跨境电商 - 多市场产品图片本地化"
+        }
+      },
+      "cta": {
+        "tryNow": "立即体验",
+        "learnMore": "了解更多"
+      }
+    },
     "action": {
       "pricing": "购买积分",
       "login": "登录",

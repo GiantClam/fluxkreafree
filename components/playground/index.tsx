@@ -78,12 +78,26 @@ export enum FluxTaskStatus {
 export default function Playground({
   locale,
   chargeProduct,
+  initialModel,
 }: {
   locale: string;
   chargeProduct?: ChargeProductSelectDto[];
+  initialModel?: string;
 }) {
   const [isPublic, setIsPublic] = React.useState(true);
-  const [selectedModel, setSelectedModel] = React.useState<Model>(models[0]);
+  
+  // 根据initialModel参数找到对应的模型，如果没有则使用默认的第一个模型
+  const getInitialModel = () => {
+    if (initialModel) {
+      const foundModel = models.find(m => m.id === initialModel);
+      if (foundModel) {
+        return foundModel;
+      }
+    }
+    return models[0];
+  };
+  
+  const [selectedModel, setSelectedModel] = React.useState<Model>(getInitialModel());
   const [ratio, setRatio] = React.useState<Ratio>(Ratio.r1);
   const [inputPrompt, setInputPrompt] = React.useState<string>("");
   const [loading, setLoading] = useState(false);
@@ -103,6 +117,17 @@ export default function Playground({
   const queryClient = useQueryClient();
   const [pricingCardOpen, setPricingCardOpen] = useState(false);
   const [lora, setLora] = React.useState<string>(loras.wukong);
+  
+  // 当initialModel变化时，更新selectedModel
+  useEffect(() => {
+    if (initialModel) {
+      const foundModel = models.find(m => m.id === initialModel);
+      if (foundModel) {
+        setSelectedModel(foundModel);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialModel]);
   
   // 判断是否为 clothing-tryon 模型
   const isClothingTryon = selectedModel.id === model.clothingTryon;

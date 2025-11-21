@@ -6,6 +6,8 @@ import HeroLanding from "@/components/sections/hero-landing";
 import PricingCard from "@/components/sections/pricing-card";
 import TwitterList from "@/components/sections/twitter-list";
 import SchnellIntro from "@/components/sections/schnell-intro";
+import CreditsRewards from "@/components/sections/credits-rewards";
+import BatchClothingTryon from "@/components/sections/batch-clothing-tryon";
 import { infos } from "@/config/landing";
 
 type Props = {
@@ -19,6 +21,8 @@ export default function IndexPage({ params: { locale } }: Props) {
   return (
     <>
       <HeroLanding />
+      <CreditsRewards />
+      <BatchClothingTryon />
       {/* <Powered /> */}
       {/* <BentoGrid /> */}
       {/* <InfoLanding data={infos[0]} reverse={true} /> */}

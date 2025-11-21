@@ -183,6 +183,80 @@
       "description": "Flux.1 [schnell] 是基礎模型的精煉版本，運行速度比原版快10倍。它採用 Apache 2.0 許可，針對速度和效率進行了優化，滿足那些需要快速生成圖像而不影響質量的用戶。這個模型非常適合本地開發和個人使用，在性能和可訪問性之間達到了完美平衡。我們每月為用戶提供5次免費機會，體驗 Flux.1 [schnell] 模型的閃電般快速圖像生成，讓您親身感受其令人難以置信的速度。",
       "action": "立即嘗試"
     },
+    "creditsRewards": {
+      "badge": "🎉 限時福利",
+      "title": "免費積分大放送",
+      "description": "註冊即送100積分，每日登錄再送10積分！立即開始您的AI創作之旅。",
+      "signup": {
+        "title": "註冊獎勵",
+        "amount": "100積分",
+        "description": "新用戶註冊即可獲得100積分，可用於所有AI模型生成。"
+      },
+      "daily": {
+        "title": "每日登錄獎勵",
+        "amount": "10積分",
+        "description": "每天首次登錄自動獲得10積分，持續累積，讓創作更輕鬆。"
+      },
+      "cta": {
+        "signup": "立即註冊",
+        "learnMore": "了解更多"
+      },
+      "stats": {
+        "total": "110積分",
+        "totalLabel": "新用戶首次獲得",
+        "daily": "10積分",
+        "dailyLabel": "每日登錄獎勵",
+        "free": "100%免費",
+        "freeLabel": "無需信用卡"
+      }
+    },
+    "batchTryon": {
+      "badge": "👔 電商專用",
+      "title": "批量虛擬試衣：革新電商產品攝影",
+      "description": "一次性上傳最多50件服裝，後台異步處理，批量下載結果。專為服裝電商和跨境電商企業設計，大幅提升產品攝影效率。",
+      "features": {
+        "batch": {
+          "title": "批量上傳",
+          "description": "一次性上傳最多50件服裝，支持上衣、下裝或完整套裝"
+        },
+        "async": {
+          "title": "異步處理",
+          "description": "後台自動處理，關閉頁面後任務仍會繼續運行"
+        },
+        "download": {
+          "title": "批量下載",
+          "description": "一鍵下載所有結果為ZIP文件，便於批量導入電商平台"
+        },
+        "quality": {
+          "title": "專業質量",
+          "description": "保留姿勢、配飾和細節，生成可直接用於電商的專業圖片"
+        }
+      },
+      "stats": {
+        "items": "50件",
+        "itemsLabel": "單次批量處理",
+        "time": "節省90%",
+        "timeLabel": "產品攝影時間",
+        "cost": "降低90%",
+        "costLabel": "攝影成本"
+      },
+      "useCases": {
+        "title": "適用場景",
+        "case1": {
+          "title": "新產品發布 - 快速生成一致的產品圖片"
+        },
+        "case2": {
+          "title": "季節性目錄更新 - 高效處理大批量商品"
+        },
+        "case3": {
+          "title": "跨境電商 - 多市場產品圖片本地化"
+        }
+      },
+      "cta": {
+        "tryNow": "立即體驗",
+        "learnMore": "了解更多"
+      }
+    },
     "action": {
       "pricing": "購買積分",
       "login": "登錄",

@@ -8,6 +8,7 @@ export const dynamic = 'force-dynamic';
 
 interface PageProps {
   params: { locale: string };
+  searchParams: { model?: string };
 }
 
 export async function generateMetadata({ params: { locale } }: PageProps) {
@@ -21,9 +22,10 @@ export async function generateMetadata({ params: { locale } }: PageProps) {
 
 export default async function PlaygroundPage({
   params: { locale },
+  searchParams,
 }: PageProps) {
   unstable_setRequestLocale(locale);
   const { data: chargeProduct } = await getChargeProduct(locale);
 
-  return <Playground locale={locale} chargeProduct={chargeProduct} />;
+  return <Playground locale={locale} chargeProduct={chargeProduct} initialModel={searchParams.model} />;
 }

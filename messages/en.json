@@ -183,6 +183,80 @@
       "description": "Experience the fastest FLUX.1 model completely free. Generate stunning AI images in seconds with Krea's revolutionary open-source technology. No cost, no limits - just pure AI creativity.",
       "action": "Try Free Now"
     },
+    "creditsRewards": {
+      "badge": "🎉 Limited Time Offer",
+      "title": "Free Credits Giveaway",
+      "description": "100 credits on signup + 10 credits daily login bonus! Start your AI creation journey now.",
+      "signup": {
+        "title": "Signup Bonus",
+        "amount": "100 Credits",
+        "description": "New users get 100 credits on registration, usable for all AI model generations."
+      },
+      "daily": {
+        "title": "Daily Login Bonus",
+        "amount": "10 Credits",
+        "description": "Get 10 credits automatically on your first login each day. Accumulate continuously for easier creation."
+      },
+      "cta": {
+        "signup": "Sign Up Now",
+        "learnMore": "Learn More"
+      },
+      "stats": {
+        "total": "110 Credits",
+        "totalLabel": "New User First Time",
+        "daily": "10 Credits",
+        "dailyLabel": "Daily Login Bonus",
+        "free": "100% Free",
+        "freeLabel": "No Credit Card"
+      }
+    },
+    "batchTryon": {
+      "badge": "👔 E-Commerce Ready",
+      "title": "Batch Virtual Try-On: Revolutionize E-Commerce Product Photography",
+      "description": "Upload up to 50 clothing items at once, process asynchronously in the background, and download all results in bulk. Designed for fashion e-commerce and cross-border e-commerce businesses.",
+      "features": {
+        "batch": {
+          "title": "Bulk Upload",
+          "description": "Upload up to 50 items at once, supporting tops, bottoms, or full outfits"
+        },
+        "async": {
+          "title": "Async Processing",
+          "description": "Tasks run automatically in the background, continue even after closing the page"
+        },
+        "download": {
+          "title": "Bulk Download",
+          "description": "Download all results as ZIP file with one click, easy to import to e-commerce platforms"
+        },
+        "quality": {
+          "title": "Professional Quality",
+          "description": "Preserves pose, accessories, and details, generates professional images ready for e-commerce"
+        }
+      },
+      "stats": {
+        "items": "50 Items",
+        "itemsLabel": "Per Batch Processing",
+        "time": "Save 90%",
+        "timeLabel": "Product Photography Time",
+        "cost": "Reduce 90%",
+        "costLabel": "Photography Costs"
+      },
+      "useCases": {
+        "title": "Use Cases",
+        "case1": {
+          "title": "New Product Launch - Quickly generate consistent product images"
+        },
+        "case2": {
+          "title": "Seasonal Catalog Updates - Efficiently process large batches"
+        },
+        "case3": {
+          "title": "Cross-Border E-Commerce - Localize product images for multiple markets"
+        }
+      },
+      "cta": {
+        "tryNow": "Try Now",
+        "learnMore": "Learn More"
+      }
+    },
     "action": {
       "pricing": "Learn More About FLUX.1",
       "login": "Start Generating Free",
@@ -233,7 +307,7 @@
       },
       "item6": {
         "question": "How can I get support for Flux Krea Free?",
-        "answer": "You can reach out to us at support@fluxkrea.free for any questions or support related to Flux Krea Free."
+        "answer": "You can reach out to us at contact@fluxkreafree.com for any questions or support related to Flux Krea Free."
       }
     },
     "tip": {
@@ -392,7 +466,7 @@
       },
       "item6": {
         "question": "How can I get online support?",
-        "answer": "You can reach us at support@fluxkrea.free."
+        "answer": "You can reach us at contact@fluxkreafree.com."
       }
     }
   },
